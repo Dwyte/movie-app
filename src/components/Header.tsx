@@ -1,6 +1,12 @@
 import Search from "./Search";
 
-function Header({ searchTerm, setSearchTerm }) {
+function Header({
+  searchTerm,
+  setSearchTerm,
+}: {
+  searchTerm: string;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+}) {
   return (
     <header className="flex justify-between fixed left-0 right-0 top-0 items-center bg-black py-4 px-8">
       <div className="flex justify-between items-center gap-16">

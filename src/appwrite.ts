@@ -1,4 +1,5 @@
 import { Client, Databases, ID, Query } from "appwrite";
+import { TrendingMovie } from "./types";
 
 const DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const COLLECTION_ID = import.meta.env.VITE_APPWRITE_COLLECTION_ID;
@@ -10,7 +11,7 @@ const client = new Client()
 
 const database = new Databases(client);
 
-export const updateSearchCount = async (searchTerm, movie) => {
+export const updateSearchCount = async (searchTerm: string, movie: any) => {
   // 1. Use appwrite SDK/API if a document already exists for the searchTerm
   try {
     const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
@@ -35,19 +36,24 @@ export const updateSearchCount = async (searchTerm, movie) => {
       });
     }
   } catch (error) {
-    console.log("LOL" + error.message);
+    if (error instanceof Error) {
+      console.log(error.message);
+    } else {
+      console.log("Unknown Error", error);
+    }
   }
 };
 
-export const getTrendingMovies = async () => {
+export const getTrendingMovies = async (): Promise<TrendingMovie[] | null>=> {
   try {
     const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
       Query.limit(5),
       Query.orderDesc("count"),
     ]);
-
-    return result.documents;
+    
+    return result.documents.map((doc) => ({...doc} as TrendingMovie))
   } catch (error) {
     console.log(error);
+    return null;
   }
 };

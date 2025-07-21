@@ -1,4 +1,6 @@
-function TrendingMovies({ trendingMovies }) {
+import { Movie, TrendingMovie } from "../types";
+
+function TrendingMovies({ trendingMovies }: { trendingMovies: TrendingMovie[] }) {
   return (
     trendingMovies.length > 0 && (
       <section className="trending">

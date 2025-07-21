@@ -6,6 +6,7 @@ import { useDebounce } from "react-use";
 import { getTrendingMovies, updateSearchCount } from "./appwrite";
 import Header from "./components/Header";
 import TrendingMovies from "./components/TrendingMovies";
+import { Movie, TrendingMovie } from "./types";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -18,12 +19,12 @@ const API_OPTIONS = {
 };
 
 const App = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [movieList, setMovieList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [trendingMovies, setTrendingMovies] = useState([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [movieList, setMovieList] = useState<Movie[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
+  const [trendingMovies, setTrendingMovies] = useState<TrendingMovie[]>([]);
 
   // Prevents an API call for every change in searchTerm
   // Waits for the user to stop typing before making the API call
@@ -32,7 +33,7 @@ const App = () => {
   const loadTrendingMovies = async () => {
     try {
       const movies = await getTrendingMovies();
-      setTrendingMovies(movies);
+      setTrendingMovies(movies || []);
     } catch (error) {
       console.log(error);
     }
@@ -66,7 +67,11 @@ const App = () => {
       }
     } catch (error) {
       console.log(`Error fetching movies ${error}`);
-      setErrorMessage(error.message);
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("Unknown Error.")
+      }
     } finally {
       setIsLoading(false);
     }
