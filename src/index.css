@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
 @layer base {
@@ -20,6 +21,6 @@
   }
 
   .movie-poster {
-    @apply hover:outline-3 hover:outline-white hover:p-[1px] hover:cursor-pointer;
+    @apply hover:outline-3 hover:outline-white hover:cursor-pointer;
   }
 }
