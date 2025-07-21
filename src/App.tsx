@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Search from "./components/Search";
 import Spinner from "./components/Spinner";
 import MovieCard from "./components/MovieCard";
 import { useDebounce } from "react-use";
@@ -7,16 +6,7 @@ import { getTrendingMovies, updateSearchCount } from "./appwrite";
 import Header from "./components/Header";
 import TrendingMovies from "./components/TrendingMovies";
 import { Movie, TrendingMovie } from "./types";
-
-const API_BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const API_OPTIONS = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
+import { getMovies } from "./tmdbAPI";
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -44,17 +34,8 @@ const App = () => {
     setErrorMessage("");
 
     try {
-      const endpoint = query
-        ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
-        : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
-      const response = await fetch(endpoint, API_OPTIONS);
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch movies");
-      }
-
-      const data = await response.json();
-      console.log(data);
+      const data = await getMovies(query);
+    
       if (data.Response === "False") {
         setErrorMessage(data.error.message);
         setMovieList([]);
@@ -70,7 +51,7 @@ const App = () => {
       if (error instanceof Error) {
         setErrorMessage(error.message);
       } else {
-        setErrorMessage("Unknown Error.")
+        setErrorMessage("Unknown Error.");
       }
     } finally {
       setIsLoading(false);
