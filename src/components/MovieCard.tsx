@@ -54,8 +54,6 @@ const MovieCard = ({
           setMovieImageFilePath("");
           return;
         }
-
-        setMovieImageFilePath("/no-movie.png");
       } catch (error) {
         console.error(error);
       }
@@ -67,9 +65,9 @@ const MovieCard = ({
   return (
     <div className="movie-card">
       <div className="w-70 h-40 relative group flex justify-center items-center">
-        <div className="w-full absolute group-hover:w-90 group-hover:z-100 group-hover:top-[-50px] group-hover:shadow-2xl">
+        <div className="w-70 h-40 absolute group-hover:w-90 group-hover:h-50 group-hover:z-100 group-hover:top-[-50px] group-hover:shadow-2xl">
           <img
-            className="rounded-sm object-cover group-hover:rounded-t-sm group-hover:rounded-b-none"
+            className="w-70 h-40 rounded-sm object-cover group-hover:w-90 group-hover:h-50 group-hover:rounded-t-sm group-hover:rounded-b-none"
             src={
               moveImageFilePath
                 ? `${MOVIE_IMAGE_BASE_URL}${moveImageFilePath}`

@@ -61,7 +61,7 @@ const MovieSearchResults = ({ searchTerm }: Props) => {
   return (
     <div>
       <h2>Search Results for "{query}":</h2>
-      <div className="grid grid-cols-5 gap-3">
+      <div className="flex flex-wrap justify-start gap-3">
         {movieList.map((movie) => (
           <MovieCard movie={movie} />
         ))}
