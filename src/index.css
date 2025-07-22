@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
 @layer base {
@@ -16,6 +16,27 @@
   .trending {
     & p {
       -webkit-text-stroke: 2px #e8e8e8;
+    }
+  }
+
+  .movie-card {
+    @apply flex-none rounded-sm cursor-pointer;
+
+    & .movie-card-title {
+      @apply flex items-end bg-[linear-gradient(to_top,_black_0%,_transparent_25%)] absolute top-0 left-0 right-0 bottom-0 px-1;
+    }
+    & .movie-card-info {
+      display: none;
+    }
+  }
+
+  .movie-card:hover {
+    & .movie-card-info {
+      @apply block p-2 bg-stone-900;
+    }
+
+    & .movie-card-title {
+      display: none;
     }
   }
 }

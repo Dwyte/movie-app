@@ -1,7 +1,14 @@
+import { movieGenres } from "../constants";
 import { Movie } from "../types";
 
+const genreIdsToName = (genreIds: number[]): string[] => {
+  return movieGenres
+    .filter((genre) => genreIds.includes(genre.id))
+    .map((genre) => genre.name);
+};
+
 const MovieCard = ({
-  movie: { backdrop_path, poster_path, title },
+  movie: { backdrop_path, poster_path, title, genre_ids },
 }: {
   movie: Movie;
 }) => {
@@ -18,14 +25,23 @@ const MovieCard = ({
   };
 
   return (
-    <div className="flex-none movie-poster relative rounded-sm overflow-hidden cursor-pointer">
-      <img
-        className="w-full h-40 object-cover"
-        src={getMovieImageSource()}
-        alt={title}
-      />
-      <div className="flex items-end bg-[linear-gradient(to_top,_black_0%,_transparent_25%)] absolute top-0 left-0 right-0 bottom-0 px-1">
-        <div className="font-[Oswald] text-white">{title}</div>
+    <div className="movie-card">
+      <div className="w-70 h-40 relative group flex justify-center items-center">
+        <div className="w-full absolute group-hover:w-90 group-hover:z-100 group-hover:top-[-50px]">
+          <img
+            className="object-cover"
+            src={getMovieImageSource()}
+            alt={title}
+          />
+
+          <div className="movie-card-info">
+            <div className="font-[Oswald] text-white">{title}</div>
+            <div className="font-[Oswald] text-white">{genreIdsToName(genre_ids).toString()}</div>
+          </div>
+        </div>
+        <div className="movie-card-title">
+          <div className="font-[Oswald] text-white">{title}</div>
+        </div>
       </div>
     </div>
   );

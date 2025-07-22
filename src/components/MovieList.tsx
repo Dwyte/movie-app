@@ -36,23 +36,23 @@ const MovieListByGenre = ({ genre }: Props) => {
   };
 
   return (
-    <div className="overflow-hidden">
-      <h2>{genre.name}</h2>
+    <div>
+      <h2 className="absolute">{genre.name}</h2>
       <div className="relative flex items-center">
-        <div ref={scrollContainer} className="flex overflow-hidden gap-3">
+        <div ref={scrollContainer} className="flex overflow-x-hidden py-20 px-10 gap-3 border">
           {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>
         <button
           onClick={() => handleScroll(-1500)}
-          className="absolute left-0 text-white z-5 bg-black cursor-pointer"
+          className="absolute left-0 text-white z-100 bg-black cursor-pointer"
         >
           Back
         </button>
         <button
           onClick={() => handleScroll(1500)}
-          className="absolute right-0 text-white z-5 bg-black cursor-pointer"
+          className="absolute right-0 text-white z-100 bg-black cursor-pointer"
         >
           Next
         </button>
