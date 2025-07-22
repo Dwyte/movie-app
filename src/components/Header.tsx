@@ -4,7 +4,9 @@ function Header() {
   return (
     <header className="flex justify-between fixed left-0 right-0 top-0 items-center bg-black py-4 px-8">
       <div className="flex justify-between items-center gap-16">
-        <img className="w-30 h-9" src="/logo.png" alt="logo" />
+        <a href="/">
+          <img className="w-30 h-9" src="/logo.png" alt="logo" />
+        </a>
         <a className="text-white" href="">
           Movies
         </a>
