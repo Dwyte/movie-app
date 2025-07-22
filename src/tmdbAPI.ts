@@ -1,4 +1,8 @@
-import { DiscoverMoviesAPIResult } from "./types";
+import {
+  DiscoverMoviesAPIResult,
+  MovieImage,
+  MovieImagesResult,
+} from "./types";
 import { MovieGenre } from "./types";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
@@ -40,5 +44,18 @@ export const getMovies = async (
     throw new Error("Failed to fetch movies");
   }
 
+  return await response.json();
+};
+
+export const getMovieImages = async (
+  movieId: number
+): Promise<MovieImagesResult> => {
+  const url = new URL(`${API_BASE_URL}/movie/${movieId}/images`);
+
+  const response = await fetch(url, API_OPTIONS);
+
+  if (!response.ok) {
+    throw new Error("Failed to get movie images");
+  }
   return await response.json();
 };

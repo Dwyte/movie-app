@@ -25,14 +25,17 @@
     & .movie-card-title {
       @apply flex items-end bg-[linear-gradient(to_top,_black_0%,_transparent_25%)] absolute top-0 left-0 right-0 bottom-0 px-1;
     }
+
     & .movie-card-info {
       display: none;
     }
   }
 
   .movie-card:hover {
+    @apply shadow-2xl;
+
     & .movie-card-info {
-      @apply block p-2 bg-stone-900;
+      @apply block p-2 bg-stone-900 rounded-b-sm;
     }
 
     & .movie-card-title {

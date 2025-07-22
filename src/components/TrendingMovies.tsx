@@ -16,7 +16,7 @@ const TrendingMovies = () => {
     };
 
     loadTrendingMovies();
-  });
+  }, []);
 
   return (
     trendingMovies.length > 0 && (
