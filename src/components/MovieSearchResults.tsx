@@ -4,6 +4,7 @@ import { useDebounce } from "react-use";
 import { updateSearchCount } from "../appwrite";
 import { searchMovies } from "../tmdbAPI";
 import MovieCard from "./MovieCard";
+import { useSearchParams } from "react-router-dom";
 
 interface Props {
   searchTerm: string;
@@ -13,11 +14,12 @@ const MovieSearchResults = ({ searchTerm }: Props) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [movieList, setMovieList] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
+  const [searchParams] = useSearchParams();
 
+  // const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
   // Prevents an API call for every change in searchTerm
   // Waits for the user to stop typing before making the API call
-  useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
+  // useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
 
   const fetchMovies = async (query: string) => {
     setIsLoading(true);
@@ -48,15 +50,17 @@ const MovieSearchResults = ({ searchTerm }: Props) => {
     }
   };
 
+  const query = searchParams.get("q");
+
   useEffect(() => {
-    if (debouncedSearchTerm.length > 0) {
-      fetchMovies(debouncedSearchTerm);
+    if (query) {
+      fetchMovies(query);
     }
-  }, [debouncedSearchTerm]);
+  }, [searchParams]);
 
   return (
     <div>
-      <h2>Search Results for "{searchTerm}":</h2>
+      <h2>Search Results for "{query}":</h2>
       <div className="grid grid-cols-5 gap-3">
         {movieList.map((movie) => (
           <MovieCard movie={movie} />
