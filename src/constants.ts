@@ -1,9 +1,6 @@
-interface Genre {
-  id: number;
-  name: string;
-}
+import { MovieGenre } from "./types";
 
-const movieGenres: Genre[] = [
+export const movieGenres: MovieGenre[] = [
   {
     id: 28,
     name: "Action",

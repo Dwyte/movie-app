@@ -6,9 +6,8 @@ const MovieCard = ({ movie: { backdrop_path, title } }: { movie: Movie }) => {
     : "/no-movie.png";
 
   return (
-    <div className="movie-poster relative rounded-sm overflow-hidden">
+    <div className="flex-none movie-poster relative rounded-sm overflow-hidden cursor-pointer">
       <img className="w-75 h-auto" src={movieImageSource} alt={title} />
-
       <div className="flex items-end bg-[linear-gradient(to_top,_black_0%,_transparent_25%)] font-sans tracking-wide text-white absolute top-0 left-0 right-0 bottom-0 px-1">
         <div>{title}</div>
       </div>

@@ -7,6 +7,8 @@ import Header from "./components/Header";
 import TrendingMovies from "./components/TrendingMovies";
 import { Movie, TrendingMovie } from "./types";
 import { getMovies, searchMovies } from "./tmdbAPI";
+import MovieList from "./components/MovieList";
+import { movieGenres } from "./constants";
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -35,6 +37,7 @@ const App = () => {
 
     try {
       const data = query ? await searchMovies(query) : await getMovies();
+      console.log(data);
 
       if (data.Response === "False") {
         setErrorMessage(data.error.message);
@@ -66,19 +69,6 @@ const App = () => {
     loadTrendingMovies();
   }, []);
 
-  const renderMovieLists = () => {
-    if (isLoading) return <Spinner />;
-    if (errorMessage) return <p className="text-red-500">{errorMessage}</p>;
-
-    return (
-      <ul className="grid grid-cols-5 gap-5">
-        {movieList.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
-      </ul>
-    );
-  };
-
   return (
     <main className="">
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
@@ -86,12 +76,9 @@ const App = () => {
         {searchTerm.length === 0 && (
           <TrendingMovies trendingMovies={trendingMovies} />
         )}
-        <section className="all-movies">
-          <h2 className="">
-            {searchTerm ? `Showing results for "${searchTerm}"` : "All movies"}
-          </h2>
-          {renderMovieLists()}
-        </section>
+        <div className="all-movies">
+          <MovieList genre={movieGenres[0]} />
+        </div>
       </div>
     </main>
   );

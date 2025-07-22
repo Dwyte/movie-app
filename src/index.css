@@ -8,19 +8,14 @@
   }
 
   h2 {
-    @apply font-bold text-[30px] mb-5 text-white;
+    @apply font-bold text-[30px] my-3 text-white;
   }
 }
 
 @layer components {
   .trending {
     & p {
-      -webkit-text-stroke: 7px #b1b1b1;
-      @apply m-0 font-[Bebas_Neue] font-[500] text-[320px] leading-none text-black mr-[-40px];
+      -webkit-text-stroke: 2px #e8e8e8;
     }
-  }
-
-  .movie-poster {
-    @apply hover:outline-3 hover:outline-white hover:cursor-pointer;
   }
 }

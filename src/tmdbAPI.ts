@@ -1,3 +1,6 @@
+import { DiscoverMoviesAPIResult } from "./types";
+import { MovieGenre } from "./types";
+
 const API_BASE_URL = "https://api.themoviedb.org/3";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const API_OPTIONS = {
@@ -21,7 +24,9 @@ export const searchMovies = async (query: string) => {
   return await response.json();
 };
 
-export const getMovies = async (genres: Genre[] = []) => {
+export const getMovies = async (
+  genres: MovieGenre[] = []
+): Promise<DiscoverMoviesAPIResult> => {
   const url = new URL(`${API_BASE_URL}/discover/movie`);
   url.searchParams.append("sort_by", "popularity.desc");
 

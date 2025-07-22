@@ -1,5 +1,10 @@
 import { Models } from "appwrite";
 
+export interface MovieGenre {
+  id: number;
+  name: string;
+}
+
 export interface Movie {
   adult: boolean;
   backdrop_path: string;
@@ -22,4 +27,11 @@ export type TrendingMovie = Models.Document & {
   searchTerm: string;
   poster_url: string;
   count: number;
-}
+};
+
+export type DiscoverMoviesAPIResult = {
+  page: number;
+  total_pages: number;
+  total_results: number;
+  results: Movie[];
+};
