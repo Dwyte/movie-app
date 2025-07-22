@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import Spinner from "./components/Spinner";
-import MovieCard from "./components/MovieCard";
 import { useDebounce } from "react-use";
-import { getTrendingMovies, updateSearchCount } from "./appwrite";
+import { updateSearchCount } from "./appwrite";
 import Header from "./components/Header";
 import TrendingMovies from "./components/TrendingMovies";
-import { Movie, TrendingMovie } from "./types";
+import { Movie } from "./types";
 import { getMovies, searchMovies } from "./tmdbAPI";
 import MovieList from "./components/MovieList";
 import { movieGenres } from "./constants";
@@ -16,20 +14,10 @@ const App = () => {
   const [movieList, setMovieList] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
-  const [trendingMovies, setTrendingMovies] = useState<TrendingMovie[]>([]);
 
   // Prevents an API call for every change in searchTerm
   // Waits for the user to stop typing before making the API call
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
-
-  const loadTrendingMovies = async () => {
-    try {
-      const movies = await getTrendingMovies();
-      setTrendingMovies(movies || []);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const fetchMovies = async (query = "") => {
     setIsLoading(true);
@@ -65,17 +53,11 @@ const App = () => {
     fetchMovies(debouncedSearchTerm);
   }, [debouncedSearchTerm]);
 
-  useEffect(() => {
-    loadTrendingMovies();
-  }, []);
-
   return (
     <main className="">
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className="py-25 px-10">
-        {searchTerm.length === 0 && (
-          <TrendingMovies trendingMovies={trendingMovies} />
-        )}
+        {searchTerm.length === 0 && <TrendingMovies />}
         <div className="all-movies">
           <MovieList genre={movieGenres[0]} />
         </div>
