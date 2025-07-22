@@ -6,7 +6,7 @@ import { getTrendingMovies, updateSearchCount } from "./appwrite";
 import Header from "./components/Header";
 import TrendingMovies from "./components/TrendingMovies";
 import { Movie, TrendingMovie } from "./types";
-import { getMovies } from "./tmdbAPI";
+import { getMovies, searchMovies } from "./tmdbAPI";
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -34,8 +34,8 @@ const App = () => {
     setErrorMessage("");
 
     try {
-      const data = await getMovies(query);
-    
+      const data = query ? await searchMovies(query) : await getMovies();
+
       if (data.Response === "False") {
         setErrorMessage(data.error.message);
         setMovieList([]);

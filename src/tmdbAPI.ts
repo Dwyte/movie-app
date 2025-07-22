@@ -8,12 +8,28 @@ const API_OPTIONS = {
   },
 };
 
-export const getMovies = async (query: string | null) => {
-  const endpoint = query
-    ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
-    : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+export const searchMovies = async (query: string) => {
+  const url = new URL(`${API_BASE_URL}/search/movie`);
+  url.searchParams.append("query", query);
 
-  const response = await fetch(endpoint, API_OPTIONS);
+  const response = await fetch(url, API_OPTIONS);
+
+  if (!response.ok) {
+    throw new Error("Failed to seach movies.");
+  }
+
+  return await response.json();
+};
+
+export const getMovies = async (genres: Genre[] = []) => {
+  const url = new URL(`${API_BASE_URL}/discover/movie`);
+  url.searchParams.append("sort_by", "popularity.desc");
+
+  genres.forEach((genre) => {
+    url.searchParams.append("with_genres", genre.id.toString());
+  });
+
+  const response = await fetch(url, API_OPTIONS);
 
   if (!response.ok) {
     throw new Error("Failed to fetch movies");
