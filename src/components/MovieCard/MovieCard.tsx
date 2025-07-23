@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { movieGenres } from "../constants";
-import { Movie } from "../types";
-import { getMovieImages, getMovieImageURL } from "../tmdbAPI";
+import { movieGenres } from "../../constants";
+import { Movie } from "../../types";
+import { getMovieImages, getMovieImageURL } from "../../tmdbAPI";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   BsSuitHeartFill,
@@ -26,7 +26,6 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
     const fetchMovieImages = async () => {
       try {
         const movieImages = await getMovieImages(movie.id);
-        console.log(movieImages);
         const movieImageWithTitle = movieImages.backdrops.find(
           (movieImage) =>
             movieImage.iso_639_1 === "en" && movieImage.aspect_ratio > 1
@@ -61,13 +60,10 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
   };
 
   return (
-    <div
-      onClick={handleViewMovie}
-      className="movie-card w-70 h-40 relative group flex justify-center items-center"
-    >
-      <div className="w-70 h-40 absolute rounded-sm group-hover:w-77 group-hover:h-44 group-hover:z-100 group-hover:top-[-60px] group-hover:shadow-[0_2px_10px_black]">
+    <div onClick={handleViewMovie} className="movie-card group">
+      <div className="movie-card-preview">
         <img
-          className="w-70 h-40 rounded-sm object-cover group-hover:w-77 group-hover:h-44 group-hover:rounded-t-sm group-hover:rounded-b-none"
+          className="movie-card-image"
           src={
             movieImageFilePath
               ? getMovieImageURL(movieImageFilePath)
@@ -78,13 +74,13 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
 
         <div className="movie-card-info">
           <div className="flex gap-2">
-            <button className="round-button round-button-light hover:round-button-dark">
+            <button className="round-button">
               <BsPlayFill />
             </button>
-            <button className="round-button round-button-dark hover:round-button-light">
+            <button className="round-button">
               <BsPlusLg />
             </button>
-            <button className="round-button round-button-dark hover:round-button-light">
+            <button className="round-button">
               <BsSuitHeartFill />
             </button>
           </div>

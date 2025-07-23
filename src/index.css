@@ -28,10 +28,14 @@
   }
 
   .movie-card {
-    @apply flex-none rounded-sm cursor-pointer;
+    @apply flex-none rounded-sm cursor-pointer w-70 h-40 relative flex justify-center items-center;
 
-    & .movie-card-title {
-      @apply flex items-end bg-[linear-gradient(to_top,_black_0%,_transparent_25%)] absolute top-0 left-0 right-0 bottom-0 px-1;
+    & .movie-card-preview {
+      @apply w-70 h-40 absolute rounded-sm;
+    }
+
+    & .movie-card-image {
+      @apply w-70 h-40 rounded-sm object-cover;
     }
 
     & .movie-card-info {
@@ -40,14 +44,26 @@
   }
 
   .movie-card:hover {
-    @apply shadow-2xl;
+    @apply shadow-2xl z-1000;
+
+    & .movie-card-preview {
+      @apply w-77 h-44 top-[-60px] shadow-[0_2px_10px_black];
+    }
+
+    & .movie-card-image {
+      @apply w-77 h-44 rounded-t-sm rounded-b-none;
+    }
 
     & .movie-card-info {
       @apply flex flex-col gap-2 p-2 bg-stone-900 rounded-b-sm font-sans shadow-[0_2px_10px_black] p-3;
     }
+  }
 
-    & .movie-card-title {
-      display: none;
-    }
+  .movie-list-scroll-button {
+    @apply text-white z-100 bg-stone-800 h-32 rounded-sm text-2xl cursor-pointer;
+  }
+
+  .movie-list-scroll-button:hover {
+    @apply bg-stone-700;
   }
 }
