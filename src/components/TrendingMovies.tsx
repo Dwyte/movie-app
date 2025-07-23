@@ -28,7 +28,7 @@ const TrendingMovies = () => {
               key={movie.id}
               className="flex-none flex items-start cursor-pointer relative"
             >
-              <p className="m-0 font-[Bebas_Neue] font-[500] text-[200px] leading-none text-black absolute left-[-42px] bottom-0">
+              <p className="m-0 text-[160px] leading-none text-black absolute left-[-42px] bottom-0">
                 {index + 1}
               </p>
               <img
