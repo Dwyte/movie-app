@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { movieGenres } from "../constants";
 import { Movie } from "../types";
-import { getMovieImages } from "../tmdbAPI";
+import { getMovieImages, getMovieImageURL } from "../tmdbAPI";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const genreIdsToName = (genreIds: number[]): string[] => {
   return movieGenres
@@ -9,31 +10,15 @@ const genreIdsToName = (genreIds: number[]): string[] => {
     .map((genre) => genre.name);
 };
 
-const MOVIE_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
-
-const MovieCard = ({
-  movie: { backdrop_path, poster_path, title, genre_ids, id },
-}: {
-  movie: Movie;
-}) => {
-  const getMovieImageSource = () => {
-    if (backdrop_path) {
-      return `https://image.tmdb.org/t/p/w500/${backdrop_path}`;
-    }
-
-    if (poster_path) {
-      return `https://image.tmdb.org/t/p/w500/${poster_path}`;
-    }
-
-    return "/no-movie.png";
-  };
-
-  const [moveImageFilePath, setMovieImageFilePath] = useState("");
+const MovieCard = ({ movie }: { movie: Movie }) => {
+  const [movieImageFilePath, setMovieImageFilePath] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchMovieImages = async () => {
       try {
-        const movieImages = await getMovieImages(id);
+        const movieImages = await getMovieImages(movie.id);
         console.log(movieImages);
         const movieImageWithTitle = movieImages.backdrops.find(
           (movieImage) =>
@@ -45,13 +30,13 @@ const MovieCard = ({
           return;
         }
 
-        if (backdrop_path) {
-          setMovieImageFilePath(backdrop_path);
+        if (movie.backdrop_path) {
+          setMovieImageFilePath(movie.backdrop_path);
           return;
         }
 
-        if (poster_path) {
-          setMovieImageFilePath("");
+        if (movie.poster_path) {
+          setMovieImageFilePath(movie.poster_path);
           return;
         }
       } catch (error) {
@@ -62,25 +47,32 @@ const MovieCard = ({
     fetchMovieImages();
   }, []);
 
-  return (
-    <div className="movie-card">
-      <div className="w-70 h-40 relative group flex justify-center items-center">
-        <div className="w-70 h-40 absolute group-hover:w-90 group-hover:h-50 group-hover:z-100 group-hover:top-[-50px] group-hover:shadow-2xl">
-          <img
-            className="w-70 h-40 rounded-sm object-cover group-hover:w-90 group-hover:h-50 group-hover:rounded-t-sm group-hover:rounded-b-none"
-            src={
-              moveImageFilePath
-                ? `${MOVIE_IMAGE_BASE_URL}${moveImageFilePath}`
-                : "/no-movie.png"
-            }
-            alt={title}
-          />
+  const handleViewMovie = () => {
+    navigate(`/movie/${movie.id}`, {
+      state: { backgroundLocation: location, movie },
+    });
+  };
 
-          <div className="movie-card-info">
-            <div className="font-[Oswald] text-white">{title}</div>
-            <div className="font-[Oswald] text-white">
-              {genreIdsToName(genre_ids).toString()}
-            </div>
+  return (
+    <div
+      onClick={handleViewMovie}
+      className="movie-card w-70 h-40 relative group flex justify-center items-center"
+    >
+      <div className="w-70 h-40 absolute group-hover:w-90 group-hover:h-50 group-hover:z-100 group-hover:top-[-50px] group-hover:shadow-2xl">
+        <img
+          className="w-70 h-40 rounded-sm object-cover group-hover:w-90 group-hover:h-50 group-hover:rounded-t-sm group-hover:rounded-b-none"
+          src={
+            movieImageFilePath
+              ? getMovieImageURL(movieImageFilePath)
+              : "/no-movie.png"
+          }
+          alt={movie.title}
+        />
+
+        <div className="movie-card-info">
+          <div className="font-[Oswald] text-white">{movie.title}</div>
+          <div className="font-[Oswald] text-white">
+            {genreIdsToName(movie.genre_ids).toString()}
           </div>
         </div>
       </div>

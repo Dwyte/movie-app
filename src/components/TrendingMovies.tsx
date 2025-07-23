@@ -10,6 +10,7 @@ const TrendingMovies = () => {
       try {
         const movies = await getTrendingMovies();
         setTrendingMovies(movies || []);
+        console.log(movies);
       } catch (error) {
         console.log(error);
       }

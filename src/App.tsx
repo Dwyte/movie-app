@@ -4,30 +4,36 @@ import TrendingMovies from "./components/TrendingMovies";
 import MovieList from "./components/MovieList";
 import { movieGenres } from "./constants";
 import MovieSearchResults from "./components/MovieSearchResults";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+import ViewMovieModal from "./components/ViewMovieModal";
+
+const Home = () => {
+  return (
+    <div>
+      <TrendingMovies /> <MovieList genre={movieGenres[0]} />
+    </div>
+  );
+};
 
 const App = () => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
-
+  const location = useLocation();
+  const state = location.state as { backgroundLocation?: Location };
+  const backgroundLocation = state?.backgroundLocation;
+  console.log(backgroundLocation);
   return (
-    <main className="">
+    <main>
       <Header />
-      <div className="py-25 px-10">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <div>
-                <TrendingMovies /> <MovieList genre={movieGenres[0]} />
-              </div>
-            }
-          />
-
-          <Route
-            path="/search"
-            element={<MovieSearchResults searchTerm={searchTerm} />}
-          />
+      <div className="relative py-25 h-500 px-10">
+        <Routes location={backgroundLocation || location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/search" element={<MovieSearchResults />} />
+          <Route path="/movie/:movieId" element={<ViewMovieModal />} />
         </Routes>
+      {backgroundLocation && (
+        <Routes>
+          <Route path="/movie/:movieId" element={<ViewMovieModal />} />
+        </Routes>
+      )}
       </div>
     </main>
   );

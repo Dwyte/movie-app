@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Movie } from "../types";
-import { useDebounce } from "react-use";
+// import { useDebounce } from "react-use";
 import { updateSearchCount } from "../appwrite";
 import { searchMovies } from "../tmdbAPI";
 import MovieCard from "./MovieCard";
 import { useSearchParams } from "react-router-dom";
 
-interface Props {
-  searchTerm: string;
-}
-
-const MovieSearchResults = ({ searchTerm }: Props) => {
+const MovieSearchResults = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [movieList, setMovieList] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
