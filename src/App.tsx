@@ -6,11 +6,16 @@ import { movieGenres } from "./constants";
 import MovieSearchResults from "./components/MovieSearchResults";
 import { Route, Routes, useLocation } from "react-router-dom";
 import ViewMovieModal from "./components/ViewMovieModal";
+import HeroSection from "./components/HeroSection";
 
 const Home = () => {
   return (
     <div>
-      <TrendingMovies /> <MovieList genre={movieGenres[0]} />
+      <HeroSection />
+
+      <div className="px-10 py-20">
+        <TrendingMovies /> <MovieList genre={movieGenres[0]} />
+      </div>
     </div>
   );
 };
@@ -23,17 +28,17 @@ const App = () => {
   return (
     <main>
       <Header />
-      <div className="relative py-25 h-500 px-10">
+      <div className="relative">
         <Routes location={backgroundLocation || location}>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<MovieSearchResults />} />
           <Route path="/movie/:movieId" element={<ViewMovieModal />} />
         </Routes>
-      {backgroundLocation && (
-        <Routes>
-          <Route path="/movie/:movieId" element={<ViewMovieModal />} />
-        </Routes>
-      )}
+        {backgroundLocation && (
+          <Routes>
+            <Route path="/movie/:movieId" element={<ViewMovieModal />} />
+          </Routes>
+        )}
       </div>
     </main>
   );

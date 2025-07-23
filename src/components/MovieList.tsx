@@ -39,7 +39,7 @@ const MovieListByGenre = ({ genre }: Props) => {
     <div>
       <h2 className="absolute">{genre.name}</h2>
       <div className="relative flex items-center">
-        <div ref={scrollContainer} className="flex overflow-x-hidden py-20 px-10 gap-3 border">
+        <div ref={scrollContainer} className="flex overflow-x-hidden py-20 px-10 gap-2">
           {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}

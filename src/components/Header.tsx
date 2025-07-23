@@ -2,7 +2,7 @@ import Search from "./Search";
 
 function Header() {
   return (
-    <header className="flex justify-between fixed left-0 right-0 top-0 items-center bg-black py-4 px-8">
+    <header className="flex justify-between fixed left-0 right-0 top-0 items-center bg-black/95 py-4 px-8 z-1000">
       <div className="flex justify-between items-center gap-16">
         <a href="/">
           <img className="w-30 h-9" src="/logo.png" alt="logo" />
