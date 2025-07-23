@@ -1,5 +1,6 @@
 import {
   DiscoverMoviesAPIResult,
+  Movie,
   MovieImage,
   MovieImagesResult,
 } from "./types";
@@ -37,6 +38,20 @@ export const getMovies = async (
   genres.forEach((genre) => {
     url.searchParams.append("with_genres", genre.id.toString());
   });
+
+  const response = await fetch(url, API_OPTIONS);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch movies");
+  }
+
+  return await response.json();
+};
+
+export const getTrendingMovies = async (
+  timeWindow: "day" | "week"
+): Promise<DiscoverMoviesAPIResult> => {
+  const url = new URL(`${API_BASE_URL}/trending/movie/${timeWindow}`);
 
   const response = await fetch(url, API_OPTIONS);
 

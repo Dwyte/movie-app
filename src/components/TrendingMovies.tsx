@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import { TrendingMovie } from "../types";
-import { getTrendingMovies } from "../appwrite";
+import { Movie, TrendingMovie } from "../types";
+import { getMovieImageURL, getTrendingMovies } from "../tmdbAPI";
 
 const TrendingMovies = () => {
-  const [trendingMovies, setTrendingMovies] = useState<TrendingMovie[]>([]);
+  const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
     const loadTrendingMovies = async () => {
       try {
-        const movies = await getTrendingMovies();
-        setTrendingMovies(movies || []);
-        console.log(movies);
+        const response = await getTrendingMovies("day");
+        setTrendingMovies(response.results || []);
       } catch (error) {
         console.log(error);
       }
@@ -26,7 +25,7 @@ const TrendingMovies = () => {
         <ul className="flex items-center gap-16 pl-8 overflow-hidden">
           {trendingMovies.map((movie, index) => (
             <li
-              key={movie.$id}
+              key={movie.id}
               className="flex-none flex items-start cursor-pointer relative"
             >
               <p className="m-0 font-[Bebas_Neue] font-[500] text-[200px] leading-none text-black absolute left-[-42px] bottom-0">
@@ -34,7 +33,7 @@ const TrendingMovies = () => {
               </p>
               <img
                 className="w-50 h-auto movie-poster rounded-sm"
-                src={movie.poster_url}
+                src={getMovieImageURL(movie.poster_path)}
                 alt={movie.title}
               />
             </li>
