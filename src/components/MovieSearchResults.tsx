@@ -55,7 +55,7 @@ const MovieSearchResults = () => {
   }, [searchParams]);
 
   return (
-    <div>
+    <div className="py-20 p-10">
       <h2>Search Results for "{query}":</h2>
       <div className="flex flex-wrap justify-start gap-3">
         {movieList.map((movie) => (

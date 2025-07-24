@@ -32,6 +32,8 @@ const MovieListByGenre = ({ genre }: Props) => {
     const atStart = scrollLeft === 0;
     const atEnd = scrollLeft >= maxScrollLeft * 0.999;
 
+    console.log({ scrollWidth, scrollLeft, clientWidth });
+
     setScrollInfo((prev) => {
       const noChanges = prev?.atStart === atStart && prev?.atEnd === atEnd;
       if (noChanges) return prev;

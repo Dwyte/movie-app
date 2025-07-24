@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
+import { BsSearch, BsX } from "react-icons/bs";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Search = () => {
@@ -35,23 +36,23 @@ const Search = () => {
   };
 
   return (
-    <div className="">
-      <div className="relative flex items-center">
-        <img
-          className="absolute left-1 h-3 w-6"
-          src="search.svg"
-          alt="search"
+    <div className="flex-1 rounded-sm overflow-hidden flex gap-2 items-center text-white bg-stone-800 px-3 sm:flex sm:items-center sm:relative">
+      <BsSearch onClick={handleSubmit} className="text-white text-md " />
+      <form className="flex-1" onSubmit={handleSubmit}>
+        <input
+          className="w-full py-2 focus:outline-0"
+          type="text"
+          placeholder="Titles, People, Genres"
+          value={searchTerm}
+          onChange={handleSearchInputChange}
         />
-        <form onSubmit={handleSubmit}>
-          <input
-            className="pl-7 py-1 bg-gray-300 w-60 font-medium focus:outline-0"
-            type="text"
-            placeholder="Titles, People, Genres"
-            value={searchTerm}
-            onChange={handleSearchInputChange}
-          />
-        </form>
-      </div>
+      </form>
+      {searchTerm.length > 0 && (
+        <BsX
+          onClick={() => setSearchTerm("")}
+          className="text-white text-2xl cursor-pointer"
+        />
+      )}
     </div>
   );
 };
