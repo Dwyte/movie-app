@@ -75,7 +75,7 @@ export const getMovieImages = async (
   return await response.json();
 };
 
-export const getMovieImageURL = (path: string) => {
-  const MOVIE_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
+export const getMovieImageURL = (path: string, quality: string = "500") => {
+  const MOVIE_IMAGE_BASE_URL = `https://image.tmdb.org/t/p/w${quality}`;
   return `${MOVIE_IMAGE_BASE_URL}${path}`;
 };

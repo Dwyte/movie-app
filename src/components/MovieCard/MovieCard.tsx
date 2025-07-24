@@ -10,12 +10,7 @@ import {
   BsBadgeHd,
   BsExplicitFill,
 } from "react-icons/bs";
-
-const genreIdsToName = (genreIds: number[]): string[] => {
-  return movieGenres
-    .filter((genre) => genreIds.includes(genre.id))
-    .map((genre) => genre.name);
-};
+import GenreList from "../GenreList";
 
 const MovieCard = ({ movie }: { movie: Movie }) => {
   const [movieImageFilePath, setMovieImageFilePath] = useState("");
@@ -89,9 +84,8 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
             <div>1h 58m</div>
             <BsBadgeHd className="text-lg" />
           </div>
-          <div className="text-white text-sm">
-            {genreIdsToName(movie.genre_ids).slice(0, 4).join(" • ").toString()}
-          </div>
+
+          <GenreList genreIds={movie.genre_ids} className="text-sm"/>
         </div>
       </div>
     </div>

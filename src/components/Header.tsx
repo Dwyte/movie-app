@@ -23,7 +23,7 @@ function Header() {
   };
 
   return (
-    <header className="fixed left-0 right-0 top-0 p-6 z-1000">
+    <header className="fixed left-0 right-0 top-0 p-6 z-1000 bg-gradient-to-b from-black via-50% via-black/70 to-black/0">
       <div className="flex justify-between items-center gap-2 mb-4 sm:gap-8">
         <Link className="" to="/">
           <img className="hidden w-20 sm:block" src="/logo.png" alt="logo" />
@@ -34,7 +34,7 @@ function Header() {
           onClick={handleNavModalClick}
           className={`${
             !isMobileNavVisible && "hidden"
-          } fixed flex flex-col items-center justify-center gap-10 bg-black/60 backdrop-blur-sm inset-0 text-4xl sm:static sm:justify-start sm:flex-row sm:text-base sm:bg-transparent sm:bg-none sm:backdrop-blur-none sm:flex-1 sm:gap-4`}
+          } fixed flex sm:flex flex-col items-center justify-center gap-10 bg-black/60 backdrop-blur-sm inset-0 text-4xl sm:static sm:justify-start sm:flex-row sm:text-base sm:bg-transparent sm:bg-none sm:backdrop-blur-none sm:flex-1 sm:gap-4`}
         >
           {navLinks.map((link) => (
             <Link

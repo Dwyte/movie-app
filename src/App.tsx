@@ -12,7 +12,6 @@ const Home = () => {
   return (
     <div>
       <HeroSection />
-
       <div className="px-10 py-20">
         <TrendingMovies /> <MovieList genre={movieGenres[0]} />
       </div>
