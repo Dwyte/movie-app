@@ -56,7 +56,7 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
   return (
     <div onClick={handleMovieCardClick} className="shrink-0 cursor-pointer">
       <img
-        className="rounded-sm object-cover w-30 h-45 sm:w-60 sm:h-36"
+        className="rounded-sm object-cover w-30 h-45 sm:w-66 sm:h-36"
         src={img}
         alt={movie.title}
       />

@@ -8,6 +8,7 @@ import {
 import { BsPlusCircleFill } from "react-icons/bs";
 import { FaInfoCircle } from "react-icons/fa";
 import GenreList from "./GenreList";
+import { shortenParagraph } from "../utils";
 
 const HeroSection = () => {
   const [movie, setMovie] = useState<Movie | null>(null);
@@ -15,7 +16,10 @@ const HeroSection = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       const trendingMovies = await getTrendingMovies("week");
-      const movie = trendingMovies.results[0];
+      const movie =
+        trendingMovies.results[
+          Math.floor(Math.random() * trendingMovies.results.length)
+        ];
       const images = await getMovieImages(movie.id);
 
       const backdrop = images.backdrops.filter(
@@ -37,7 +41,7 @@ const HeroSection = () => {
     <div className="relative">
       <div className="hidden sm:block absolute inset-0 bg-linear-to-r from-black to-black/0 to-60%"></div>
       <img
-        className="w-full h-120 sm:h-150 object-cover sm:inset-shadow-lg"
+        className="w-full h-120 sm:h-160 object-cover sm:inset-shadow-lg"
         src={
           movie
             ? getMovieImageURL(movie?.backdrop_path, "1920")
@@ -50,14 +54,14 @@ const HeroSection = () => {
           <div className="flex flex-col justify-center sm:ml-12">
             <div className="flex mb-2 justify-center sm:justify-start sm:mb-8">
               <img
-                className="w-50 sm:w-100"
+                className="w-50 h-full sm:w-65"
                 src={getMovieImageURL(movie?.poster_path, "500")}
                 alt=""
               />
             </div>
 
             <div className="hidden text-white sm:block sm:w-150 sm:text-sm sm:mb-4">
-              {movie.overview}
+              {shortenParagraph(movie.overview, 100)}
             </div>
 
             <GenreList
