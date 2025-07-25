@@ -28,11 +28,13 @@ const MoviesRow = ({
   return (
     movies.length > 0 && (
       <section>
-        <h2>{title}</h2>
+        <h2 className="ml-4 sm:ml-12">{title}</h2>
         <div className="flex items-center gap-2 scrollable-x">
+          <div className="shrink-0 w-2 sm:w-10"></div>
           {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
+          <div className="shrink-0 w-2 sm:w-4"></div>
         </div>
       </section>
     )

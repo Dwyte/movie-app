@@ -47,7 +47,7 @@ const HeroSection = () => {
       />
       {movie && (
         <div className="flex items-end justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t from-[#000] to-black/0 to-50% sm:to-25%">
-          <div className="flex flex-col justify-center sm:ml-16">
+          <div className="flex flex-col justify-center sm:ml-12">
             <div className="flex mb-2 justify-center sm:justify-start sm:mb-8">
               <img
                 className="w-50 sm:w-100"
