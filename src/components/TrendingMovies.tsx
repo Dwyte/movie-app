@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
-import { Movie, TrendingMovie } from "../types";
-import { getMovieImageURL, getTrendingMovies } from "../tmdbAPI";
+import { Movie } from "../types";
+import { getTrendingMovies } from "../tmdbAPI";
+import MovieCard from "./MovieCard";
 
-const TrendingMovies = () => {
-  const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
+const MoviesRow = ({
+  title,
+  fetchMovies,
+}: {
+  title: string;
+  fetchMovies: () => Promise<Movie[]>;
+}) => {
+  const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
     const loadTrendingMovies = async () => {
       try {
-        const response = await getTrendingMovies("day");
-        setTrendingMovies(response.results || []);
+        const response = await fetchMovies();
+        setMovies(response);
       } catch (error) {
         console.log(error);
       }
@@ -19,29 +26,17 @@ const TrendingMovies = () => {
   }, []);
 
   return (
-    trendingMovies.length > 0 && (
-      <section className="trending">
-        <h2>Trending Movies</h2>
-        <ul className="flex items-center gap-16 pl-8 overflow-hidden">
-          {trendingMovies.map((movie, index) => (
-            <li
-              key={movie.id}
-              className="flex-none flex items-start cursor-pointer relative"
-            >
-              <p className="m-0 text-[160px] leading-none text-black absolute left-[-42px] bottom-0">
-                {index + 1}
-              </p>
-              <img
-                className="w-50 h-auto movie-poster rounded-sm"
-                src={getMovieImageURL(movie.poster_path)}
-                alt={movie.title}
-              />
-            </li>
+    movies.length > 0 && (
+      <section>
+        <h2>{title}</h2>
+        <div className="flex items-center gap-2 scrollable-x">
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
           ))}
-        </ul>
+        </div>
       </section>
     )
   );
 };
 
-export default TrendingMovies;
+export default MoviesRow;

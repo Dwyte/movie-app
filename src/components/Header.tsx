@@ -34,7 +34,7 @@ function Header() {
           onClick={handleNavModalClick}
           className={`${
             !isMobileNavVisible && "hidden"
-          } fixed flex sm:flex flex-col items-center justify-center gap-10 bg-black/60 backdrop-blur-sm inset-0 text-4xl sm:static sm:justify-start sm:flex-row sm:text-base sm:bg-transparent sm:bg-none sm:backdrop-blur-none sm:flex-1 sm:gap-4`}
+          } fixed flex sm:flex flex-col items-center justify-center gap-10 bg-black/60 backdrop-blur-sm inset-0 text-4xl sm:static sm:justify-start sm:flex-row sm:text-base sm:bg-transparent sm:bg-none sm:backdrop-blur-none sm:flex-1 sm:gap-8`}
         >
           {navLinks.map((link) => (
             <Link
@@ -61,11 +61,9 @@ function Header() {
 
       <div
         onClick={() => setIsMobileNavVisible(true)}
-        className="flex justify-center w-full text-white cursor-pointer sm:hidden"
+        className="flex items-center gap-1 justify-center w-full text-white cursor-pointer sm:hidden"
       >
-        <label htmlFor="discover-checkbox">
-          Discover <BsChevronDown className="inline" />
-        </label>
+        <div>Discover</div> <BsChevronDown className="text-sm" />
       </div>
     </header>
   );

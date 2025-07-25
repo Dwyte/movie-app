@@ -7,7 +7,7 @@
   }
 
   h2 {
-    @apply font-bold text-[30px] my-3 text-white;
+    @apply font-bold text-xl my-2 text-white sm:text-2xl sm:my-3;
   }
 }
 
@@ -20,11 +20,14 @@
     @apply bg-white text-stone-950 border-white;
   }
 
-  .trending {
-    & p {
-      @apply font-[Bebas_Neue] font-[500];
-      -webkit-text-stroke: 2px #e8e8e8;
-    }
+  .scrollable-x {
+    @apply overflow-x-scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollable-x::-webkit-scrollbar {
+    display: none;
   }
 
   .movie-card {

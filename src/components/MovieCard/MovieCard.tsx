@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { movieGenres } from "../../constants";
 import { Movie } from "../../types";
 import { getMovieImages, getMovieImageURL } from "../../tmdbAPI";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   BsSuitHeartFill,
   BsPlusLg,
@@ -11,83 +11,55 @@ import {
   BsExplicitFill,
 } from "react-icons/bs";
 import GenreList from "../GenreList";
+import useIsSmUp from "../../hooks/useIsSmUp";
 
 const MovieCard = ({ movie }: { movie: Movie }) => {
-  const [movieImageFilePath, setMovieImageFilePath] = useState("");
+  // Backdrop with Logo used for landscape versions
+  const [movieBackdropFilePath, setMovieBackdropFilePath] = useState("");
+  const isSmUp = useIsSmUp();
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    const fetchMovieImages = async () => {
+    const findMovieBackdrop = async () => {
       try {
         const movieImages = await getMovieImages(movie.id);
-        const movieImageWithTitle = movieImages.backdrops.find(
+        const movieBackdrop = movieImages.backdrops.find(
           (movieImage) =>
             movieImage.iso_639_1 === "en" && movieImage.aspect_ratio > 1
         );
-
-        if (movieImageWithTitle) {
-          setMovieImageFilePath(movieImageWithTitle.file_path);
-          return;
-        }
-
-        if (movie.backdrop_path) {
-          setMovieImageFilePath(movie.backdrop_path);
-          return;
-        }
-
-        if (movie.poster_path) {
-          setMovieImageFilePath(movie.poster_path);
-          return;
+        if (movieBackdrop) {
+          setMovieBackdropFilePath(movieBackdrop?.file_path);
+        } else if (movie.backdrop_path) {
+          setMovieBackdropFilePath(movie.backdrop_path);
         }
       } catch (error) {
         console.error(error);
       }
     };
 
-    fetchMovieImages();
-  }, []);
+    if (isSmUp && movieBackdropFilePath === "") {
+      findMovieBackdrop();
+    }
+  }, [isSmUp]);
 
-  const handleViewMovie = () => {
+  const img = isSmUp
+    ? getMovieImageURL(movieBackdropFilePath)
+    : getMovieImageURL(movie.poster_path);
+
+  const handleMovieCardClick = () => {
     navigate(`/movie/${movie.id}`, {
       state: { backgroundLocation: location, movie },
     });
   };
 
   return (
-    <div onClick={handleViewMovie} className="movie-card group">
-      <div className="movie-card-preview">
-        <img
-          className="movie-card-image"
-          src={
-            movieImageFilePath
-              ? getMovieImageURL(movieImageFilePath)
-              : "/no-movie.png"
-          }
-          alt={movie.title}
-        />
-
-        <div className="movie-card-info">
-          <div className="flex gap-2">
-            <button className="round-button">
-              <BsPlayFill />
-            </button>
-            <button className="round-button">
-              <BsPlusLg />
-            </button>
-            <button className="round-button">
-              <BsSuitHeartFill />
-            </button>
-          </div>
-          <div className="flex text-stone-500 items-center text-xs gap-1">
-            {movie.adult && <BsExplicitFill className="text-base" />}
-            <div>1h 58m</div>
-            <BsBadgeHd className="text-lg" />
-          </div>
-
-          <GenreList genreIds={movie.genre_ids} className="text-sm"/>
-        </div>
-      </div>
+    <div onClick={handleMovieCardClick} className="shrink-0 cursor-pointer">
+      <img
+        className="rounded-sm object-cover w-30 h-45 sm:w-60 sm:h-36"
+        src={img}
+        alt={movie.title}
+      />
     </div>
   );
 };

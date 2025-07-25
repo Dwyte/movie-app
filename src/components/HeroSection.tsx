@@ -24,8 +24,6 @@ const HeroSection = () => {
 
       if (backdrop) movie.backdrop_path = backdrop.file_path;
 
-      console.log(images.logos);
-
       const logo = images.logos.find((logo) => logo.iso_639_1 === "en");
       if (logo) movie.poster_path = logo.file_path;
 
@@ -39,7 +37,7 @@ const HeroSection = () => {
     <div className="relative">
       <div className="hidden sm:block absolute inset-0 bg-linear-to-r from-black to-black/0 to-60%"></div>
       <img
-        className="w-full h-150 object-cover sm:inset-shadow-lg"
+        className="w-full h-120 sm:h-150 object-cover sm:inset-shadow-lg"
         src={
           movie
             ? getMovieImageURL(movie?.backdrop_path, "1920")
@@ -48,22 +46,23 @@ const HeroSection = () => {
         alt="Random Movie Posters"
       />
       {movie && (
-        <div className="flex items-end justify-center sm:justify-start absolute inset-0 bg-linear-to-t from-[#000] to-black/0 to-25%">
-          <div className="flex flex-col justify-center px-4 sm:ml-15">
-            {/* <h2 className="text-center">{movie.title}</h2> */}
-            <div className="flex mb-4 justify-center sm:mb-8 sm:justify-start">
+        <div className="flex items-end justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t from-[#000] to-black/0 to-50% sm:to-25%">
+          <div className="flex flex-col justify-center sm:ml-16">
+            <div className="flex mb-2 justify-center sm:justify-start sm:mb-8">
               <img
-                className="w-60 sm:w-100"
+                className="w-50 sm:w-100"
                 src={getMovieImageURL(movie?.poster_path, "500")}
                 alt=""
               />
             </div>
 
-            <div className="hidden text-white sm:block sm:w-150 sm:text-sm sm:mb-4">{movie.overview}</div>
+            <div className="hidden text-white sm:block sm:w-150 sm:text-sm sm:mb-4">
+              {movie.overview}
+            </div>
 
             <GenreList
               genreIds={movie.genre_ids}
-              className="text-center mb-4 sm:text-left"
+              className="text-center mb-2 sm:text-left sm:mb-4"
             />
             <div className="flex gap-4 justify-center sm:justify-start">
               <button className="rounded-sm py-2 px-3 text-stone-900 font-semibold cursor-pointer bg-white flex items-center hover:opacity-80">
