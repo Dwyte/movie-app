@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Movie } from "../types";
+import { Movie, MovieImage } from "../types";
 import {
   getMovieImages,
   getMovieImageURL,
@@ -12,6 +12,7 @@ import { shortenParagraph } from "../utils";
 
 const HeroSection = () => {
   const [movie, setMovie] = useState<Movie | null>(null);
+  const [logo, setLogo] = useState<MovieImage | null>(null);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -29,7 +30,8 @@ const HeroSection = () => {
       if (backdrop) movie.backdrop_path = backdrop.file_path;
 
       const logo = images.logos.find((logo) => logo.iso_639_1 === "en");
-      if (logo) movie.poster_path = logo.file_path;
+      console.log(logo);
+      if (logo) setLogo(logo);
 
       setMovie(movie);
     };
@@ -41,7 +43,7 @@ const HeroSection = () => {
     <div className="relative">
       <div className="hidden sm:block absolute inset-0 bg-linear-to-r from-black to-black/0 to-60%"></div>
       <img
-        className="w-full h-120 sm:h-160 object-cover sm:inset-shadow-lg"
+        className="w-full h-120 sm:h-screen object-cover sm:inset-shadow-lg"
         src={
           movie
             ? getMovieImageURL(movie?.backdrop_path, "1920")
@@ -50,23 +52,25 @@ const HeroSection = () => {
         alt="Random Movie Posters"
       />
       {movie && (
-        <div className="flex items-end justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t from-[#000] to-black/0 to-50% sm:to-25%">
-          <div className="flex flex-col justify-center sm:ml-12">
-            <div className="flex mb-2 justify-center sm:justify-start sm:mb-8">
-              <img
-                className="w-50 h-full sm:w-80"
-                src={getMovieImageURL(movie?.poster_path, "500")}
-                alt=""
-              />
-            </div>
+        <div className="flex items-end sm:items-center sm:mt-[-100px] justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t from-[#000] to-black/0 to-50% sm:to-25%">
+          <div className="flex flex-col gap-2 sm:gap-4 justify-center sm:ml-12">
+            {logo && (
+              <div className="flex mb-2 justify-center sm:justify-start">
+                <img
+                  className={`w-50 h-full sm:w-auto sm:max-h-65`}
+                  src={getMovieImageURL(logo.file_path, "500")}
+                  alt=""
+                />
+              </div>
+            )}
 
-            <div className="hidden text-white sm:block sm:w-150 sm:text-sm sm:mb-4">
+            <div className="hidden text-white sm:block sm:w-150 sm:text-sm">
               {shortenParagraph(movie.overview, 100)}
             </div>
 
             <GenreList
               genreIds={movie.genre_ids}
-              className="text-center mb-2 sm:text-left sm:mb-4"
+              className="text-center sm:text-left"
             />
             <div className="flex gap-4 justify-center sm:justify-start">
               <button className="rounded-sm py-2 px-3 text-stone-900 font-semibold cursor-pointer bg-white flex items-center hover:opacity-80">
