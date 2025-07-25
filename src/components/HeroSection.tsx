@@ -54,7 +54,7 @@ const HeroSection = () => {
           <div className="flex flex-col justify-center sm:ml-12">
             <div className="flex mb-2 justify-center sm:justify-start sm:mb-8">
               <img
-                className="w-50 h-full sm:w-65"
+                className="w-50 h-full sm:w-80"
                 src={getMovieImageURL(movie?.poster_path, "500")}
                 alt=""
               />

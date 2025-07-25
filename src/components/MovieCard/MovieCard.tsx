@@ -1,21 +1,20 @@
-import { useEffect, useState } from "react";
-import { movieGenres } from "../../constants";
+import { useEffect, useMemo, useState } from "react";
 import { Movie } from "../../types";
 import { getMovieImages, getMovieImageURL } from "../../tmdbAPI";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  BsSuitHeartFill,
-  BsPlusLg,
-  BsPlayFill,
-  BsBadgeHd,
-  BsExplicitFill,
-} from "react-icons/bs";
-import GenreList from "../GenreList";
+import { useLocation, useNavigate } from "react-router-dom";
 import useIsSmUp from "../../hooks/useIsSmUp";
 
-const MovieCard = ({ movie }: { movie: Movie }) => {
+const MovieCard = ({
+  movie,
+  imgClassNames,
+}: {
+  movie: Movie;
+  imgClassNames?: string;
+}) => {
   // Backdrop with Logo used for landscape versions
-  const [movieBackdropFilePath, setMovieBackdropFilePath] = useState("");
+  const [movieBackdropFilePath, setMovieBackdropFilePath] = useState<
+    string | null
+  >(null);
   const isSmUp = useIsSmUp();
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,6 +27,7 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
           (movieImage) =>
             movieImage.iso_639_1 === "en" && movieImage.aspect_ratio > 1
         );
+
         if (movieBackdrop) {
           setMovieBackdropFilePath(movieBackdrop?.file_path);
         } else if (movie.backdrop_path) {
@@ -38,14 +38,10 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
       }
     };
 
-    if (isSmUp && movieBackdropFilePath === "") {
+    if (isSmUp && movieBackdropFilePath === null) {
       findMovieBackdrop();
     }
   }, [isSmUp]);
-
-  const img = isSmUp
-    ? getMovieImageURL(movieBackdropFilePath)
-    : getMovieImageURL(movie.poster_path);
 
   const handleMovieCardClick = () => {
     navigate(`/movie/${movie.id}`, {
@@ -53,11 +49,28 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
     });
   };
 
+  const imgSource = useMemo(() => {
+    if (isSmUp) {
+      if (movieBackdropFilePath !== null)
+        return getMovieImageURL(movieBackdropFilePath);
+
+      return "/no-image-landscape.png";
+    }
+
+    if (movie.poster_path) {
+      return getMovieImageURL(movie.poster_path);
+    }
+
+    return "no-image-portrait.png";
+  }, [movieBackdropFilePath, isSmUp]);
+
   return (
     <div onClick={handleMovieCardClick} className="shrink-0 cursor-pointer">
       <img
-        className="rounded-sm object-cover w-30 h-45 sm:w-66 sm:h-36"
-        src={img}
+        className={`rounded-sm object-cover ${
+          imgClassNames || "w-30 h-45 sm:w-66 sm:h-36"
+        }`}
+        src={imgSource}
         alt={movie.title}
       />
     </div>

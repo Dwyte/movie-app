@@ -23,10 +23,10 @@ function Header() {
   };
 
   return (
-    <header className="fixed left-0 right-0 top-0 p-6 z-1000 bg-gradient-to-b from-black via-50% via-black/70 to-black/0">
-      <div className="flex justify-between items-center gap-2 mb-4 sm:gap-8">
-        <Link className="" to="/">
-          <img className="hidden w-20 sm:block" src="/logo.png" alt="logo" />
+    <header className="fixed left-0 right-0 top-0 p-4 sm:px-12 sm:py-6 z-1000 bg-gradient-to-b from-black via-50% via-black/70 to-black/0">
+      <div className="flex justify-between items-center gap-4 mb-4 sm:gap-8">
+        <Link to="/">
+          <img className="hidden w-30 sm:block" src="/logo.png" alt="logo" />
           <img className="w-5 sm:hidden" src="/n-logo.svg" alt="logo" />
         </Link>
 
@@ -49,22 +49,22 @@ function Header() {
           ))}
         </div>
 
-        <div className="flex flex-1 max-w-80 items-center gap-4">
+        <div className="flex flex-1 sm:max-w-75 items-center gap-4">
           <Search />
           <img
-            className="hidden w-10 h-10 sm:block"
+            className="rounded-sm w-10 h-10 sm:block"
             src="/profile-picture.jpg"
             alt="Smiley Icon"
           />
         </div>
       </div>
 
-      <div
+      {location.pathname !== "/search" && <div
         onClick={() => setIsMobileNavVisible(true)}
         className="flex items-center gap-1 justify-center w-full text-white cursor-pointer sm:hidden"
       >
         <div>Discover</div> <BsChevronDown className="text-sm" />
-      </div>
+      </div>}
     </header>
   );
 }

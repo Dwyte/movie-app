@@ -23,7 +23,6 @@ export const shortenParagraph = (
   const currSentences = [];
 
   for (let i = 0; i < sentences.length; i++) {
-    console.log(currSentences, sentences, currLength);
     const currSentence = sentences[i];
     currSentences.push(currSentence);
 

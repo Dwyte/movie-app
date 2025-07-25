@@ -55,11 +55,11 @@ const MovieSearchResults = () => {
   }, [searchParams]);
 
   return (
-    <div className="py-20 p-10">
+    <div className="px-4 pb-4 pt-20 sm:px-16">
       <h2>Search Results for "{query}":</h2>
-      <div className="flex flex-wrap justify-start gap-3">
+      <div className="grid grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-3">
         {movieList.map((movie) => (
-          <MovieCard movie={movie} />
+          <MovieCard key={movie.id} movie={movie} imgClassNames="h-full" />
         ))}
       </div>
     </div>
