@@ -12,6 +12,14 @@
 }
 
 @layer components {
+  .primary-btn {
+    @apply rounded-sm py-2 px-3 text-stone-900 font-semibold cursor-pointer bg-white flex items-center hover:opacity-80;
+  }
+
+  .secondary-btn {
+    @apply rounded-sm py-2 px-3 text-stone-100 font-semibold cursor-pointer bg-stone-800 flex items-center hover:opacity-80;
+  }
+
   .round-button {
     @apply text-white border-stone-500 bg-stone-950 border-[1px] p-2 text-[16px] rounded-full font-bold cursor-pointer;
   }
@@ -19,9 +27,9 @@
   .round-button:hover {
     @apply bg-white text-stone-950 border-white;
   }
-
+  /* Scrollable content but scroll bar not visible */
   .scrollable-x {
-    @apply overflow-x-scroll;
+    @apply overflow-y-scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }

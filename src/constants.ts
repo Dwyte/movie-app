@@ -78,3 +78,8 @@ export const movieGenres: MovieGenre[] = [
     name: "Western",
   },
 ];
+
+export const genreIdsToName: { [key: number]: string } = {};
+movieGenres.forEach(
+  (movieGenre) => (genreIdsToName[movieGenre.id] = movieGenre.name)
+);

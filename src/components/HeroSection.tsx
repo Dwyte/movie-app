@@ -73,12 +73,12 @@ const HeroSection = () => {
               className="text-center sm:text-left"
             />
             <div className="flex gap-4 justify-center sm:justify-start">
-              <button className="rounded-sm py-2 px-3 text-stone-900 font-semibold cursor-pointer bg-white flex items-center hover:opacity-80">
+              <button className="primary-btn">
                 <BsPlusCircleFill className="text-md mr-2" />
                 Add to my List
               </button>
 
-              <button className="rounded-sm py-2 px-3 text-stone-100 font-semibold cursor-pointer bg-stone-500 flex items-center hover:opacity-80">
+              <button className="secondary-btn">
                 <FaInfoCircle className="text-md mr-2" />
                 More Info
               </button>

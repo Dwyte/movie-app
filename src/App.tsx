@@ -6,6 +6,7 @@ import ViewMovieModal from "./components/ViewMovieModal";
 import HeroSection from "./components/HeroSection";
 import MoviesRow from "./components/MoviesRow";
 import { getMovies, getTrendingMovies } from "./tmdbAPI";
+import useIsSmUp from "./hooks/useIsSmUp";
 
 const Home = () => {
   return (
@@ -52,16 +53,18 @@ const App = () => {
   const location = useLocation();
   const state = location.state as { backgroundLocation?: Location };
   const backgroundLocation = state?.backgroundLocation;
+
+  const isSmUp = useIsSmUp();
   return (
     <main>
       <Header />
       <div className="relative">
-        <Routes location={backgroundLocation || location}>
-          <Route path="/" element={<Home />} />
-          <Route path="/search" element={<MovieSearchResults />} />
+        <Routes location={isSmUp ? backgroundLocation || location : location}>
           <Route path="/movie/:movieId" element={<ViewMovieModal />} />
+          <Route path="/search" element={<MovieSearchResults />} />
+          <Route path="/" element={<Home />} />
         </Routes>
-        {backgroundLocation && (
+        {isSmUp && backgroundLocation && (
           <Routes>
             <Route path="/movie/:movieId" element={<ViewMovieModal />} />
           </Routes>
