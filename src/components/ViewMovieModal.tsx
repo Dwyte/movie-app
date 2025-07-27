@@ -74,7 +74,7 @@ const ViewMovieModal = () => {
         <div className="relative">
           <button
             onClick={closeModal}
-            className="round-button absolute right-3 top-3 bg-black/70 border-0"
+            className="round-button absolute right-3 top-3 border-0"
           >
             <BsXLg />
           </button>
