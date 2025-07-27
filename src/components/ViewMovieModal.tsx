@@ -10,13 +10,23 @@ import {
   BsStar,
   BsXLg,
 } from "react-icons/bs";
-import { RiDownloadLine, RiPlayFill } from "react-icons/ri";
+import { RiDownloadLine } from "react-icons/ri";
 import { genreIdsToName } from "../constants";
+import { useEffect } from "react";
 
 const ViewMovieModal = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const movie = location.state.movie as Movie;
+
+  useEffect(() => {
+    // Disable main body scrolling
+    document.body.style.overflowY = "hidden";
+
+    return () => {
+      document.body.style.overflowY = "scroll";
+    };
+  }, []);
 
   const closeModal = () => {
     navigate(-1);
@@ -27,18 +37,18 @@ const ViewMovieModal = () => {
   };
 
   return (
-    <div className="flex justify-center sm:absolute sm:inset-0 text-white z-10000">
-      <div className="sm:max-w-200 sm:mt-16 sm:rounded-sm scrollable-x">
+    <div className="flex justify-center fixed inset-0 text-white z-10000 bg-black/60">
+      <div className="sm:max-w-200 sm:mt-8 sm:rounded-sm scrollable-x">
         <div className="relative">
           <button
             onClick={closeModal}
-            className="round-button absolute right-3 top-3 bg-black/50 border-0"
+            className="round-button absolute right-3 top-3 bg-black/70 border-0"
           >
             <BsXLg />
           </button>
           <img
             onClick={handleImageClick}
-            className="w-full"
+            className="w-full sm:h-110 sm:object-cover"
             src={getMovieImageURL(movie.backdrop_path)}
             alt=""
           />

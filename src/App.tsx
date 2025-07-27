@@ -59,7 +59,7 @@ const App = () => {
 
   return (
     <main>
-      {!hideHeader && <Header />}
+      {(!hideHeader || isSmUp) && <Header />}
 
       <div>
         <Routes location={isSmUp ? backgroundLocation || location : location}>
