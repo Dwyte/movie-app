@@ -43,7 +43,7 @@ const HeroSection = () => {
     <div className="relative">
       <div className="hidden sm:block absolute inset-0 bg-linear-to-r from-black to-black/0 to-60%"></div>
       <img
-        className="w-full h-120 sm:h-screen object-cover sm:inset-shadow-lg"
+        className="w-full h-150 sm:h-screen object-cover sm:inset-shadow-lg"
         src={
           movie
             ? getMovieImageURL(movie?.backdrop_path, "1920")
