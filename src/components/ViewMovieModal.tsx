@@ -1,6 +1,11 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Cast, Movie, MovieDetails } from "../types";
-import { getMovieCredits, getMovieDetails, getMovieImageURL } from "../tmdbAPI";
+import { Cast, Movie, MovieDetails, MovieImage } from "../types";
+import {
+  getMovieCredits,
+  getMovieDetails,
+  getMovieImages,
+  getMovieImageURL,
+} from "../tmdbAPI";
 import {
   BsBadgeCcFill,
   BsBadgeHdFill,
@@ -13,13 +18,18 @@ import {
 import { RiDownloadLine } from "react-icons/ri";
 import { useEffect, useMemo, useState } from "react";
 import { getDurationString } from "../utils";
+import useIsSmUp from "../hooks/useIsSmUp";
 
 const ViewMovieModal = () => {
   const [movieDetails, setMovieDetails] = useState<MovieDetails | null>(null);
   const [movieCasts, setMovieCasts] = useState<Cast[]>([]);
+  const [logo, setLogo] = useState<MovieImage | null>(null);
+
   const location = useLocation();
   const navigate = useNavigate();
-  const { movieId } = useParams();
+  const isSmUp = useIsSmUp();
+  const params = useParams();
+  const movieId = params.movieId ? parseInt(params.movieId) : null;
 
   useEffect(() => {
     // Disable main body scrolling
@@ -33,14 +43,26 @@ const ViewMovieModal = () => {
   useEffect(() => {
     const fetchMovieDetails = async () => {
       if (!movieId) return;
-      const _movieDetails = await getMovieDetails(parseInt(movieId));
+      const _movieDetails = await getMovieDetails(movieId);
       setMovieDetails(_movieDetails);
 
-      const _movieCasts = await getMovieCredits(parseInt(movieId));
+      const _movieCasts = await getMovieCredits(movieId);
       setMovieCasts(_movieCasts.cast);
     };
 
     fetchMovieDetails();
+  }, []);
+
+  useEffect(() => {
+    const fetchMovieImages = async () => {
+      if (!movieId) return;
+      const images = await getMovieImages(movieId);
+
+      const logo = images.logos.find((logo) => logo.iso_639_1 === "en");
+      if (logo) setLogo(logo);
+    };
+
+    fetchMovieImages();
   }, []);
 
   const closeModal = () => {
@@ -55,7 +77,7 @@ const ViewMovieModal = () => {
   const imgSource = useMemo(() => {
     try {
       if (movieDetails) {
-        return getMovieImageURL(movieDetails.backdrop_path);
+        return getMovieImageURL(movieDetails.backdrop_path, "1920");
       }
     } catch (error) {
       return "/no-image-landscape.png";
@@ -74,23 +96,54 @@ const ViewMovieModal = () => {
         <div className="relative">
           <button
             onClick={closeModal}
-            className="round-button absolute right-3 top-3 border-0"
+            className="round-button absolute right-3 top-3 border-0 z-100"
           >
             <BsXLg />
           </button>
-          <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-black to-black/0 to-25%"></div>
+          <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-black to-black/0 via-black/75 via-25% to-100%"></div>
           <img
             className="w-full sm:h-110 sm:object-cover"
             src={imgSource}
             alt=""
           />
+
+          <div className="hidden sm:flex flex-col items-start px-10 gap-8 absolute left-0 right-0 bottom-0">
+            {logo ? (
+              <img
+                className="w-auto max-h-30"
+                src={getMovieImageURL(logo.file_path)}
+                alt=""
+              />
+            ) : (
+              <h1 className="text-2xl font-bold">{movieDetails?.title}</h1>
+            )}
+            <div className="flex items-center gap-4 w-full">
+              <button className="primary-btn justify-center min-w-30">
+                <BsPlayFill className="text-2xl mr-1" />
+                <span>Play</span>
+              </button>
+
+              <button className="round-button">
+                <BsPlusLg />
+              </button>
+              <button className="round-button">
+                <BsStar />
+              </button>
+              <div className="flex-1"></div>
+              <button className="round-button opacity-65">
+                <RiDownloadLine />
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col gap-2 p-4 bg-black sm:px-10 sm:gap-4">
-          <h1 className="font-bold text-2xl">
-            {movieDetails ? movieDetails.title : "Movie Title"}
-          </h1>
-          <div className="flex-col gap-2 sm:flex sm:flex-row sm:gap-12">
+        <div className="flex flex-col gap-2 p-4 bg-black sm:px-10 sm:py-8 sm:gap-4">
+          {!isSmUp && (
+            <h1 className="font-bold text-2xl sm:hidden">
+              {movieDetails && movieDetails.title}
+            </h1>
+          )}
+          <div className="flex flex-col gap-2 sm:flex sm:flex-row sm:gap-12">
             <div className="flex flex-col gap-2 sm:flex-3">
               <div className="flex items-center gap-2 text-stone-400">
                 <div>{movieDetails && movieDetails.release_date}</div>

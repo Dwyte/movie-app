@@ -30,7 +30,7 @@ const HeroSection = () => {
       if (backdrop) movie.backdrop_path = backdrop.file_path;
 
       const logo = images.logos.find((logo) => logo.iso_639_1 === "en");
-      console.log(logo);
+
       if (logo) setLogo(logo);
 
       setMovie(movie);
@@ -56,7 +56,6 @@ const HeroSection = () => {
           <div className="flex flex-col gap-2 sm:gap-4 justify-center sm:ml-12">
             {logo && (
               <div className="flex mb-2 px-10 justify-center sm:px-0 sm:justify-start">
-
                 <img
                   className={`w-auto max-h-50 sm:w-auto sm:max-h-65`}
                   src={getMovieImageURL(logo.file_path, "500")}
