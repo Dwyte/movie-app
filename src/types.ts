@@ -69,16 +69,28 @@ export interface MovieDetails {
   vote_count: number;
 }
 
+export interface WatchProvider {
+  logo_path: string;
+  provider_id: number;
+  provider_name: string;
+  display_priority: number;
+}
+
+export interface WatchProvidersAPIResults {
+  id: number;
+  results: {
+    [key in CountryCode]: {
+      link: string;
+      flatrate: WatchProvider[];
+      rent: WatchProvider[];
+      buy: WatchProvider[];
+    };
+  };
+}
+
 export type CountryCode = (typeof countryCodes)[number];
 
 export type LanguageCode = (typeof languageCodes)[number];
-
-export type TrendingMovie = Models.Document & {
-  movie_id: number;
-  searchTerm: string;
-  poster_url: string;
-  count: number;
-};
 
 export type DiscoverMoviesAPIResult = {
   page: number;

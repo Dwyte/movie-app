@@ -1,8 +1,8 @@
 import {
   DiscoverMoviesAPIResult,
-  Movie,
-  MovieImage,
+  MovieDetails,
   MovieImagesResult,
+  WatchProvidersAPIResults,
 } from "./types";
 import { MovieGenre } from "./types";
 
@@ -16,17 +16,20 @@ const API_OPTIONS = {
   },
 };
 
-export const searchMovies = async (query: string) => {
+export const get = async (url: URL): Promise<any> => {
+  const response = await fetch(url, API_OPTIONS);
+  if (!response.ok) {
+    throw new Error("Failed to fetch movies");
+  }
+  return await response.json();
+};
+
+export const searchMovies = async (
+  query: string
+): Promise<DiscoverMoviesAPIResult> => {
   const url = new URL(`${API_BASE_URL}/search/movie`);
   url.searchParams.append("query", query);
-
-  const response = await fetch(url, API_OPTIONS);
-
-  if (!response.ok) {
-    throw new Error("Failed to seach movies.");
-  }
-
-  return await response.json();
+  return await get(url);
 };
 
 export const getMovies = async (
@@ -39,40 +42,35 @@ export const getMovies = async (
     url.searchParams.append("with_genres", genre.id.toString());
   });
 
-  const response = await fetch(url, API_OPTIONS);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch movies");
-  }
-
-  return await response.json();
+  return await get(url);
 };
 
 export const getTrendingMovies = async (
   timeWindow: "day" | "week"
 ): Promise<DiscoverMoviesAPIResult> => {
   const url = new URL(`${API_BASE_URL}/trending/movie/${timeWindow}`);
-
-  const response = await fetch(url, API_OPTIONS);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch movies");
-  }
-
-  return await response.json();
+  return await get(url);
 };
 
 export const getMovieImages = async (
   movieId: number
 ): Promise<MovieImagesResult> => {
   const url = new URL(`${API_BASE_URL}/movie/${movieId}/images`);
+  return await get(url);
+};
 
-  const response = await fetch(url, API_OPTIONS);
+export const getMovieDetails = async (
+  movieId: number
+): Promise<MovieDetails> => {
+  const url = new URL(`${API_BASE_URL}/movie/${movieId}`);
+  return get(url);
+};
 
-  if (!response.ok) {
-    throw new Error("Failed to get movie images");
-  }
-  return await response.json();
+export const getWatchProviders = async (
+  movieId: number
+): Promise<WatchProvidersAPIResults> => {
+  const url = new URL(`${API_BASE_URL}/movie/${movieId}/watch/providers`);
+  return get(url);
 };
 
 export const getMovieImageURL = (path: string, quality: string = "500") => {
