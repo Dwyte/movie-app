@@ -78,7 +78,7 @@ const ViewMovieModal = () => {
           >
             <BsXLg />
           </button>
-
+          <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-black to-black/0 to-25%"></div>
           <img
             className="w-full sm:h-110 sm:object-cover"
             src={imgSource}
@@ -86,56 +86,65 @@ const ViewMovieModal = () => {
           />
         </div>
 
-        <div className="flex flex-col gap-2 p-4 bg-black">
+        <div className="flex flex-col gap-2 p-4 bg-black sm:px-10 sm:gap-4">
           <h1 className="font-bold text-2xl">
             {movieDetails ? movieDetails.title : "Movie Title"}
           </h1>
-          <div className="flex items-center gap-2 text-stone-400">
-            <div>{movieDetails && movieDetails.release_date}</div>
-            <div>{movieDetails && getDurationString(movieDetails.runtime)}</div>
-            <BsBadgeHdFill className="text-xl" />
-            <BsBadgeCcFill className="text-xl" />
-          </div>
+          <div className="flex-col gap-2 sm:flex sm:flex-row sm:gap-12">
+            <div className="flex flex-col gap-2 sm:flex-3">
+              <div className="flex items-center gap-2 text-stone-400">
+                <div>{movieDetails && movieDetails.release_date}</div>
+                <div>
+                  {movieDetails && getDurationString(movieDetails.runtime)}
+                </div>
+                <BsBadgeHdFill className="text-xl" />
+                <BsBadgeCcFill className="text-xl" />
+              </div>
 
-          <div className="flex items-center gap-2">
-            <div className="flex flex-col items-center leading-none text-[8px] font-bold bg-red-600 p-[3px] rounded-[2px]">
-              <span>TOP</span> <span className="text-[11px]">10</span>
+              <div className="flex items-center gap-2">
+                <div className="flex flex-col items-center leading-none text-[8px] font-bold bg-red-600 p-[3px] rounded-[2px]">
+                  <span>TOP</span> <span className="text-[11px]">10</span>
+                </div>
+                <h3 className="font-bold text-lg">#1 in TV Shows Today</h3>
+              </div>
+
+              <button className="primary-btn justify-center sm:hidden">
+                <BsPlayFill className="text-2xl mr-1" />
+                Play
+              </button>
+              <button className="secondary-btn justify-center sm:hidden">
+                <RiDownloadLine className="text-2xl mr-1" />
+                Download
+              </button>
+
+              <p className="text-stone-300 text-sm">
+                {movieDetails && movieDetails.overview}
+              </p>
             </div>
-            <h3 className="font-bold text-lg">#1 in TV Shows Today</h3>
-          </div>
 
-          <button className="primary-btn justify-center">
-            <BsPlayFill className="text-2xl mr-1" />
-            Play
-          </button>
-          <button className="secondary-btn justify-center">
-            <RiDownloadLine className="text-2xl mr-1" />
-            Download
-          </button>
-          <p className="text-stone-300 text-sm">
-            {movieDetails && movieDetails.overview}
-          </p>
-
-          {movieCasts.length > 0 && (
-            <div className="text-sm text-stone-400">
-              Casts: &#32;
-              <span className="text-white">
-                {movieCasts
-                  .slice(0, 3)
-                  .map((cast) => cast.name)
-                  .join(", ")}
-              </span>
+            <div className="flex flex-col gap-2 sm:flex-2">
+              {movieCasts.length > 0 && (
+                <div className="text-sm text-stone-400">
+                  Casts: &#32;
+                  <span className="text-white">
+                    {movieCasts
+                      .slice(0, 3)
+                      .map((cast) => cast.name)
+                      .join(", ")}
+                  </span>
+                </div>
+              )}
+              <div className="text-sm text-stone-400">
+                Genres: &#32;
+                <span className="text-white">
+                  {movieDetails &&
+                    movieDetails.genres.map((genre) => genre.name).join(", ")}
+                </span>
+              </div>
             </div>
-          )}
-          <div className="text-sm text-stone-400">
-            Genres: &#32;
-            <span className="text-white">
-              {movieDetails &&
-                movieDetails.genres.map((genre) => genre.name).join(", ")}
-            </span>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 sm:hidden">
             <button className="flex flex-col justify-between items-center gap-1 px-3 py-2 min-w-16 border-b-2 border-b-red-600">
               <BsPlusLg className="text-2xl p-[3px]" />
               <span className="text-sm">My List</span>
@@ -151,7 +160,7 @@ const ViewMovieModal = () => {
           </div>
 
           <div>
-            <h3 className="text-lg font-bold my-2">More Like This</h3>
+            <h2 className="text-lg font-bold my-2">More Like This</h2>
             <div className="grid grid-cols-3 gap-2">
               <img src="/no-image-portrait.png" className="rounded-sm" alt="" />
               <img src="/no-image-portrait.png" className="rounded-sm" alt="" />
