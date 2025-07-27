@@ -34,3 +34,16 @@ export const shortenParagraph = (
 
   return currSentences.join(". ").trim();
 };
+
+/**
+ * Returns a duration in the follwing format: Xh Xm ex. 2h 54m
+ * @param runtimeMinutes duration/runtime in minutes integer
+ * @returns
+ */
+export const getDurationString = (runtimeMinutes: number): string => {
+  const hours = Math.floor(runtimeMinutes / 60);
+  const minutes = runtimeMinutes % 60;
+  const hoursString = hours > 0 ? `${hours}h ` : "";
+
+  return `${hoursString}${minutes}m`;
+};

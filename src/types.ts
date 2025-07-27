@@ -102,7 +102,7 @@ export type DiscoverMoviesAPIResult = {
 export type MovieImage = {
   aspect_ratio: number;
   height: number;
-  iso_639_1: string;
+  iso_639_1: LanguageCode;
   file_path: string;
   vote_average: number;
   vote_count: number;

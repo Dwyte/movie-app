@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Movie } from "../types";
-import { getMovieImageURL } from "../tmdbAPI";
+import { Movie, MovieDetails } from "../types";
+import { getMovieDetails, getMovieImageURL } from "../tmdbAPI";
 import {
   BsBadgeCcFill,
   BsBadgeHdFill,
@@ -12,9 +12,11 @@ import {
 } from "react-icons/bs";
 import { RiDownloadLine } from "react-icons/ri";
 import { genreIdsToName } from "../constants";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getDurationString } from "../utils";
 
 const ViewMovieModal = () => {
+  const [movieDetails, setMovieDetails] = useState<MovieDetails | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const movie = location.state.movie as Movie;
@@ -27,6 +29,15 @@ const ViewMovieModal = () => {
       document.body.style.overflowY = "scroll";
     };
   }, []);
+
+  useEffect(() => {
+    const fetchMovieDetails = async () => {
+      const response = await getMovieDetails(movie.id);
+      setMovieDetails(response);
+    };
+
+    fetchMovieDetails();
+  }, [movie]);
 
   const closeModal = () => {
     navigate(-1);
@@ -57,8 +68,8 @@ const ViewMovieModal = () => {
         <div className="flex flex-col gap-2 p-4 bg-black">
           <h1 className="font-bold text-2xl">{movie.title}</h1>
           <div className="flex items-center gap-2 text-stone-400">
-            <div>2023-07-23</div>
-            <div>2h 23m</div>
+            <div>{movieDetails && movieDetails.release_date}</div>
+            <div>{movieDetails && getDurationString(movieDetails.runtime)}</div>
             <BsBadgeHdFill className="text-xl" />
             <BsBadgeCcFill className="text-xl" />
           </div>
@@ -80,9 +91,9 @@ const ViewMovieModal = () => {
           </button>
           <p className="text-stone-300 text-sm">{movie.overview}</p>
 
-          <div className="text-sm">
+          <div className="text-sm text-stone-400">
             Genres: &#32;
-            <span className="text-stone-400">
+            <span className="text-white">
               {movie.genre_ids
                 .map((genreId) => genreIdsToName[genreId])
                 .join(", ")}
