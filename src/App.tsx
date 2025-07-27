@@ -1,7 +1,7 @@
 import Header from "./components/Header";
 import { movieGenres } from "./constants";
 import MovieSearchResults from "./components/MovieSearchResults";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useMatch } from "react-router-dom";
 import ViewMovieModal from "./components/ViewMovieModal";
 import HeroSection from "./components/HeroSection";
 import MoviesRow from "./components/MoviesRow";
@@ -55,10 +55,13 @@ const App = () => {
   const backgroundLocation = state?.backgroundLocation;
 
   const isSmUp = useIsSmUp();
+  const hideHeader = useMatch("/movie/:id");
+
   return (
     <main>
-      <Header />
-      <div className="relative">
+      {!hideHeader && <Header />}
+
+      <div>
         <Routes location={isSmUp ? backgroundLocation || location : location}>
           <Route path="/movie/:movieId" element={<ViewMovieModal />} />
           <Route path="/search" element={<MovieSearchResults />} />

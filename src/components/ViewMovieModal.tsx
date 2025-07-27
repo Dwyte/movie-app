@@ -27,7 +27,7 @@ const ViewMovieModal = () => {
   };
 
   return (
-    <div className="flex justify-center absolute inset-0 text-white z-10000 bg-black/60 backdrop-blur-xs">
+    <div className="flex justify-center sm:absolute sm:inset-0 text-white z-10000">
       <div className="sm:max-w-200 sm:mt-16 sm:rounded-sm scrollable-x">
         <div className="relative">
           <button
