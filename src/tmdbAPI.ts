@@ -1,5 +1,6 @@
 import {
   DiscoverMoviesAPIResult,
+  MovieCreditsAPIResult,
   MovieDetails,
   MovieImagesResult,
   WatchProvidersAPIResults,
@@ -78,4 +79,11 @@ export const getMovieImageURL = (path: string, quality: string = "500") => {
 
   const MOVIE_IMAGE_BASE_URL = `https://image.tmdb.org/t/p/w${quality}`;
   return `${MOVIE_IMAGE_BASE_URL}${path}`;
+};
+
+export const getMovieCredits = (
+  movieId: number
+): Promise<MovieCreditsAPIResult> => {
+  const url = new URL(`${API_BASE_URL}/movie/${movieId}/credits`);
+  return get(url);
 };

@@ -1,6 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Movie, MovieDetails } from "../types";
-import { getMovieDetails, getMovieImageURL } from "../tmdbAPI";
+import { Cast, Movie, MovieDetails } from "../types";
+import { getMovieCredits, getMovieDetails, getMovieImageURL } from "../tmdbAPI";
 import {
   BsBadgeCcFill,
   BsBadgeHdFill,
@@ -16,6 +16,7 @@ import { getDurationString } from "../utils";
 
 const ViewMovieModal = () => {
   const [movieDetails, setMovieDetails] = useState<MovieDetails | null>(null);
+  const [movieCasts, setMovieCasts] = useState<Cast[]>([]);
   const location = useLocation();
   const navigate = useNavigate();
   const { movieId } = useParams();
@@ -32,8 +33,11 @@ const ViewMovieModal = () => {
   useEffect(() => {
     const fetchMovieDetails = async () => {
       if (!movieId) return;
-      const response = await getMovieDetails(parseInt(movieId));
-      setMovieDetails(response);
+      const _movieDetails = await getMovieDetails(parseInt(movieId));
+      setMovieDetails(_movieDetails);
+
+      const _movieCasts = await getMovieCredits(parseInt(movieId));
+      setMovieCasts(_movieCasts.cast);
     };
 
     fetchMovieDetails();
@@ -112,6 +116,17 @@ const ViewMovieModal = () => {
             {movieDetails && movieDetails.overview}
           </p>
 
+          {movieCasts.length > 0 && (
+            <div className="text-sm text-stone-400">
+              Casts: &#32;
+              <span className="text-white">
+                {movieCasts
+                  .slice(0, 3)
+                  .map((cast) => cast.name)
+                  .join(", ")}
+              </span>
+            </div>
+          )}
           <div className="text-sm text-stone-400">
             Genres: &#32;
             <span className="text-white">
