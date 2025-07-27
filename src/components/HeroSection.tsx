@@ -55,9 +55,10 @@ const HeroSection = () => {
         <div className="flex items-end sm:items-center sm:mt-[-100px] justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t from-[#000] to-black/0 to-50% sm:to-25%">
           <div className="flex flex-col gap-2 sm:gap-4 justify-center sm:ml-12">
             {logo && (
-              <div className="flex mb-2 justify-center sm:justify-start">
+              <div className="flex mb-2 px-10 justify-center sm:px-0 sm:justify-start">
+
                 <img
-                  className={`w-50 h-full sm:w-auto sm:max-h-65`}
+                  className={`w-auto max-h-50 sm:w-auto sm:max-h-65`}
                   src={getMovieImageURL(logo.file_path, "500")}
                   alt=""
                 />
