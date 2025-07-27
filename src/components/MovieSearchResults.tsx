@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Movie } from "../types";
 // import { useDebounce } from "react-use";
-import { updateSearchCount } from "../appwrite";
 import { searchMovies } from "../tmdbAPI";
 import MovieCard from "./MovieCard";
 import { useSearchParams } from "react-router-dom";
@@ -23,17 +22,7 @@ const MovieSearchResults = () => {
 
     try {
       const data = await searchMovies(query);
-
-      if (data.Response === "False") {
-        setErrorMessage(data.error.message);
-        setMovieList([]);
-        return;
-      }
-
       setMovieList(data.results || []);
-      if (query && data.results.length > 0) {
-        await updateSearchCount(query, data.results[0]);
-      }
     } catch (error) {
       console.log(`Error fetching movies ${error}`);
       if (error instanceof Error) {
