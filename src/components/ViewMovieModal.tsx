@@ -18,7 +18,7 @@ import {
 } from "react-icons/bs";
 import { RiDownloadLine } from "react-icons/ri";
 import { useEffect, useMemo, useState } from "react";
-import { getDurationString } from "../utils";
+import { getDurationString, shortenParagraph } from "../utils";
 import useIsSmUp from "../hooks/useIsSmUp";
 import MovieCard from "./MovieCard";
 
@@ -189,7 +189,7 @@ const ViewMovieModal = () => {
               </button>
 
               <p className="text-stone-300 text-sm">
-                {movieDetails && movieDetails.overview}
+                {movieDetails && shortenParagraph(movieDetails.overview, 200)}
               </p>
             </div>
 

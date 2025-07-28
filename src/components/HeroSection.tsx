@@ -9,10 +9,15 @@ import { BsPlusCircleFill } from "react-icons/bs";
 import { FaInfoCircle } from "react-icons/fa";
 import GenreList from "./GenreList";
 import { shortenParagraph } from "../utils";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-use";
 
 const HeroSection = () => {
   const [movie, setMovie] = useState<Movie | null>(null);
   const [logo, setLogo] = useState<MovieImage | null>(null);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -38,6 +43,11 @@ const HeroSection = () => {
 
     fetchMovies();
   }, []);
+
+  const handleMoreInfoClick = () => {
+    if (!movie) return;
+    navigate(`/movie/${movie.id}`, { state: { backgroundLocation: location } });
+  };
 
   return (
     <div className="relative">
@@ -78,7 +88,7 @@ const HeroSection = () => {
                 Add to my List
               </button>
 
-              <button className="secondary-btn">
+              <button onClick={handleMoreInfoClick} className="secondary-btn">
                 <FaInfoCircle className="text-md mr-2" />
                 More Info
               </button>

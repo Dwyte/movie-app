@@ -46,9 +46,8 @@ const MovieCard = ({
   }, [isSmUp]);
 
   const handleMovieCardClick = () => {
-    console.log(sourcePathName, location);
     navigate(`/movie/${movie.id}`, {
-      state: { backgroundLocation: sourcePathName || location, movie },
+      state: { backgroundLocation: sourcePathName || location },
     });
   };
 
