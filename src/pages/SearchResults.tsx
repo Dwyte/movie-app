@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Movie } from "../types";
-// import { useDebounce } from "react-use";
-import { searchMovies } from "../tmdbAPI";
-import MovieCard from "./MovieCard";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-const MovieSearchResults = () => {
+import MovieCard from "../components/MovieCard";
+
+import { searchMovies } from "../tmdbAPI";
+import { Movie } from "../types";
+
+const SearchResults = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [movieList, setMovieList] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParams] = useSearchParams();
-
-  // const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
-  // Prevents an API call for every change in searchTerm
-  // Waits for the user to stop typing before making the API call
-  // useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
 
   const fetchMovies = async (query: string) => {
     setIsLoading(true);
@@ -55,4 +51,4 @@ const MovieSearchResults = () => {
   );
 };
 
-export default MovieSearchResults;
+export default SearchResults;

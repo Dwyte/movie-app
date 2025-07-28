@@ -1,7 +1,7 @@
 import { Route, Routes, useLocation, useMatch } from "react-router-dom";
 
 import Home from "./pages/Home";
-import MovieSearchResults from "./components/MovieSearchResults";
+import SearchResults from "./pages/SearchResults";
 import ViewMovieModal from "./components/ViewMovieModal";
 import Header from "./components/Header";
 
@@ -22,7 +22,7 @@ const App = () => {
       <div>
         <Routes location={isSmUp ? backgroundLocation || location : location}>
           <Route path="/movie/:movieId" element={<ViewMovieModal />} />
-          <Route path="/search" element={<MovieSearchResults />} />
+          <Route path="/search" element={<SearchResults />} />
           <Route path="/" element={<Home />} />
         </Routes>
         {isSmUp && backgroundLocation && (
