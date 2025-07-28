@@ -1,7 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import Search from "./Search";
-import { BsChevronDown, BsX, BsXLg } from "react-icons/bs";
 import { useState } from "react";
+
+import { BsChevronDown } from "react-icons/bs";
+import SearchBox from "./SearchBox";
 
 const navLinks: { name: string; path: string }[] = [
   {
@@ -50,7 +51,7 @@ function Header() {
         </div>
 
         <div className="flex flex-1 sm:max-w-75 items-center gap-4">
-          <Search />
+          <SearchBox />
           <img
             className="rounded-sm w-10 h-10 sm:block"
             src="/profile-picture.jpg"
@@ -59,12 +60,14 @@ function Header() {
         </div>
       </div>
 
-      {location.pathname !== "/search" && <div
-        onClick={() => setIsMobileNavVisible(true)}
-        className="flex items-center gap-1 justify-center w-full text-white cursor-pointer sm:hidden"
-      >
-        <div>Discover</div> <BsChevronDown className="text-sm" />
-      </div>}
+      {location.pathname !== "/search" && (
+        <div
+          onClick={() => setIsMobileNavVisible(true)}
+          className="flex items-center gap-1 justify-center w-full text-white cursor-pointer sm:hidden"
+        >
+          <div>Discover</div> <BsChevronDown className="text-sm" />
+        </div>
+      )}
     </header>
   );
 }

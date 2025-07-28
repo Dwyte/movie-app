@@ -1,8 +1,8 @@
 import { FormEvent, useEffect, useState } from "react";
-import { BsSearch, BsX } from "react-icons/bs";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { BsSearch, BsX } from "react-icons/bs";
 
-const Search = () => {
+const SearchBox = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -69,4 +69,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchBox;

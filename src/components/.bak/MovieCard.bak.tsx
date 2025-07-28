@@ -10,7 +10,7 @@ import {
   BsBadgeHd,
   BsExplicitFill,
 } from "react-icons/bs";
-import GenreList from "./GenreList";
+import GenreList from "../GenreList";
 import useIsSmUp from "../../hooks/useIsSmUp";
 
 const MovieCard = ({ movie }: { movie: Movie }) => {
