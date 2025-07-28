@@ -55,11 +55,11 @@ const App = () => {
   const backgroundLocation = state?.backgroundLocation;
 
   const isSmUp = useIsSmUp();
-  const hideHeader = useMatch("/movie/:id");
+  const isViewingMovie = useMatch("/movie/:id");
 
   return (
     <main>
-      {(!hideHeader || isSmUp) && <Header />}
+      {(!isViewingMovie || isSmUp) && <Header />}
 
       <div>
         <Routes location={isSmUp ? backgroundLocation || location : location}>

@@ -5,6 +5,7 @@ import {
   getMovieDetails,
   getMovieImages,
   getMovieImageURL,
+  getMovies,
 } from "../tmdbAPI";
 import {
   BsBadgeCcFill,
@@ -19,9 +20,11 @@ import { RiDownloadLine } from "react-icons/ri";
 import { useEffect, useMemo, useState } from "react";
 import { getDurationString } from "../utils";
 import useIsSmUp from "../hooks/useIsSmUp";
+import MovieCard from "./MovieCard";
 
 const ViewMovieModal = () => {
   const [movieDetails, setMovieDetails] = useState<MovieDetails | null>(null);
+  const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
   const [movieCasts, setMovieCasts] = useState<Cast[]>([]);
   const [logo, setLogo] = useState<MovieImage | null>(null);
 
@@ -30,6 +33,9 @@ const ViewMovieModal = () => {
   const isSmUp = useIsSmUp();
   const params = useParams();
   const movieId = params.movieId ? parseInt(params.movieId) : null;
+  const backgroundLocation = location.state
+    ? location.state.backgroundLocation
+    : "/";
 
   useEffect(() => {
     // Disable main body scrolling
@@ -51,7 +57,7 @@ const ViewMovieModal = () => {
     };
 
     fetchMovieDetails();
-  }, []);
+  }, [movieId]);
 
   useEffect(() => {
     const fetchMovieImages = async () => {
@@ -63,15 +69,27 @@ const ViewMovieModal = () => {
     };
 
     fetchMovieImages();
-  }, []);
+  }, [movieId]);
+
+  useEffect(() => {
+    const fetchSimilarMovies = async () => {
+      if (!movieDetails) return;
+
+      const _similarMovies = await getMovies(movieDetails.genres);
+
+      // Remove current Movie
+      const filteredSimilarMovies = _similarMovies.results.filter(
+        (movie) => movie.id !== movieDetails.id
+      );
+
+      setSimilarMovies(filteredSimilarMovies);
+    };
+
+    fetchSimilarMovies();
+  }, [movieDetails]);
 
   const closeModal = () => {
-    if (location.state && location.state.backgroundLocation) {
-      navigate(location.state.backgroundLocation);
-      return;
-    }
-
-    navigate("/");
+    navigate(backgroundLocation);
   };
 
   const imgSource = useMemo(() => {
@@ -215,12 +233,15 @@ const ViewMovieModal = () => {
           <div>
             <h2 className="text-lg font-bold my-2">More Like This</h2>
             <div className="grid grid-cols-3 gap-2">
-              <img src="/no-image-portrait.png" className="rounded-sm" alt="" />
-              <img src="/no-image-portrait.png" className="rounded-sm" alt="" />
-              <img src="/no-image-portrait.png" className="rounded-sm" alt="" />
-              <img src="/no-image-portrait.png" className="rounded-sm" alt="" />
-              <img src="/no-image-portrait.png" className="rounded-sm" alt="" />
-              <img src="/no-image-portrait.png" className="rounded-sm" alt="" />
+              {similarMovies.map((movie) => {
+                return (
+                  <MovieCard
+                    key={movie.id}
+                    movie={movie}
+                    sourcePathName={backgroundLocation}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>

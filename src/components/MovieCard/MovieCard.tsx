@@ -7,9 +7,11 @@ import useIsSmUp from "../../hooks/useIsSmUp";
 const MovieCard = ({
   movie,
   imgClassNames,
+  sourcePathName,
 }: {
   movie: Movie;
   imgClassNames?: string;
+  sourcePathName?: string;
 }) => {
   // Backdrop with Logo used for landscape versions
   const [movieBackdropFilePath, setMovieBackdropFilePath] = useState<
@@ -44,8 +46,9 @@ const MovieCard = ({
   }, [isSmUp]);
 
   const handleMovieCardClick = () => {
+    console.log(sourcePathName, location);
     navigate(`/movie/${movie.id}`, {
-      state: { backgroundLocation: location, movie },
+      state: { backgroundLocation: sourcePathName || location, movie },
     });
   };
 
