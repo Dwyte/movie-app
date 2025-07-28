@@ -6,17 +6,15 @@ import { Movie } from "../../misc/types";
 
 import useIsSmUp from "../../hooks/useIsSmUp";
 
-const MovieCard = ({
-  movie,
-  imgClassNames,
-  sourcePathName,
-}: {
+interface Props {
   movie: Movie;
   imgClassNames?: string;
   sourcePathName?: string;
-}) => {
+}
+
+const MovieCard = ({ movie, imgClassNames, sourcePathName }: Props) => {
   // Backdrop with Logo used for landscape versions
-  const [movieBackdropFilePath, setMovieBackdropFilePath] = useState<
+  const [backdropWithTitleFilePath, setBackdropWithTitleFilePath] = useState<
     string | null
   >(null);
   const isSmUp = useIsSmUp();
@@ -27,36 +25,53 @@ const MovieCard = ({
     const findMovieBackdrop = async () => {
       try {
         const movieImages = await getMovieImages(movie.id);
-        const movieBackdrop = movieImages.backdrops.find(
+
+        // We look for a backdrop that has "en" for language, meaning
+        // that backdrop image has the title/logo and we use that as preview
+        // for the movie card so it's easier for the user to identify
+        const movieBackdropWithTitle = movieImages.backdrops.find(
           (movieImage) =>
             movieImage.iso_639_1 === "en" && movieImage.aspect_ratio > 1
         );
 
-        if (movieBackdrop) {
-          setMovieBackdropFilePath(movieBackdrop?.file_path);
-        } else if (movie.backdrop_path) {
-          setMovieBackdropFilePath(movie.backdrop_path);
+        if (movieBackdropWithTitle) {
+          setBackdropWithTitleFilePath(movieBackdropWithTitle?.file_path);
         }
       } catch (error) {
         console.error(error);
       }
     };
 
-    if (isSmUp && movieBackdropFilePath === null) {
+    // Only need to find backdrop/landscape image in Desktop mode.
+    // Portrait posters for mobile.
+    if (isSmUp && backdropWithTitleFilePath === null) {
       findMovieBackdrop();
     }
   }, [isSmUp]);
 
   const handleMovieCardClick = () => {
+    // Goto MoviePage and set backgroundLocation to tell what page to render
+    // at the background when rendering the Modal MoviePage in desktop.
     navigate(`/movie/${movie.id}`, {
+      // Current location as default origin before viewing the modal,
+      // sourcePathName for recursive MoviePage viewing e.g. Viewing another
+      // Movie inside recommendations in MoviePage, the original backgroundLocation
+      // is passed as sourcePathName from the first MoviePage's MovieCards.
       state: { backgroundLocation: sourcePathName || location },
     });
   };
 
+  // On Desktop we use landscape/backdrop image, on mobile we use
+  // portrait/poster image (this always has the title)
   const imgSource = useMemo(() => {
     if (isSmUp) {
-      if (movieBackdropFilePath !== null)
-        return getMovieImageURL(movieBackdropFilePath);
+      if (backdropWithTitleFilePath !== null) {
+        return getMovieImageURL(backdropWithTitleFilePath);
+      }
+
+      if (movie.backdrop_path) {
+        return getMovieImageURL(movie.backdrop_path);
+      }
 
       return "/no-image-landscape.png";
     }
@@ -66,7 +81,7 @@ const MovieCard = ({
     }
 
     return "no-image-portrait.png";
-  }, [movieBackdropFilePath, isSmUp]);
+  }, [backdropWithTitleFilePath, isSmUp]);
 
   return (
     <div onClick={handleMovieCardClick} className="shrink-0 cursor-pointer">
