@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Movie, MovieGenre } from "../types";
-import MovieCard from "./MovieCard";
-import { getMovies } from "../tmdbAPI";
+import { Movie, MovieGenre } from "../../types";
+import MovieCard from "./MovieCard.bak";
+import { getMovies } from "../../tmdbAPI";
 import {
   BsChevronBarRight,
   BsChevronLeft,
