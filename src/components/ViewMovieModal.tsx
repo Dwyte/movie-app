@@ -17,7 +17,7 @@ import {
   BsXLg,
 } from "react-icons/bs";
 import { RiDownloadLine } from "react-icons/ri";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { getDurationString, shortenParagraph } from "../utils";
 import useIsSmUp from "../hooks/useIsSmUp";
 import MovieCard from "./MovieCard";
@@ -28,6 +28,7 @@ const ViewMovieModal = () => {
   const [movieCasts, setMovieCasts] = useState<Cast[]>([]);
   const [logo, setLogo] = useState<MovieImage | null>(null);
 
+  const modalRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const isSmUp = useIsSmUp();
@@ -102,12 +103,24 @@ const ViewMovieModal = () => {
     }
   }, [movieDetails]);
 
+  const resetScroll = () => {
+    if (!modalRef) return;
+
+    console.log(modalRef, modalRef.current?.scrollTop);
+
+    modalRef.current?.scrollBy({
+      top: -modalRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div
       onClick={closeModal}
       className="flex justify-center fixed inset-0 text-white z-10000 bg-black/60"
     >
       <div
+        ref={modalRef}
         onClick={(e) => e.stopPropagation()}
         className="sm:max-w-200 sm:mt-8 sm:rounded-sm scrollable-x"
       >
@@ -235,11 +248,12 @@ const ViewMovieModal = () => {
             <div className="grid grid-cols-3 gap-2">
               {similarMovies.map((movie) => {
                 return (
-                  <MovieCard
-                    key={movie.id}
-                    movie={movie}
-                    sourcePathName={backgroundLocation}
-                  />
+                  <div key={movie.id} onClick={() => resetScroll()}>
+                    <MovieCard
+                      movie={movie}
+                      sourcePathName={backgroundLocation}
+                    />
+                  </div>
                 );
               })}
             </div>
