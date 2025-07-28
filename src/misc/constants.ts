@@ -1,4 +1,14 @@
-import { MovieGenre } from "./types";
+import { MovieGenre, NavLinks } from "./types";
+
+export const navLinks: NavLinks[] = [
+  {
+    name: "Home",
+    path: "/",
+  },
+  { name: "Movies", path: "/movies" },
+  { name: "Series", path: "/series" },
+  { name: "My List", path: "/mylist" },
+];
 
 export const movieGenres: MovieGenre[] = [
   {

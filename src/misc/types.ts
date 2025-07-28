@@ -148,3 +148,5 @@ export type MovieImagesResult = {
   logos: MovieImage[];
   posters: MovieImage[];
 };
+
+export type NavLinks = { name: string; path: string };
