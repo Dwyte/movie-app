@@ -20,21 +20,22 @@
     @apply rounded-sm py-2 px-3 text-stone-100 font-semibold cursor-pointer bg-stone-800 flex items-center hover:opacity-80;
   }
 
-  .round-button {
+  .icon-btn {
     @apply text-white border-stone-500 bg-stone-950 border-[1px] p-2 text-[16px] rounded-full font-bold cursor-pointer;
   }
 
-  .round-button:hover {
+  .icon-btn:hover {
     @apply bg-white text-stone-950 border-white;
   }
+
   /* Scrollable content but scroll bar not visible */
-  .scrollable-x {
+  .scrollable {
     @apply overflow-y-scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
 
-  .scrollable-x::-webkit-scrollbar {
+  .scrollable::-webkit-scrollbar {
     display: none;
   }
 

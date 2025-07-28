@@ -121,12 +121,12 @@ const MoviePage = () => {
       <div
         ref={modalRef}
         onClick={(e) => e.stopPropagation()}
-        className="sm:max-w-200 sm:mt-8 sm:rounded-sm scrollable-x"
+        className="sm:max-w-200 sm:mt-8 sm:rounded-sm scrollable"
       >
         <div className="relative">
           <button
             onClick={closeModal}
-            className="round-button absolute right-3 top-3 border-0 z-100"
+            className="icon-btn absolute right-3 top-3 border-0 z-100"
           >
             <BsXLg />
           </button>
@@ -153,14 +153,14 @@ const MoviePage = () => {
                 <span>Play</span>
               </button>
 
-              <button className="round-button">
+              <button className="icon-btn">
                 <BsPlusLg />
               </button>
-              <button className="round-button">
+              <button className="icon-btn">
                 <BsStar />
               </button>
               <div className="flex-1"></div>
-              <button className="round-button opacity-65">
+              <button className="icon-btn opacity-65">
                 <RiDownloadLine />
               </button>
             </div>

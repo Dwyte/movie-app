@@ -62,13 +62,13 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
 
         <div className="hidden movie-card-info">
           <div className="flex gap-2">
-            <button className="round-button">
+            <button className="icon-btn">
               <BsPlayFill />
             </button>
-            <button className="round-button">
+            <button className="icon-btn">
               <BsPlusLg />
             </button>
-            <button className="round-button">
+            <button className="icon-btn">
               <BsSuitHeartFill />
             </button>
           </div>
