@@ -1,10 +1,10 @@
 import { Route, Routes, useLocation, useMatch } from "react-router-dom";
 
-import Home from "./pages/Home";
 import SearchResults from "./pages/SearchResults";
-import ViewMovieModal from "./components/ViewMovieModal";
-import Header from "./components/Header";
+import MoviePage from "./pages/MoviePage";
+import Home from "./pages/Home";
 
+import Header from "./components/Header";
 import useIsSmUp from "./hooks/useIsSmUp";
 
 const App = () => {
@@ -21,13 +21,13 @@ const App = () => {
 
       <div>
         <Routes location={isSmUp ? backgroundLocation || location : location}>
-          <Route path="/movie/:movieId" element={<ViewMovieModal />} />
+          <Route path="/movie/:movieId" element={<MoviePage />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/" element={<Home />} />
         </Routes>
         {isSmUp && backgroundLocation && (
           <Routes>
-            <Route path="/movie/:movieId" element={<ViewMovieModal />} />
+            <Route path="/movie/:movieId" element={<MoviePage />} />
           </Routes>
         )}
       </div>

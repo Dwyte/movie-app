@@ -1,5 +1,9 @@
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+
 import { Cast, Movie, MovieDetails, MovieImage } from "../types";
+import { getDurationString, shortenParagraph } from "../utils";
+import { RiDownloadLine } from "react-icons/ri";
 import {
   getMovieCredits,
   getMovieDetails,
@@ -16,13 +20,11 @@ import {
   BsStar,
   BsXLg,
 } from "react-icons/bs";
-import { RiDownloadLine } from "react-icons/ri";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { getDurationString, shortenParagraph } from "../utils";
-import useIsSmUp from "../hooks/useIsSmUp";
-import MovieCard from "./MovieCard";
 
-const ViewMovieModal = () => {
+import MovieCard from "../components/MovieCard";
+import useIsSmUp from "../hooks/useIsSmUp";
+
+const MoviePage = () => {
   const [movieDetails, setMovieDetails] = useState<MovieDetails | null>(null);
   const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
   const [movieCasts, setMovieCasts] = useState<Cast[]>([]);
@@ -105,9 +107,6 @@ const ViewMovieModal = () => {
 
   const resetScroll = () => {
     if (!modalRef) return;
-
-    console.log(modalRef, modalRef.current?.scrollTop);
-
     modalRef.current?.scrollBy({
       top: -modalRef.current.scrollHeight,
       behavior: "smooth",
@@ -264,4 +263,4 @@ const ViewMovieModal = () => {
   );
 };
 
-export default ViewMovieModal;
+export default MoviePage;
