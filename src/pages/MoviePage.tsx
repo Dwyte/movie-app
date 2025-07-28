@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { Cast, Movie, MovieDetails, MovieImage } from "../types";
-import { getDurationString, shortenParagraph } from "../utils";
+import { Cast, Movie, MovieDetails, MovieImage } from "../misc/types";
+import { getDurationString, shortenParagraph } from "../misc/utils";
 import { RiDownloadLine } from "react-icons/ri";
 import {
   getMovieCredits,
@@ -10,7 +10,7 @@ import {
   getMovieImages,
   getMovieImageURL,
   getMovies,
-} from "../tmdbAPI";
+} from "../misc/tmdbAPI";
 import {
   BsBadgeCcFill,
   BsBadgeHdFill,

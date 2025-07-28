@@ -1,5 +1,4 @@
 import { Client, Databases, ID, Query } from "appwrite";
-import { TrendingMovie } from "./types";
 
 const DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const COLLECTION_ID = import.meta.env.VITE_APPWRITE_COLLECTION_ID;
@@ -44,14 +43,14 @@ export const updateSearchCount = async (searchTerm: string, movie: any) => {
   }
 };
 
-export const getTrendingMovies = async (): Promise<TrendingMovie[] | null>=> {
+export const getTrendingMovies = async (): Promise<any[] | null> => {
   try {
     const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
       Query.limit(10),
       Query.orderDesc("count"),
     ]);
-    
-    return result.documents.map((doc) => ({...doc} as TrendingMovie))
+
+    return result.documents.map((doc) => ({ ...doc }));
   } catch (error) {
     console.log(error);
     return null;

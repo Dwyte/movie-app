@@ -1,7 +1,7 @@
 import HeroSection from "../components/HeroSection";
 import MoviesRow from "../components/MoviesRow";
-import { movieGenres } from "../constants";
-import { getMovies, getTrendingMovies } from "../tmdbAPI";
+import { movieGenres } from "../misc/constants";
+import { getMovies, getTrendingMovies } from "../misc/tmdbAPI";
 
 const Home = () => {
   return (

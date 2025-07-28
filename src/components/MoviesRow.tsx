@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Movie } from "../types";
-import { getTrendingMovies } from "../tmdbAPI";
+import { Movie } from "../misc/types";
 import MovieCard from "./MovieCard";
 
 const MoviesRow = ({

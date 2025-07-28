@@ -3,8 +3,8 @@ import { useSearchParams } from "react-router-dom";
 
 import MovieCard from "../components/MovieCard";
 
-import { searchMovies } from "../tmdbAPI";
-import { Movie } from "../types";
+import { searchMovies } from "../misc/tmdbAPI";
+import { Movie } from "../misc/types";
 
 const SearchResults = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");

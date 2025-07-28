@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
-import { Movie, MovieImage } from "../types";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-use";
+
+import { BsPlusCircleFill } from "react-icons/bs";
+import { FaInfoCircle } from "react-icons/fa";
+import { shortenParagraph } from "../misc/utils";
+import { Movie, MovieImage } from "../misc/types";
 import {
   getMovieImages,
   getMovieImageURL,
   getTrendingMovies,
-} from "../tmdbAPI";
-import { BsPlusCircleFill } from "react-icons/bs";
-import { FaInfoCircle } from "react-icons/fa";
+} from "../misc/tmdbAPI";
 import GenreList from "./GenreList";
-import { shortenParagraph } from "../utils";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-use";
 
 const HeroSection = () => {
   const [movie, setMovie] = useState<Movie | null>(null);

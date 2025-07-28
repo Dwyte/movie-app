@@ -1,7 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
-import { Movie } from "../../types";
-import { getMovieImages, getMovieImageURL } from "../../tmdbAPI";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+
+import { getMovieImages, getMovieImageURL } from "../../misc/tmdbAPI";
+import { Movie } from "../../misc/types";
+
 import useIsSmUp from "../../hooks/useIsSmUp";
 
 const MovieCard = ({

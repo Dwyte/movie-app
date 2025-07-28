@@ -1,4 +1,3 @@
-import { Models } from "appwrite";
 import { countryCodes, languageCodes } from "./constants";
 
 export interface MovieGenre {

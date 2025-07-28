@@ -1,5 +1,5 @@
-import { MovieGenre } from "../types";
-import { movieGenres } from "../constants";
+import { MovieGenre } from "../misc/types";
+import { movieGenres } from "../misc/constants";
 
 const genreIdsToName = (genreIds: number[]): string[] => {
   return movieGenres
