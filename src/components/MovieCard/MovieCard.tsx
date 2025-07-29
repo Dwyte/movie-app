@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
-import { getMovieImages, getTMBDImageURL } from "../../misc/tmdbAPI";
+import { getMovieImages } from "../../misc/tmdbAPI";
+import { getTMDBImageURL } from "../../misc/utils";
 import { Movie } from "../../misc/types";
 
 import useIsSmUp from "../../hooks/useIsSmUp";
@@ -11,7 +12,6 @@ interface Props {
   imgClassNames?: string;
   sourcePathName?: string;
 }
-
 const MovieCard = ({ movie, imgClassNames, sourcePathName }: Props) => {
   // Backdrop with Logo used for landscape versions
   const [backdropWithTitleFilePath, setBackdropWithTitleFilePath] = useState<
@@ -66,18 +66,18 @@ const MovieCard = ({ movie, imgClassNames, sourcePathName }: Props) => {
   const imgSource = useMemo(() => {
     if (isSmUp) {
       if (backdropWithTitleFilePath !== null) {
-        return getTMBDImageURL(backdropWithTitleFilePath);
+        return getTMDBImageURL(backdropWithTitleFilePath);
       }
 
       if (movie.backdrop_path) {
-        return getTMBDImageURL(movie.backdrop_path);
+        return getTMDBImageURL(movie.backdrop_path);
       }
 
       return "/no-image-landscape.png";
     }
 
     if (movie.poster_path) {
-      return getTMBDImageURL(movie.poster_path);
+      return getTMDBImageURL(movie.poster_path);
     }
 
     return "no-image-portrait.png";

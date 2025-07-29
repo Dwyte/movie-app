@@ -74,13 +74,6 @@ export const getMovieWatchProviders = async (
   return await get(url);
 };
 
-export const getTMBDImageURL = (path: string, quality: string = "500") => {
-  if (!path) throw Error(`Invalid path.  <${path}>`);
-
-  const MOVIE_IMAGE_BASE_URL = `https://image.tmdb.org/t/p/w${quality}`;
-  return `${MOVIE_IMAGE_BASE_URL}${path}`;
-};
-
 export const getMovieCredits = async (
   movieId: number
 ): Promise<MovieCreditsAPIResult> => {

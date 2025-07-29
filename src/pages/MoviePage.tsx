@@ -2,13 +2,16 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { Cast, Movie, MovieDetails, MovieImage } from "../misc/types";
-import { getDurationString, shortenParagraph } from "../misc/utils";
+import {
+  getDurationString,
+  shortenParagraph,
+  getTMDBImageURL,
+} from "../misc/utils";
 import { RiDownloadLine } from "react-icons/ri";
 import {
   getMovieCredits,
   getMovieDetails,
   getMovieImages,
-  getTMBDImageURL,
   getDiscoverMovies,
 } from "../misc/tmdbAPI";
 import {
@@ -102,7 +105,7 @@ const MoviePage = () => {
   const imgSource = useMemo(() => {
     try {
       if (movieDetails) {
-        return getTMBDImageURL(movieDetails.backdrop_path, "1920");
+        return getTMDBImageURL(movieDetails.backdrop_path, "1920");
       }
     } catch (error) {
       return "/no-image-landscape.png";
@@ -145,7 +148,7 @@ const MoviePage = () => {
             {logo ? (
               <img
                 className="w-auto max-h-30"
-                src={getTMBDImageURL(logo.file_path)}
+                src={getTMDBImageURL(logo.file_path)}
                 alt=""
               />
             ) : (

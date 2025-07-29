@@ -47,3 +47,10 @@ export const getDurationString = (runtimeMinutes: number): string => {
 
   return `${hoursString}${minutes}m`;
 };
+
+export const getTMDBImageURL = (path: string, quality: string = "500") => {
+  if (!path) throw Error(`Invalid path.  <${path}>`);
+
+  const MOVIE_IMAGE_BASE_URL = `https://image.tmdb.org/t/p/w${quality}`;
+  return `${MOVIE_IMAGE_BASE_URL}${path}`;
+};

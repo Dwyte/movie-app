@@ -4,13 +4,9 @@ import { useLocation } from "react-use";
 
 import { BsPlusCircleFill } from "react-icons/bs";
 import { FaInfoCircle } from "react-icons/fa";
-import { shortenParagraph } from "../misc/utils";
+import { shortenParagraph, getTMDBImageURL } from "../misc/utils";
 import { Movie, MovieImage } from "../misc/types";
-import {
-  getMovieImages,
-  getTMBDImageURL,
-  getTrendingMovies,
-} from "../misc/tmdbAPI";
+import { getMovieImages, getTrendingMovies } from "../misc/tmdbAPI";
 import GenreList from "./GenreList";
 
 const HeroSection = () => {
@@ -52,11 +48,12 @@ const HeroSection = () => {
 
   return (
     <div className="relative min-h-150">
-      <div className="hidden sm:block absolute inset-0 bg-linear-to-r from-black to-black/0 to-60%"></div> <img
+      <div className="hidden sm:block absolute inset-0 bg-linear-to-r from-black to-black/0 to-60%"></div>{" "}
+      <img
         className="w-full h-150 sm:h-screen object-cover sm:inset-shadow-lg"
         src={
           movie
-            ? getTMBDImageURL(movie?.backdrop_path, "1920")
+            ? getTMDBImageURL(movie?.backdrop_path, "1920")
             : "/hero-image.jpg"
         }
         alt="Random Movie Posters"
@@ -68,7 +65,7 @@ const HeroSection = () => {
               <div className="flex mb-2 px-10 justify-center sm:px-0 sm:justify-start">
                 <img
                   className={`w-auto max-h-50 sm:w-auto sm:max-h-65`}
-                  src={getTMBDImageURL(logo.file_path, "500")}
+                  src={getTMDBImageURL(logo.file_path, "500")}
                   alt=""
                 />
               </div>
