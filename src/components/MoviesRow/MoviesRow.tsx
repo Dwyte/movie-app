@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Movie } from "../../misc/types";
 import MovieCard from "./../MovieCard";
 import ScrollButton from "./ScrollButton";
+import useIsSmUp from "../../hooks/useIsSmUp";
 
 const MOVIE_CARD_DIV_WIDTH = 272; // Includes 8px right-gap
 const LEFT_END_SPACE_WIDTH = 48; // Includes 8px right-gap
@@ -18,6 +19,8 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
   const scrollableDiv = useRef<HTMLDivElement | null>(null);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(0);
+
+  const isSmUp = useIsSmUp();
 
   const canScrollLeft = currentPage > 0;
   const canScrollRight = currentPage < totalPages - 1;
@@ -96,28 +99,34 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
       <section className="group">
         <div className="flex justify-between items-end ml-4 sm:ml-12">
           <h2>{title}</h2>
-          <div className="hidden text-white group-hover:flex gap-0.5 mb-1 mr-16">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <div
-                key={index}
-                className={`h-0.5 rounded-sm ${
-                  currentPage === index ? "w-5 bg-white" : "w-2 bg-stone-400"
-                } `}
-              ></div>
-            ))}
-          </div>
+          {isSmUp && (
+            <div className="hidden text-white group-hover:flex gap-0.5 mb-1 mr-16">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <div
+                  key={index}
+                  className={`h-0.5 rounded-sm ${
+                    currentPage === index ? "w-5 bg-white" : "w-2 bg-stone-400"
+                  } `}
+                ></div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="relative flex items-center">
-          <ScrollButton
-            direction="left"
-            onClick={() => shiftPage(-1)}
-            isVisible={canScrollLeft}
-          />
-          <ScrollButton
-            direction="right"
-            onClick={() => shiftPage(1)}
-            isVisible={canScrollRight}
-          />
+          {isSmUp && (
+            <Fragment>
+              <ScrollButton
+                direction="left"
+                onClick={() => shiftPage(-1)}
+                isVisible={canScrollLeft}
+              />
+              <ScrollButton
+                direction="right"
+                onClick={() => shiftPage(1)}
+                isVisible={canScrollRight}
+              />
+            </Fragment>
+          )}
           <div
             ref={scrollableDiv}
             className="flex items-center gap-2 scrollable"
