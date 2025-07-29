@@ -3,6 +3,7 @@ import { Movie } from "../../misc/types";
 import MovieCard from "./../MovieCard";
 import ScrollButton from "./ScrollButton";
 import useIsSmUp from "../../hooks/useIsSmUp";
+import PageIndicator from "./PageIndicator";
 
 const MOVIE_CARD_DIV_WIDTH = 272; // Includes 8px right-gap
 const LEFT_END_SPACE_WIDTH = 48; // Includes 8px right-gap
@@ -100,16 +101,7 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
         <div className="flex justify-between items-end ml-4 sm:ml-12">
           <h2>{title}</h2>
           {isSmUp && (
-            <div className="hidden text-white group-hover:flex gap-0.5 mb-1 mr-16">
-              {Array.from({ length: totalPages }, (_, index) => (
-                <div
-                  key={index}
-                  className={`h-0.5 rounded-sm ${
-                    currentPage === index ? "w-5 bg-white" : "w-2 bg-stone-400"
-                  } `}
-                ></div>
-              ))}
-            </div>
+            <PageIndicator totalPages={totalPages} currentPage={currentPage} />
           )}
         </div>
         <div className="relative flex items-center">
