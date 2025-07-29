@@ -1,6 +1,6 @@
 import { countryCodes, languageCodes } from "./constants";
 
-export interface MovieGenre {
+export interface Genre {
   id: number;
   name: string;
 }
@@ -45,7 +45,7 @@ export interface MovieDetails {
   backdrop_path: string;
   belongs_to_collection: string;
   budget: number;
-  genres: MovieGenre[];
+  genres: Genre[];
   homepage: string;
   id: number;
   imbd_id: string;
@@ -91,7 +91,7 @@ export type CountryCode = (typeof countryCodes)[number];
 
 export type LanguageCode = (typeof languageCodes)[number];
 
-export type Cast = {
+export interface Cast {
   adult: boolean;
   gender: number;
   id: number;
@@ -104,9 +104,9 @@ export type Cast = {
   character: string;
   credit_id: string;
   order: number;
-};
+}
 
-export type Crew = {
+export interface Crew {
   adult: boolean;
   gender: number;
   id: number;
@@ -118,22 +118,22 @@ export type Crew = {
   credit_id: string;
   department: string;
   job: string;
-};
+}
 
-export type MovieCreditsAPIResult = {
+export interface MovieCreditsAPIResult {
   id: number;
   cast: Cast[];
   crew: Crew[];
-};
+}
 
-export type DiscoverMoviesAPIResult = {
+export interface DiscoverMoviesAPIResult {
   page: number;
   total_pages: number;
   total_results: number;
   results: Movie[];
-};
+}
 
-export type MovieImage = {
+export interface MovieImage {
   aspect_ratio: number;
   height: number;
   iso_639_1: LanguageCode;
@@ -141,12 +141,31 @@ export type MovieImage = {
   vote_average: number;
   vote_count: number;
   width: number;
-};
+}
 
-export type MovieImagesResult = {
+export interface MovieImagesResult {
   backdrops: MovieImage[];
   logos: MovieImage[];
   posters: MovieImage[];
-};
+}
 
-export type NavLinks = { name: string; path: string };
+export interface TV {
+  adult: boolean;
+  backdrop_path: string;
+  first_air_date: string;
+  genre_ids: number[];
+  id: number;
+  name: string;
+  origin_country: CountryCode[];
+  original_language: LanguageCode;
+  original_name: string;
+  overview: string;
+  poster_path: string;
+  vote_average: number;
+  vote_count: number;
+}
+
+export interface NavLinks {
+  name: string;
+  path: string;
+}

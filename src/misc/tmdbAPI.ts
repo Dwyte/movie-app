@@ -4,7 +4,7 @@ import {
   MovieDetails,
   MovieImagesResult,
   WatchProvidersAPIResults,
-  MovieGenre
+  Genre,
 } from "./types";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
@@ -34,7 +34,7 @@ export const searchMovies = async (
 };
 
 export const getMovies = async (
-  genres: MovieGenre[] = []
+  genres: Genre[] = []
 ): Promise<DiscoverMoviesAPIResult> => {
   const url = new URL(`${API_BASE_URL}/discover/movie`);
   url.searchParams.append("sort_by", "popularity.desc");
@@ -86,4 +86,14 @@ export const getMovieCredits = (
 ): Promise<MovieCreditsAPIResult> => {
   const url = new URL(`${API_BASE_URL}/movie/${movieId}/credits`);
   return get(url);
+};
+
+export const getTVShows = async (genres: Genre[]) => {
+  const url = new URL(`${API_BASE_URL}/discover/tv`);
+  genres.forEach((genre) => {
+    url.searchParams.append("with_genres", genre.id.toString());
+  });
+  url.searchParams.append("sort_by", "popularity.desc");
+
+  return await get(url);
 };
