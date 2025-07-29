@@ -93,9 +93,21 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
 
   return (
     movies.length > 0 && (
-      <section>
-        <h2 className="ml-4 sm:ml-12">{title}</h2>
-        <div className="relative flex items-center group">
+      <section className="group">
+        <div className="flex justify-between items-end ml-4 sm:ml-12">
+          <h2>{title}</h2>
+          <div className="hidden text-white group-hover:flex gap-0.5 mb-1 mr-16">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <div
+                key={index}
+                className={`h-0.5 rounded-sm ${
+                  currentPage === index ? "w-5 bg-white" : "w-2 bg-stone-400"
+                } `}
+              ></div>
+            ))}
+          </div>
+        </div>
+        <div className="relative flex items-center">
           <ScrollButton
             direction="left"
             onClick={() => shiftPage(-1)}
