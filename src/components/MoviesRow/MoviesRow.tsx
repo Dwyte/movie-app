@@ -1,9 +1,12 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import { Movie } from "../../misc/types";
-import MovieCard from "./../MovieCard";
-import ScrollButton from "./ScrollButton";
-import useIsSmUp from "../../hooks/useIsSmUp";
+
 import PageIndicator from "./PageIndicator";
+import ScrollButton from "./ScrollButton";
+import MovieCard from "./../MovieCard";
+
+import useIsOnMobile from "../../hooks/useIsOnMobile";
+
+import { Movie } from "../../misc/types";
 
 const MOVIE_CARD_DIV_WIDTH = 272; // Includes 8px right-gap
 const LEFT_END_SPACE_WIDTH = 48; // Includes 8px right-gap
@@ -21,7 +24,7 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(0);
 
-  const isSmUp = useIsSmUp();
+  const isOnMobile = useIsOnMobile();
 
   const canScrollLeft = currentPage > 0;
   const canScrollRight = currentPage < totalPages - 1;
@@ -100,12 +103,12 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
       <section className="group">
         <div className="flex justify-between items-end ml-4 sm:ml-12">
           <h2>{title}</h2>
-          {isSmUp && (
+          {!isOnMobile && (
             <PageIndicator totalPages={totalPages} currentPage={currentPage} />
           )}
         </div>
         <div className="relative flex items-center">
-          {isSmUp && (
+          {!isOnMobile && (
             <Fragment>
               <ScrollButton
                 direction="left"
