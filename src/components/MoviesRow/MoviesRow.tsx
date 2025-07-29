@@ -46,7 +46,7 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
     );
 
     const step = MOVIE_CARD_DIV_WIDTH * visibleMoviesCount;
-    const newTotalPages = Math.round(actualScrollWidth / step);
+    const newTotalPages = Math.ceil(actualScrollWidth / step);
     const newCurrentPage = Math.round(currentDiv.scrollLeft / step);
 
     setCurrentPage(newCurrentPage);
