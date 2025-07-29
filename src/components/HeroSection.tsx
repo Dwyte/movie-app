@@ -51,9 +51,8 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="relative">
-      <div className="hidden sm:block absolute inset-0 bg-linear-to-r from-black to-black/0 to-60%"></div>
-      <img
+    <div className="relative min-h-150">
+      <div className="hidden sm:block absolute inset-0 bg-linear-to-r from-black to-black/0 to-60%"></div> <img
         className="w-full h-150 sm:h-screen object-cover sm:inset-shadow-lg"
         src={
           movie
