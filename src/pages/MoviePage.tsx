@@ -68,7 +68,11 @@ const MoviePage = () => {
       const images = await getMovieImages(movieId);
 
       const logo = images.logos.find((logo) => logo.iso_639_1 === "en");
-      if (logo) setLogo(logo);
+      if (logo) {
+        setLogo(logo);
+      } else {
+        setLogo(null);
+      }
     };
 
     fetchMovieImages();
