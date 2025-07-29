@@ -25,7 +25,7 @@ export const get = async (url: URL): Promise<any> => {
   return await response.json();
 };
 
-export const searchMovies = async (
+export const getSearchMovies = async (
   query: string
 ): Promise<DiscoverMoviesAPIResult> => {
   const url = new URL(`${API_BASE_URL}/search/movie`);
@@ -33,7 +33,7 @@ export const searchMovies = async (
   return await get(url);
 };
 
-export const getMovies = async (
+export const getDiscoverMovies = async (
   genres: Genre[] = []
 ): Promise<DiscoverMoviesAPIResult> => {
   const url = new URL(`${API_BASE_URL}/discover/movie`);
@@ -64,31 +64,31 @@ export const getMovieDetails = async (
   movieId: number
 ): Promise<MovieDetails> => {
   const url = new URL(`${API_BASE_URL}/movie/${movieId}`);
-  return get(url);
+  return await get(url);
 };
 
-export const getWatchProviders = async (
+export const getMovieWatchProviders = async (
   movieId: number
 ): Promise<WatchProvidersAPIResults> => {
   const url = new URL(`${API_BASE_URL}/movie/${movieId}/watch/providers`);
-  return get(url);
+  return await get(url);
 };
 
-export const getMovieImageURL = (path: string, quality: string = "500") => {
+export const getTMBDImageURL = (path: string, quality: string = "500") => {
   if (!path) throw Error(`Invalid path.  <${path}>`);
 
   const MOVIE_IMAGE_BASE_URL = `https://image.tmdb.org/t/p/w${quality}`;
   return `${MOVIE_IMAGE_BASE_URL}${path}`;
 };
 
-export const getMovieCredits = (
+export const getMovieCredits = async (
   movieId: number
 ): Promise<MovieCreditsAPIResult> => {
   const url = new URL(`${API_BASE_URL}/movie/${movieId}/credits`);
-  return get(url);
+  return await get(url);
 };
 
-export const getTVShows = async (genres: Genre[]) => {
+export const getDiscoverTVShows = async (genres: Genre[]) => {
   const url = new URL(`${API_BASE_URL}/discover/tv`);
   genres.forEach((genre) => {
     url.searchParams.append("with_genres", genre.id.toString());

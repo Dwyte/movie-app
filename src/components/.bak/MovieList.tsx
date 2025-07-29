@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Movie, MovieGenre } from "../../types";
 import MovieCard from "./MovieCard.bak";
-import { getMovies } from "../../tmdbAPI";
+import { getDiscoverMovies } from "../../tmdbAPI";
 import {
   BsChevronBarRight,
   BsChevronLeft,
@@ -45,7 +45,7 @@ const MovieListByGenre = ({ genre }: Props) => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const data = await getMovies([genre]);
+        const data = await getDiscoverMovies([genre]);
         setMovies(data.results);
       } catch (error) {
         console.error(error);

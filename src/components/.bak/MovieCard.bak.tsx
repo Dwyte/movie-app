@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { MOVIE_GENRES } from "../../constants";
 import { Movie } from "../../types";
-import { getMovieImages, getMovieImageURL } from "../../tmdbAPI";
+import { getMovieImages, getTMBDImageURL } from "../../tmdbAPI";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   BsSuitHeartFill,
@@ -54,7 +54,7 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
           className="w-200"
           src={
             movieImageFilePath
-              ? getMovieImageURL(movieImageFilePath)
+              ? getTMBDImageURL(movieImageFilePath)
               : "/no-movie.png"
           }
           alt={movie.title}

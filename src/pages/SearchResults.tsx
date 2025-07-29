@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 import MovieCard from "../components/MovieCard";
 
-import { searchMovies } from "../misc/tmdbAPI";
+import { getSearchMovies } from "../misc/tmdbAPI";
 import { Movie } from "../misc/types";
 
 const SearchResults = () => {
@@ -17,7 +17,7 @@ const SearchResults = () => {
     setErrorMessage("");
 
     try {
-      const data = await searchMovies(query);
+      const data = await getSearchMovies(query);
       setMovieList(data.results || []);
     } catch (error) {
       console.log(`Error fetching movies ${error}`);

@@ -8,8 +8,8 @@ import {
   getMovieCredits,
   getMovieDetails,
   getMovieImages,
-  getMovieImageURL,
-  getMovies,
+  getTMBDImageURL,
+  getDiscoverMovies,
 } from "../misc/tmdbAPI";
 import {
   BsBadgeCcFill,
@@ -82,7 +82,7 @@ const MoviePage = () => {
     const fetchSimilarMovies = async () => {
       if (!movieDetails) return;
 
-      const _similarMovies = await getMovies(movieDetails.genres);
+      const _similarMovies = await getDiscoverMovies(movieDetails.genres);
 
       // Remove current Movie
       const filteredSimilarMovies = _similarMovies.results.filter(
@@ -102,7 +102,7 @@ const MoviePage = () => {
   const imgSource = useMemo(() => {
     try {
       if (movieDetails) {
-        return getMovieImageURL(movieDetails.backdrop_path, "1920");
+        return getTMBDImageURL(movieDetails.backdrop_path, "1920");
       }
     } catch (error) {
       return "/no-image-landscape.png";
@@ -145,7 +145,7 @@ const MoviePage = () => {
             {logo ? (
               <img
                 className="w-auto max-h-30"
-                src={getMovieImageURL(logo.file_path)}
+                src={getTMBDImageURL(logo.file_path)}
                 alt=""
               />
             ) : (

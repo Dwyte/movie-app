@@ -8,7 +8,7 @@ import { shortenParagraph } from "../misc/utils";
 import { Movie, MovieImage } from "../misc/types";
 import {
   getMovieImages,
-  getMovieImageURL,
+  getTMBDImageURL,
   getTrendingMovies,
 } from "../misc/tmdbAPI";
 import GenreList from "./GenreList";
@@ -56,7 +56,7 @@ const HeroSection = () => {
         className="w-full h-150 sm:h-screen object-cover sm:inset-shadow-lg"
         src={
           movie
-            ? getMovieImageURL(movie?.backdrop_path, "1920")
+            ? getTMBDImageURL(movie?.backdrop_path, "1920")
             : "/hero-image.jpg"
         }
         alt="Random Movie Posters"
@@ -68,7 +68,7 @@ const HeroSection = () => {
               <div className="flex mb-2 px-10 justify-center sm:px-0 sm:justify-start">
                 <img
                   className={`w-auto max-h-50 sm:w-auto sm:max-h-65`}
-                  src={getMovieImageURL(logo.file_path, "500")}
+                  src={getTMBDImageURL(logo.file_path, "500")}
                   alt=""
                 />
               </div>

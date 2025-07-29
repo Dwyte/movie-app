@@ -10,7 +10,7 @@ export interface Movie {
   backdrop_path: string;
   genre_ids: number[];
   id: number;
-  original_language: string;
+  original_language: LanguageCode;
   original_title: string;
   overview: string;
   popularity: number;

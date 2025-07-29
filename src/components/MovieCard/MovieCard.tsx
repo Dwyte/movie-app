@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
-import { getMovieImages, getMovieImageURL } from "../../misc/tmdbAPI";
+import { getMovieImages, getTMBDImageURL } from "../../misc/tmdbAPI";
 import { Movie } from "../../misc/types";
 
 import useIsSmUp from "../../hooks/useIsSmUp";
@@ -66,18 +66,18 @@ const MovieCard = ({ movie, imgClassNames, sourcePathName }: Props) => {
   const imgSource = useMemo(() => {
     if (isSmUp) {
       if (backdropWithTitleFilePath !== null) {
-        return getMovieImageURL(backdropWithTitleFilePath);
+        return getTMBDImageURL(backdropWithTitleFilePath);
       }
 
       if (movie.backdrop_path) {
-        return getMovieImageURL(movie.backdrop_path);
+        return getTMBDImageURL(movie.backdrop_path);
       }
 
       return "/no-image-landscape.png";
     }
 
     if (movie.poster_path) {
-      return getMovieImageURL(movie.poster_path);
+      return getTMBDImageURL(movie.poster_path);
     }
 
     return "no-image-portrait.png";
