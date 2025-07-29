@@ -4,7 +4,7 @@ import { useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import SearchBox from "./SearchBox";
 
-import { navLinks } from "../../misc/constants";
+import { NAV_LINKS } from "../../misc/constants";
 
 function Header() {
   const location = useLocation();
@@ -33,7 +33,7 @@ function Header() {
             !isMobileNavVisible && "hidden"
           } fixed flex flex-col items-center justify-center gap-10 bg-black/60 backdrop-blur-sm inset-0 text-4xl sm:static sm:justify-start sm:flex-row sm:text-base sm:bg-transparent sm:bg-none sm:backdrop-blur-none sm:flex-1 sm:gap-8 sm:flex`}
         >
-          {navLinks.map((link) => (
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.path}
               className={`text-stone-500 ${

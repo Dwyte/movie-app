@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { movieGenres } from "../../constants";
+import { MOVIE_GENRES } from "../../constants";
 import { Movie } from "../../types";
 import { getMovieImages, getMovieImageURL } from "../../tmdbAPI";
 import { useLocation, useNavigate } from "react-router-dom";

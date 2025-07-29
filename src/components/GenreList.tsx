@@ -1,8 +1,8 @@
 import { MovieGenre } from "../misc/types";
-import { movieGenres } from "../misc/constants";
+import { MOVIE_GENRES } from "../misc/constants";
 
 const genreIdsToName = (genreIds: number[]): string[] => {
-  return movieGenres
+  return MOVIE_GENRES
     .filter((genre) => genreIds.includes(genre.id))
     .map((genre) => genre.name);
 };

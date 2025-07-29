@@ -1,6 +1,6 @@
 import { Genre, NavLinks } from "./types";
 
-export const navLinks: NavLinks[] = [
+export const NAV_LINKS: NavLinks[] = [
   {
     name: "Home",
     path: "/",
@@ -10,7 +10,7 @@ export const navLinks: NavLinks[] = [
   { name: "My List", path: "/mylist" },
 ];
 
-export const movieGenres: Genre[] = [
+export const MOVIE_GENRES: Genre[] = [
   {
     id: 28,
     name: "Action",
@@ -90,11 +90,11 @@ export const movieGenres: Genre[] = [
 ];
 
 export const genreIdsToName: { [key: number]: string } = {};
-movieGenres.forEach(
+MOVIE_GENRES.forEach(
   (movieGenre) => (genreIdsToName[movieGenre.id] = movieGenre.name)
 );
 
-export const countryCodes = [
+export const COUNTRY_CODES = [
   "AF",
   "AX",
   "AL",
@@ -345,7 +345,7 @@ export const countryCodes = [
   "ZW",
 ] as const;
 
-export const languageCodes = [
+export const LANGUAGE_CODES = [
   "ab",
   "aa",
   "af",

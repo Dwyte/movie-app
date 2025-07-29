@@ -1,4 +1,4 @@
-import { countryCodes, languageCodes } from "./constants";
+import { COUNTRY_CODES, LANGUAGE_CODES } from "./constants";
 
 export interface Genre {
   id: number;
@@ -87,9 +87,9 @@ export interface WatchProvidersAPIResults {
   };
 }
 
-export type CountryCode = (typeof countryCodes)[number];
+export type CountryCode = (typeof COUNTRY_CODES)[number];
 
-export type LanguageCode = (typeof languageCodes)[number];
+export type LanguageCode = (typeof LANGUAGE_CODES)[number];
 
 export interface Cast {
   adult: boolean;

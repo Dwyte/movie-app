@@ -1,6 +1,6 @@
 import HeroSection from "../components/HeroSection";
 import MoviesRow from "../components/MoviesRow";
-import { movieGenres } from "../misc/constants";
+import { MOVIE_GENRES } from "../misc/constants";
 import { getMovies, getTrendingMovies } from "../misc/tmdbAPI";
 
 const Home = () => {
@@ -19,7 +19,7 @@ const Home = () => {
           <MoviesRow
             title="Animation"
             fetchMovies={async () => {
-              const movies = await getMovies([movieGenres[2]]);
+              const movies = await getMovies([MOVIE_GENRES[2]]);
               return movies.results;
             }}
           />
@@ -27,14 +27,14 @@ const Home = () => {
           <MoviesRow
             title="Comedy"
             fetchMovies={async () => {
-              const movies = await getMovies([movieGenres[3]]);
+              const movies = await getMovies([MOVIE_GENRES[3]]);
               return movies.results;
             }}
           />
           <MoviesRow
             title="Horror"
             fetchMovies={async () => {
-              const movies = await getMovies([movieGenres[10]]);
+              const movies = await getMovies([MOVIE_GENRES[10]]);
               return movies.results;
             }}
           />
