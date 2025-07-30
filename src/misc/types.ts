@@ -246,6 +246,20 @@ export interface MovieCreditsAPIResult {
   crew: Crew[];
 }
 
+export interface GetMediaItemsAPIResult {
+  page: number;
+  total_pages: number;
+  total_results: number;
+  results: TV[] | Movie[];
+}
+
+export interface GetMediaItemsAPINormalizedResult {
+  page: number;
+  total_pages: number;
+  total_results: number;
+  results: Media[];
+}
+
 export interface DiscoverMoviesAPIResult {
   page: number;
   total_pages: number;

@@ -5,7 +5,11 @@ import {
   MovieImagesResult,
   WatchProvidersAPIResults,
   Genre,
+  MediaType,
+  GetMediaItemsAPIResult,
+  GetMediaItemsAPINormalizedResult,
 } from "./types";
+import { normalizeMedia } from "./utils";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -44,6 +48,33 @@ export const getDiscoverMovies = async (
   });
 
   return await get(url);
+};
+
+/**
+ * Fetch mediaItems from TMDB using filter and sort options.
+ * @param mediaType movie or tv
+ * @param withGenres - filter option, the api has more but only need this for now.
+ * @returns
+ */
+export const getDiscoverMediaItems = async (
+  mediaType: MediaType,
+  withGenres?: Genre[]
+): Promise<GetMediaItemsAPINormalizedResult> => {
+  const url = new URL(`${API_BASE_URL}/discover/${mediaType}`);
+  url.searchParams.append("sort_by", "popularity.desc");
+
+  if (withGenres) {
+    withGenres.forEach((genre) => {
+      url.searchParams.append("with_genres", genre.id.toString());
+    });
+  }
+
+  const response = (await get(url)) as GetMediaItemsAPIResult;
+
+  return {
+    ...response,
+    results: response.results.map((mediaItem) => normalizeMedia(mediaItem)),
+  };
 };
 
 export const getTrendingMovies = async (
