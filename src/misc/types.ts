@@ -1,31 +1,24 @@
 import { COUNTRY_CODES, LANGUAGE_CODES } from "./constants";
 
-export interface Genre {
-  id: number;
-  name: string;
-}
+type RequiredKeys<T, U> = keyof T & keyof U;
+type OptionalKeys<T, U> = Exclude<keyof T | keyof U, RequiredKeys<T, U>>;
+
+type CombineExclusiveOptional<T, U> = {
+  [K in RequiredKeys<T, U>]: T[K] & U[K];
+} & {
+  [K in OptionalKeys<T, U>]?: K extends keyof T
+    ? T[K]
+    : K extends keyof U
+    ? U[K]
+    : never;
+};
 
 export type MediaType = "movie" | "tv";
 
-export interface Media {
-  media_type: MediaType;
-  title: string;
-  release_date: string;
+type MovieTVCombined = CombineExclusiveOptional<Movie, TV>;
 
-  id: number;
-  genre_ids: number[];
-  backdrop_path: string;
-  poster_path: string;
-  overview: string;
-  adult: boolean;
-  original_language: LanguageCode;
-  popularity: number;
-  vote_average: number;
-  vote_count: number;
-
-  video?: boolean; // Movie
-  original_country?: CountryCode[]; // TV
-}
+export type Media = { mediaType: MediaType } & Omit<MovieTVCombined, "name"> &
+  Required<Pick<MovieTVCombined, "title">>;
 
 export interface Movie {
   adult: boolean;
@@ -91,13 +84,7 @@ export interface MovieDetails {
 export interface TVDetails {
   adult: boolean;
   backdrop_path: string;
-  created_by: {
-    id: number;
-    credit_id: string;
-    name: string;
-    gender: number;
-    profile_path: string;
-  }[];
+  created_by: Creator[];
   episode_run_time: number[];
   first_air_date: string;
   genres: Genre[];
@@ -127,6 +114,19 @@ export interface TVDetails {
   type: "Scripted" | "Reality" | "Documentary" | "Talk Show" | "Animation";
   vote_average: number;
   vote_count: number;
+}
+
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface Creator {
+  id: number;
+  credit_id: string;
+  name: string;
+  gender: number;
+  profile_path: string;
 }
 
 export interface SpokenLanguages {
