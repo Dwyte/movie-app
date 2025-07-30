@@ -543,15 +543,15 @@ export const TV_SHOWS_GENRES: Genre[] = [
   },
   {
     id: 35,
-    name: "Komödie",
+    name: "Comedy",
   },
   {
     id: 80,
-    name: "Krimi",
+    name: "Criminal",
   },
   {
     id: 99,
-    name: "Dokumentarfilm",
+    name: "Documentary",
   },
   {
     id: 18,
@@ -559,7 +559,7 @@ export const TV_SHOWS_GENRES: Genre[] = [
   },
   {
     id: 10751,
-    name: "Familie",
+    name: "Family",
   },
   {
     id: 10762,

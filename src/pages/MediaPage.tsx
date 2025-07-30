@@ -1,7 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { Cast, MediaImage, MediaDetails, Media } from "../misc/types";
+import {
+  Cast,
+  MediaImage,
+  MediaDetails,
+  Media,
+  MediaType,
+} from "../misc/types";
 import {
   getDurationString,
   shortenParagraph,
@@ -27,7 +33,11 @@ import {
 import MediaCard from "../components/MediaCard";
 import useIsSmUp from "../hooks/useIsSmUp";
 
-const MediaPage = () => {
+interface Props {
+  mediaType: MediaType;
+}
+
+const MediaPage = ({ mediaType }: Props) => {
   const [mediaItemDetails, setMediaItemDetails] = useState<MediaDetails | null>(
     null
   );
@@ -57,10 +67,10 @@ const MediaPage = () => {
   useEffect(() => {
     const fetchMediaDetails = async () => {
       if (!mediaId) return;
-      const _mediaItemDetails = await getMediaItemDetails("movie", mediaId);
+      const _mediaItemDetails = await getMediaItemDetails(mediaType, mediaId);
       setMediaItemDetails(_mediaItemDetails);
 
-      const _mediaCasts = await getMediaItemCredits("movie", mediaId);
+      const _mediaCasts = await getMediaItemCredits(mediaType, mediaId);
       setMediaCasts(_mediaCasts.cast);
     };
 
@@ -70,7 +80,7 @@ const MediaPage = () => {
   useEffect(() => {
     const fetchMediaImages = async () => {
       if (!mediaId) return;
-      const images = await getMediaItemImages("movie", mediaId);
+      const images = await getMediaItemImages(mediaType, mediaId);
 
       const logo = images.logos.find((logo) => logo.iso_639_1 === "en");
       if (logo) {
@@ -88,7 +98,7 @@ const MediaPage = () => {
       if (!mediaItemDetails) return;
 
       const newSimilarMediaItems = await getDiscoverMediaItems(
-        "movie",
+        mediaType,
         mediaItemDetails.genres
       );
 

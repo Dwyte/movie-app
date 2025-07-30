@@ -27,13 +27,21 @@ const App = () => {
           <Route path="/search" element={<SearchResults />} />
           <Route path="/" element={<Home />} />
           {/** In mobile, render the MoviePage as standalone page. */}
-          <Route path="/movie/:mediaId" element={<MediaPage />} />
+          <Route path="/tv/:mediaId" element={<MediaPage mediaType="tv" />} />
+          <Route
+            path="/movie/:mediaId"
+            element={<MediaPage mediaType="movie" />}
+          />
         </Routes>
 
         {/** This renders the MoviePage on top of origin component */}
         {isSmUp && backgroundLocation && (
           <Routes>
-            <Route path="/movie/:mediaId" element={<MediaPage />} />
+            <Route path="/tv/:mediaId" element={<MediaPage mediaType="tv" />} />
+            <Route
+              path="/movie/:mediaId"
+              element={<MediaPage mediaType="movie" />}
+            />
           </Routes>
         )}
       </div>

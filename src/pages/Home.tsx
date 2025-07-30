@@ -1,6 +1,6 @@
 import HeroSection from "../components/HeroSection";
 import MediaItemsRow from "../components/MediaItemsRow";
-import { MOVIE_GENRES } from "../misc/constants";
+import { MOVIE_GENRES, TV_SHOWS_GENRES } from "../misc/constants";
 import { getDiscoverMediaItems, getTrendingMediaItems } from "../misc/tmdbAPI";
 
 const Home = () => {
@@ -10,17 +10,17 @@ const Home = () => {
       <div className="relative">
         <div className="flex flex-col gap-2 py-6 sm:absolute sm:top-[-200px] sm:pt-6 sm:pb-16">
           <MediaItemsRow
-            title="Popular Today"
+            title="Popular Movies Today"
             fetchMedia={async () => {
               const mediaItems = await getTrendingMediaItems("movie", "day");
               return mediaItems.results;
             }}
           />
           <MediaItemsRow
-            title="Animation"
+            title="Series"
             fetchMedia={async () => {
-              const mediaItems = await getDiscoverMediaItems("movie", [
-                MOVIE_GENRES[2],
+              const mediaItems = await getDiscoverMediaItems("tv", [
+                TV_SHOWS_GENRES[0],
               ]);
               return mediaItems.results;
             }}
