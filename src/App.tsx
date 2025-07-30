@@ -1,7 +1,7 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 
 import SearchResults from "./pages/SearchResults";
-import MoviePage from "./pages/MoviePage";
+import MediaPage from "./pages/MediaPage";
 import Home from "./pages/Home";
 
 import Header from "./components/Header";
@@ -27,13 +27,13 @@ const App = () => {
           <Route path="/search" element={<SearchResults />} />
           <Route path="/" element={<Home />} />
           {/** In mobile, render the MoviePage as standalone page. */}
-          <Route path="/movie/:movieId" element={<MoviePage />} />
+          <Route path="/movie/:mediaId" element={<MediaPage />} />
         </Routes>
 
         {/** This renders the MoviePage on top of origin component */}
         {isSmUp && backgroundLocation && (
           <Routes>
-            <Route path="/movie/:movieId" element={<MoviePage />} />
+            <Route path="/movie/:mediaId" element={<MediaPage />} />
           </Routes>
         )}
       </div>

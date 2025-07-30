@@ -38,7 +38,7 @@ const HeroSection = () => {
 
       if (logo) setLogo(logo);
 
-      setMediaItem(mediaItem);
+      setMediaItem(randomMediaItem);
     };
 
     fetchMediaItems();
@@ -46,7 +46,7 @@ const HeroSection = () => {
 
   const handleMoreInfoClick = () => {
     if (!mediaItem) return;
-    navigate(`/${mediaItem}/${mediaItem.id}`, {
+    navigate(`/${mediaItem.media_type}/${mediaItem.id}`, {
       state: { backgroundLocation: location },
     });
   };
