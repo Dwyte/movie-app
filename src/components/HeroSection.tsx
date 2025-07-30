@@ -5,45 +5,50 @@ import { useLocation } from "react-use";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { FaInfoCircle } from "react-icons/fa";
 import { shortenParagraph, getTMDBImageURL } from "../misc/utils";
-import { Movie, MovieImage } from "../misc/types";
-import { getMovieImages, getTrendingMovies } from "../misc/tmdbAPI";
+import { Media, MediaImage } from "../misc/types";
+import { getMediaItemImages, getTrendingMediaItems } from "../misc/tmdbAPI";
 import GenreList from "./GenreList";
 
 const HeroSection = () => {
-  const [movie, setMovie] = useState<Movie | null>(null);
-  const [logo, setLogo] = useState<MovieImage | null>(null);
+  const [mediaItem, setMediaItem] = useState<Media | null>(null);
+  const [logo, setLogo] = useState<MediaImage | null>(null);
 
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      const trendingMovies = await getTrendingMovies("week");
-      const movie =
-        trendingMovies.results[
-          Math.floor(Math.random() * trendingMovies.results.length)
+    const fetchMediaItems = async () => {
+      const trendingMediaItems = await getTrendingMediaItems("movie", "week");
+      const randomMediaItem =
+        trendingMediaItems.results[
+          Math.floor(Math.random() * trendingMediaItems.results.length)
         ];
-      const images = await getMovieImages(movie.id);
+      const images = await getMediaItemImages(
+        randomMediaItem.media_type,
+        randomMediaItem.id
+      );
 
       const backdrop = images.backdrops.filter(
         (backdrop) => backdrop.iso_639_1 === null
       )[Math.floor(Math.random() * images.backdrops.length)];
 
-      if (backdrop) movie.backdrop_path = backdrop.file_path;
+      if (backdrop) randomMediaItem.backdrop_path = backdrop.file_path;
 
       const logo = images.logos.find((logo) => logo.iso_639_1 === "en");
 
       if (logo) setLogo(logo);
 
-      setMovie(movie);
+      setMediaItem(mediaItem);
     };
 
-    fetchMovies();
+    fetchMediaItems();
   }, []);
 
   const handleMoreInfoClick = () => {
-    if (!movie) return;
-    navigate(`/movie/${movie.id}`, { state: { backgroundLocation: location } });
+    if (!mediaItem) return;
+    navigate(`/${mediaItem}/${mediaItem.id}`, {
+      state: { backgroundLocation: location },
+    });
   };
 
   return (
@@ -52,13 +57,13 @@ const HeroSection = () => {
       <img
         className="w-full h-150 sm:h-screen object-cover sm:inset-shadow-lg"
         src={
-          movie
-            ? getTMDBImageURL(movie?.backdrop_path, "1920")
+          mediaItem
+            ? getTMDBImageURL(mediaItem?.backdrop_path, "1920")
             : "/hero-image.jpg"
         }
-        alt="Random Movie Posters"
+        alt="Media Backdrop Image"
       />
-      {movie && (
+      {mediaItem && (
         <div className="flex items-end sm:items-center sm:mt-[-100px] justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t from-[#000] to-black/0 to-50% sm:to-25%">
           <div className="flex flex-col gap-2 sm:gap-4 justify-center sm:ml-12">
             {logo && (
@@ -72,11 +77,11 @@ const HeroSection = () => {
             )}
 
             <div className="hidden text-white sm:block sm:w-150 sm:text-sm">
-              {shortenParagraph(movie.overview, 100)}
+              {shortenParagraph(mediaItem.overview, 100)}
             </div>
 
             <GenreList
-              genreIds={movie.genre_ids}
+              genreIds={mediaItem.genre_ids}
               className="text-center sm:text-left"
             />
             <div className="flex gap-4 justify-center sm:justify-start">
