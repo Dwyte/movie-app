@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 
 import PageIndicator from "./PageIndicator";
 import ScrollButton from "./ScrollButton";
-import MovieCard from "./../MovieCard";
+import MovieCard from "../MediaCard";
 
 import useIsOnMobile from "../../hooks/useIsOnMobile";
 

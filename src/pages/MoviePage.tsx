@@ -24,7 +24,7 @@ import {
   BsXLg,
 } from "react-icons/bs";
 
-import MovieCard from "../components/MovieCard";
+import MovieCard from "../components/MediaCard";
 import useIsSmUp from "../hooks/useIsSmUp";
 
 const MoviePage = () => {

@@ -1,18 +1,18 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
-import { getMovieImages } from "../../misc/tmdbAPI";
+import { getMediaItemImages } from "../../misc/tmdbAPI";
 import { getTMDBImageURL } from "../../misc/utils";
-import { Movie } from "../../misc/types";
+import { Media } from "../../misc/types";
 
 import useIsSmUp from "../../hooks/useIsSmUp";
 
 interface Props {
-  movie: Movie;
+  media: Media;
   imgClassNames?: string;
   sourcePathName?: string;
 }
-const MovieCard = ({ movie, imgClassNames, sourcePathName }: Props) => {
+const MediaCard = ({ media, imgClassNames, sourcePathName }: Props) => {
   // Backdrop with Logo used for landscape versions
   const [backdropWithTitleFilePath, setBackdropWithTitleFilePath] = useState<
     string | null
@@ -22,20 +22,23 @@ const MovieCard = ({ movie, imgClassNames, sourcePathName }: Props) => {
   const location = useLocation();
 
   useEffect(() => {
-    const findMovieBackdrop = async () => {
+    const findMediaBackdrop = async () => {
       try {
-        const movieImages = await getMovieImages(movie.id);
+        const mediaImages = await getMediaItemImages(
+          media.media_type,
+          media.id
+        );
 
         // We look for a backdrop that has "en" for language, meaning
         // that backdrop image has the title/logo and we use that as preview
-        // for the movie card so it's easier for the user to identify
-        const movieBackdropWithTitle = movieImages.backdrops.find(
-          (movieImage) =>
-            movieImage.iso_639_1 === "en" && movieImage.aspect_ratio > 1
+        // for the media card so it's easier for the user to identify
+        const mediaBackdropWithTitle = mediaImages.backdrops.find(
+          (mediaImage) =>
+            mediaImage.iso_639_1 === "en" && mediaImage.aspect_ratio > 1
         );
 
-        if (movieBackdropWithTitle) {
-          setBackdropWithTitleFilePath(movieBackdropWithTitle?.file_path);
+        if (mediaBackdropWithTitle) {
+          setBackdropWithTitleFilePath(mediaBackdropWithTitle?.file_path);
         }
       } catch (error) {
         console.error(error);
@@ -45,18 +48,18 @@ const MovieCard = ({ movie, imgClassNames, sourcePathName }: Props) => {
     // Only need to find backdrop/landscape image in Desktop mode.
     // Portrait posters for mobile.
     if (isSmUp && backdropWithTitleFilePath === null) {
-      findMovieBackdrop();
+      findMediaBackdrop();
     }
   }, [isSmUp]);
 
-  const handleMovieCardClick = () => {
-    // Goto MoviePage and set backgroundLocation to tell what page to render
-    // at the background when rendering the Modal MoviePage in desktop.
-    navigate(`/movie/${movie.id}`, {
+  const handleMediaCardClick = () => {
+    // Goto MediaPage and set backgroundLocation to tell what page to render
+    // at the background when rendering the Modal MediaPage in desktop.
+    navigate(`/${media.media_type}/${media.id}`, {
       // Current location as default origin before viewing the modal,
-      // sourcePathName for recursive MoviePage viewing e.g. Viewing another
-      // Movie inside recommendations in MoviePage, the original backgroundLocation
-      // is passed as sourcePathName from the first MoviePage's MovieCards.
+      // sourcePathName for recursive MediaPage viewing e.g. Viewing another
+      // Media inside recommendations in MediaPage, the original backgroundLocation
+      // is passed as sourcePathName from the first MediaPage's MediaCards.
       state: { backgroundLocation: sourcePathName || location },
     });
   };
@@ -69,31 +72,31 @@ const MovieCard = ({ movie, imgClassNames, sourcePathName }: Props) => {
         return getTMDBImageURL(backdropWithTitleFilePath);
       }
 
-      if (movie.backdrop_path) {
-        return getTMDBImageURL(movie.backdrop_path);
+      if (media.backdrop_path) {
+        return getTMDBImageURL(media.backdrop_path);
       }
 
       return "/no-image-landscape.png";
     }
 
-    if (movie.poster_path) {
-      return getTMDBImageURL(movie.poster_path);
+    if (media.poster_path) {
+      return getTMDBImageURL(media.poster_path);
     }
 
     return "no-image-portrait.png";
   }, [backdropWithTitleFilePath, isSmUp]);
 
   return (
-    <div onClick={handleMovieCardClick} className="shrink-0 cursor-pointer">
+    <div onClick={handleMediaCardClick} className="shrink-0 cursor-pointer">
       <img
         className={`rounded-sm object-cover ${
           imgClassNames || "w-30 h-45 sm:w-66 sm:h-36"
         }`}
         src={imgSource}
-        alt={movie.title}
+        alt={media.title}
       />
     </div>
   );
 };
 
-export default MovieCard;
+export default MediaCard;

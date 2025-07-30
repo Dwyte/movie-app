@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import MovieCard from "../components/MovieCard";
+import MovieCard from "../components/MediaCard";
 
 import { getSearchMovies } from "../misc/tmdbAPI";
 import { Movie } from "../misc/types";
