@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { Cast, Movie, MovieDetails, MovieImage } from "../misc/types";
+import { Cast, MediaImage, MediaDetails, Media } from "../misc/types";
 import {
   getDurationString,
   shortenParagraph,
@@ -9,10 +9,10 @@ import {
 } from "../misc/utils";
 import { RiDownloadLine } from "react-icons/ri";
 import {
-  getMovieCredits,
-  getMovieDetails,
-  getMovieImages,
-  getDiscoverMovies,
+  getMediaItemCredits,
+  getMediaItemDetails,
+  getMediaItemImages,
+  getDiscoverMediaItems,
 } from "../misc/tmdbAPI";
 import {
   BsBadgeCcFill,
@@ -24,21 +24,23 @@ import {
   BsXLg,
 } from "react-icons/bs";
 
-import MovieCard from "../components/MediaCard";
+import MediaCard from "../components/MediaCard";
 import useIsSmUp from "../hooks/useIsSmUp";
 
-const MoviePage = () => {
-  const [movieDetails, setMovieDetails] = useState<MovieDetails | null>(null);
-  const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
-  const [movieCasts, setMovieCasts] = useState<Cast[]>([]);
-  const [logo, setLogo] = useState<MovieImage | null>(null);
+const MediaPage = () => {
+  const [mediaItemDetails, setMediaItemDetails] = useState<MediaDetails | null>(
+    null
+  );
+  const [similarMedia, setSimilarMedia] = useState<Media[]>([]);
+  const [mediaCasts, setMediaCasts] = useState<Cast[]>([]);
+  const [logo, setLogo] = useState<MediaImage | null>(null);
 
   const modalRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const isSmUp = useIsSmUp();
   const params = useParams();
-  const movieId = params.movieId ? parseInt(params.movieId) : null;
+  const mediaId = params.mediaId ? parseInt(params.mediaId) : null;
   const backgroundLocation = location.state
     ? location.state.backgroundLocation
     : "/";
@@ -53,22 +55,22 @@ const MoviePage = () => {
   }, []);
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
-      if (!movieId) return;
-      const _movieDetails = await getMovieDetails(movieId);
-      setMovieDetails(_movieDetails);
+    const fetchMediaDetails = async () => {
+      if (!mediaId) return;
+      const _mediaItemDetails = await getMediaItemDetails("movie", mediaId);
+      setMediaItemDetails(_mediaItemDetails);
 
-      const _movieCasts = await getMovieCredits(movieId);
-      setMovieCasts(_movieCasts.cast);
+      const _mediaCasts = await getMediaItemCredits("movie", mediaId);
+      setMediaCasts(_mediaCasts.cast);
     };
 
-    fetchMovieDetails();
-  }, [movieId]);
+    fetchMediaDetails();
+  }, [mediaId]);
 
   useEffect(() => {
-    const fetchMovieImages = async () => {
-      if (!movieId) return;
-      const images = await getMovieImages(movieId);
+    const fetchMediaImages = async () => {
+      if (!mediaId) return;
+      const images = await getMediaItemImages("movie", mediaId);
 
       const logo = images.logos.find((logo) => logo.iso_639_1 === "en");
       if (logo) {
@@ -78,25 +80,28 @@ const MoviePage = () => {
       }
     };
 
-    fetchMovieImages();
-  }, [movieId]);
+    fetchMediaImages();
+  }, [mediaId]);
 
   useEffect(() => {
-    const fetchSimilarMovies = async () => {
-      if (!movieDetails) return;
+    const initializeRecommendations = async () => {
+      if (!mediaItemDetails) return;
 
-      const _similarMovies = await getDiscoverMovies(movieDetails.genres);
-
-      // Remove current Movie
-      const filteredSimilarMovies = _similarMovies.results.filter(
-        (movie) => movie.id !== movieDetails.id
+      const newSimilarMediaItems = await getDiscoverMediaItems(
+        "movie",
+        mediaItemDetails.genres
       );
 
-      setSimilarMovies(filteredSimilarMovies);
+      // Remove current MediaItem
+      const filteredSimilarMediaItems = newSimilarMediaItems.results.filter(
+        (mediaItem) => mediaItem.id !== mediaItemDetails.id
+      );
+
+      setSimilarMedia(filteredSimilarMediaItems);
     };
 
-    fetchSimilarMovies();
-  }, [movieDetails]);
+    initializeRecommendations();
+  }, [mediaItemDetails]);
 
   const closeModal = () => {
     navigate(backgroundLocation);
@@ -104,13 +109,13 @@ const MoviePage = () => {
 
   const imgSource = useMemo(() => {
     try {
-      if (movieDetails) {
-        return getTMDBImageURL(movieDetails.backdrop_path, "1920");
+      if (mediaItemDetails) {
+        return getTMDBImageURL(mediaItemDetails.backdrop_path, "1920");
       }
     } catch (error) {
       return "/no-image-landscape.png";
     }
-  }, [movieDetails]);
+  }, [mediaItemDetails]);
 
   const resetScroll = () => {
     if (!modalRef) return;
@@ -152,7 +157,7 @@ const MoviePage = () => {
                 alt=""
               />
             ) : (
-              <h1 className="text-2xl font-bold">{movieDetails?.title}</h1>
+              <h1 className="text-2xl font-bold">{mediaItemDetails?.title}</h1>
             )}
             <div className="flex items-center gap-4 w-full">
               <button className="primary-btn justify-center min-w-30">
@@ -177,15 +182,17 @@ const MoviePage = () => {
         <div className="flex flex-col gap-2 p-4 bg-black sm:px-10 sm:py-8 sm:gap-4">
           {!isSmUp && (
             <h1 className="font-bold text-2xl sm:hidden">
-              {movieDetails && movieDetails.title}
+              {mediaItemDetails && mediaItemDetails.title}
             </h1>
           )}
           <div className="flex flex-col gap-2 sm:flex sm:flex-row sm:gap-12">
             <div className="flex flex-col gap-2 sm:flex-3">
               <div className="flex items-center gap-2 text-stone-400">
-                <div>{movieDetails && movieDetails.release_date}</div>
+                <div>{mediaItemDetails && mediaItemDetails.release_date}</div>
                 <div>
-                  {movieDetails && getDurationString(movieDetails.runtime)}
+                  {mediaItemDetails &&
+                    mediaItemDetails.runtime &&
+                    getDurationString(mediaItemDetails.runtime)}
                 </div>
                 <BsBadgeHdFill className="text-xl" />
                 <BsBadgeCcFill className="text-xl" />
@@ -208,16 +215,17 @@ const MoviePage = () => {
               </button>
 
               <p className="text-stone-300 text-sm">
-                {movieDetails && shortenParagraph(movieDetails.overview, 200)}
+                {mediaItemDetails &&
+                  shortenParagraph(mediaItemDetails.overview, 200)}
               </p>
             </div>
 
             <div className="flex flex-col gap-2 sm:flex-2">
-              {movieCasts.length > 0 && (
+              {mediaCasts.length > 0 && (
                 <div className="text-sm text-stone-400">
                   Casts: &#32;
                   <span className="text-white">
-                    {movieCasts
+                    {mediaCasts
                       .slice(0, 3)
                       .map((cast) => cast.name)
                       .join(", ")}
@@ -227,8 +235,10 @@ const MoviePage = () => {
               <div className="text-sm text-stone-400">
                 Genres: &#32;
                 <span className="text-white">
-                  {movieDetails &&
-                    movieDetails.genres.map((genre) => genre.name).join(", ")}
+                  {mediaItemDetails &&
+                    mediaItemDetails.genres
+                      .map((genre) => genre.name)
+                      .join(", ")}
                 </span>
               </div>
             </div>
@@ -252,11 +262,11 @@ const MoviePage = () => {
           <div>
             <h2 className="text-lg font-bold my-2">More Like This</h2>
             <div className="grid grid-cols-3 gap-2">
-              {similarMovies.map((movie) => {
+              {similarMedia.map((mediaItem) => {
                 return (
-                  <div key={movie.id} onClick={() => resetScroll()}>
-                    <MovieCard
-                      movie={movie}
+                  <div key={mediaItem.id} onClick={() => resetScroll()}>
+                    <MediaCard
+                      media={mediaItem}
                       sourcePathName={backgroundLocation}
                     />
                   </div>
@@ -270,4 +280,4 @@ const MoviePage = () => {
   );
 };
 
-export default MoviePage;
+export default MediaPage;
