@@ -287,3 +287,72 @@ export interface MediaCreditsAPIResult {
   cast: Cast[];
   crew: Crew[];
 }
+
+// Specific typed enums/unions for clarity
+export type SortBy =
+  | "popularity.asc"
+  | "popularity.desc"
+  | "release_date.asc"
+  | "release_date.desc"
+  | "revenue.asc"
+  | "revenue.desc"
+  | "primary_release_date.asc"
+  | "primary_release_date.desc"
+  | "original_title.asc"
+  | "original_title.desc"
+  | "vote_average.asc"
+  | "vote_average.desc"
+  | "vote_count.asc"
+  | "vote_count.desc"
+  | "first_air_date.asc"
+  | "first_air_date.desc"
+  | "name.asc"
+  | "name.desc";
+
+export type TvStatus = 0 | 1 | 2 | 3 | 4 | 5;
+export type TvType = 0 | 1 | 2 | 3 | 4;
+export type ReleaseType = 1 | 2 | 3 | 4 | 5 | 6; // bitmask - can be combined by bitwise OR if needed
+
+export interface DiscoverQueryParams {
+  language?: string;
+  sort_by?: SortBy;
+  page?: number;
+  timezone?: string;
+  with_watch_providers?: string;
+  watch_region?: string;
+  with_genres?: string;
+  with_keywords?: string;
+  with_origin_country?: string;
+
+  // Numeric filters flattened
+  with_runtime_gte?: number;
+  with_runtime_lte?: number;
+  vote_count_gte?: number;
+  vote_count_lte?: number;
+  vote_average_gte?: number;
+  vote_average_lte?: number;
+
+  // Boolean flags
+  include_adult?: boolean;
+  include_video?: boolean;
+  include_null_first_air_dates?: boolean;
+  screened_theatrically?: boolean;
+
+  // Movie-specific date filters
+  primary_release_date_gte?: string; // YYYY-MM-DD
+  primary_release_date_lte?: string;
+  release_date_gte?: string;
+  release_date_lte?: string;
+  with_release_type?: ReleaseType | number; // bitmask supported
+
+  // TV-specific date filters
+  first_air_date_gte?: string; // YYYY-MM-DD
+  first_air_date_lte?: string;
+  air_date_gte?: string;
+  air_date_lte?: string;
+
+  // TV-specific filters
+  with_status?: TvStatus;
+  with_type?: TvType;
+  with_networks?: string;
+}

@@ -19,9 +19,11 @@ const Home = () => {
           <MediaItemsRow
             title="Series"
             fetchMedia={async () => {
-              const mediaItems = await getDiscoverMediaItems("tv", [
-                TV_SHOWS_GENRES[0],
-              ]);
+              const mediaItems = await getDiscoverMediaItems("tv", {
+                with_genres: TV_SHOWS_GENRES[0].id.toString(),
+                sort_by: "popularity.desc",
+              });
+
               return mediaItems.results;
             }}
           />
@@ -29,18 +31,20 @@ const Home = () => {
           <MediaItemsRow
             title="Comedy"
             fetchMedia={async () => {
-              const mediaItems = await getDiscoverMediaItems("movie", [
-                MOVIE_GENRES[3],
-              ]);
+              const mediaItems = await getDiscoverMediaItems("movie", {
+                with_genres: MOVIE_GENRES[3].id.toString(),
+                sort_by: "popularity.desc",
+              });
               return mediaItems.results;
             }}
           />
           <MediaItemsRow
             title="Horror"
             fetchMedia={async () => {
-              const mediaItems = await getDiscoverMediaItems("movie", [
-                MOVIE_GENRES[10],
-              ]);
+              const mediaItems = await getDiscoverMediaItems("movie", {
+                with_genres: MOVIE_GENRES[3].id.toString(),
+                sort_by: "popularity.desc",
+              });
               return mediaItems.results;
             }}
           />

@@ -7,6 +7,7 @@ import {
   MediaImagesResult,
   MediaDetails,
   MediaCreditsAPIResult,
+  DiscoverQueryParams,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -35,24 +36,34 @@ export const get = async (url: URL): Promise<any> => {
   return await response.json();
 };
 
+const toSearchParams = (
+  params: DiscoverQueryParams
+): Record<string, string> => {
+  const result: Record<string, string> = {};
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value === undefined || value === null) return;
+    result[key] = value.toString();
+  });
+
+  return result;
+};
 /**
  * Fetch mediaItems from TMDB using filter and sort options.
  * @param mediaType movie or tv
- * @param withGenres - filter option, the api has more but only need this for now.
+ * @param queryParams - filter option   
+ * see https://developer.themoviedb.org/reference/discover-movie    
+ * and https://developer.themoviedb.org/reference/discover-tv
  * @returns
  */
 export const getDiscoverMediaItems = async (
   mediaType: MediaType,
-  withGenres?: Genre[]
+  queryParams: DiscoverQueryParams = {}
 ): Promise<GetMediaItemsAPINormalizedResult> => {
-  const url = new URL(`${API_BASE_URL}/discover/${mediaType}`);
-  url.searchParams.append("sort_by", "popularity.desc");
-
-  if (withGenres) {
-    withGenres.forEach((genre) => {
-      url.searchParams.append("with_genres", genre.id.toString());
-    });
-  }
+  const urlSearchParams = new URLSearchParams(toSearchParams(queryParams));
+  const url = new URL(
+    `${API_BASE_URL}/discover/${mediaType}?${urlSearchParams.toString()}`
+  );
 
   const response = (await get(url)) as GetMediaItemsAPIResult;
 

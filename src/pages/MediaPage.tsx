@@ -97,10 +97,11 @@ const MediaPage = ({ mediaType }: Props) => {
     const initializeRecommendations = async () => {
       if (!mediaItemDetails) return;
 
-      const newSimilarMediaItems = await getDiscoverMediaItems(
-        mediaType,
-        mediaItemDetails.genres
-      );
+      const newSimilarMediaItems = await getDiscoverMediaItems(mediaType, {
+        with_genres: mediaItemDetails.genres
+          .map((g) => g.id.toString())
+          .join(","),
+      });
 
       // Remove current MediaItem
       const filteredSimilarMediaItems = newSimilarMediaItems.results.filter(
