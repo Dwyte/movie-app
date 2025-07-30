@@ -1,10 +1,10 @@
-import { MovieGenre } from "../misc/types";
+import { Genre } from "../misc/types";
 import { MOVIE_GENRES } from "../misc/constants";
 
 const genreIdsToName = (genreIds: number[]): string[] => {
-  return MOVIE_GENRES
-    .filter((genre) => genreIds.includes(genre.id))
-    .map((genre) => genre.name);
+  return MOVIE_GENRES.filter((genre) => genreIds.includes(genre.id)).map(
+    (genre) => genre.name
+  );
 };
 
 const GenreList = ({
@@ -13,7 +13,7 @@ const GenreList = ({
   className,
 }: {
   genreIds?: number[];
-  genreList?: MovieGenre[];
+  genreList?: Genre[];
   className?: string;
 }) => {
   return (
