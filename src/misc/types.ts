@@ -17,8 +17,11 @@ export type MediaType = "movie" | "tv";
 
 type MovieTVCombined = CombineExclusiveOptional<Movie, TV>;
 
-export type Media = { mediaType: MediaType } & Omit<MovieTVCombined, "name"> &
-  Required<Pick<MovieTVCombined, "title">>;
+export type Media = { media_type: MediaType } & Omit<
+  MovieTVCombined,
+  "name" | "original_name"
+> &
+  Required<Pick<MovieTVCombined, "title" | "original_title">>;
 
 export interface Movie {
   adult: boolean;

@@ -1,3 +1,5 @@
+import { Media, Movie, TV } from "./types";
+
 /**
  * Shortens a string by trimming it to whole sentences until it fits within the given maxLength.
  * For example, if the original string has 5 sentences totaling 200 characters, and maxLength is
@@ -53,4 +55,16 @@ export const getTMDBImageURL = (path: string, quality: string = "500") => {
 
   const MOVIE_IMAGE_BASE_URL = `https://image.tmdb.org/t/p/w${quality}`;
   return `${MOVIE_IMAGE_BASE_URL}${path}`;
+};
+
+export const normalizeMedia = (data: TV | Movie): Media => {
+  const isMovie = "title" in data;
+  const normalizedMedia: Media = {
+    ...data,
+    media_type: isMovie ? "movie" : "tv",
+    title: isMovie ? data.title : data.name,
+    original_title: isMovie ? data.original_title : data.original_name,
+  };
+
+  return normalizedMedia;
 };
