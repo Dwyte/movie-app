@@ -198,11 +198,18 @@ const MediaPage = ({ mediaType }: Props) => {
           <div className="flex flex-col gap-2 sm:flex sm:flex-row sm:gap-12">
             <div className="flex flex-col gap-2 sm:flex-3">
               <div className="flex items-center gap-2 text-stone-400">
-                <div>{mediaItemDetails && mediaItemDetails.release_date}</div>
                 <div>
-                  {mediaItemDetails &&
-                    mediaItemDetails.runtime &&
+                  {mediaItemDetails?.release_date ||
+                    mediaItemDetails?.first_air_date}
+                </div>
+                <div>
+                  {mediaItemDetails?.runtime &&
                     getDurationString(mediaItemDetails.runtime)}
+
+                  {mediaItemDetails?.number_of_seasons &&
+                    `${mediaItemDetails.number_of_seasons} season${
+                      mediaItemDetails.number_of_seasons > 1 ? "s" : ""
+                    }`}
                 </div>
                 <BsBadgeHdFill className="text-xl" />
                 <BsBadgeCcFill className="text-xl" />
