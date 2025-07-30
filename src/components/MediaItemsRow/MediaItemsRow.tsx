@@ -2,24 +2,24 @@ import { Fragment, useEffect, useRef, useState } from "react";
 
 import PageIndicator from "./PageIndicator";
 import ScrollButton from "./ScrollButton";
-import MovieCard from "../MediaCard";
+import MediaCard from "../MediaCard";
 
 import useIsOnMobile from "../../hooks/useIsOnMobile";
 
-import { Movie } from "../../misc/types";
+import { Media } from "../../misc/types";
 
-const MOVIE_CARD_DIV_WIDTH = 272; // Includes 8px right-gap
+const MEDIA_CARD_DIV_WIDTH = 272; // Includes 8px right-gap
 const LEFT_END_SPACE_WIDTH = 48; // Includes 8px right-gap
 const RIGHT_END_SPACE_WIDTH = 16; // 16px, no right-gap
 const TOTAL_SPACE_WIDTH = LEFT_END_SPACE_WIDTH + RIGHT_END_SPACE_WIDTH;
 
 interface Props {
   title: string;
-  fetchMovies: () => Promise<Movie[]>;
+  fetchMedia: () => Promise<Media[]>;
 }
 
-const MoviesRow = ({ title, fetchMovies }: Props) => {
-  const [movies, setMovies] = useState<Movie[]>([]);
+const MediaItemsRow = ({ title, fetchMedia }: Props) => {
+  const [mediaItems, setMediaItems] = useState<Media[]>([]);
   const scrollableDiv = useRef<HTMLDivElement | null>(null);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -30,16 +30,16 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
   const canScrollRight = currentPage < totalPages - 1;
 
   useEffect(() => {
-    const loadTrendingMovies = async () => {
+    const loadMediaItems = async () => {
       try {
-        const response = await fetchMovies();
-        setMovies(response);
+        const response = await fetchMedia();
+        setMediaItems(response);
       } catch (error) {
         console.log(error);
       }
     };
 
-    loadTrendingMovies();
+    loadMediaItems();
   }, []);
 
   const handleResize = () => {
@@ -48,11 +48,11 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
 
     // Compute TotalPages and CurrentPage
     const actualScrollWidth = currentDiv.scrollWidth - TOTAL_SPACE_WIDTH;
-    const visibleMoviesCount = Math.floor(
-      currentDiv.clientWidth / MOVIE_CARD_DIV_WIDTH
+    const visibleMediaItemsCount = Math.floor(
+      currentDiv.clientWidth / MEDIA_CARD_DIV_WIDTH
     );
 
-    const step = MOVIE_CARD_DIV_WIDTH * visibleMoviesCount;
+    const step = MEDIA_CARD_DIV_WIDTH * visibleMediaItemsCount;
     const newTotalPages = Math.ceil(actualScrollWidth / step);
     const newCurrentPage = Math.round(currentDiv.scrollLeft / step);
 
@@ -62,10 +62,10 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
 
   useEffect(() => {
     // Initial compute once the items are loaded.
-    if (movies.length > 0) {
+    if (mediaItems.length > 0) {
       handleResize();
     }
-  }, [movies]);
+  }, [mediaItems]);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -79,11 +79,11 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
   const shiftPage = (direction: -1 | 1) => {
     const currentDiv = scrollableDiv.current;
     if (currentDiv) {
-      const visibleMoviesCount = Math.floor(
-        currentDiv.clientWidth / MOVIE_CARD_DIV_WIDTH
+      const visibleMediaItemsCount = Math.floor(
+        currentDiv.clientWidth / MEDIA_CARD_DIV_WIDTH
       );
 
-      const step = MOVIE_CARD_DIV_WIDTH * visibleMoviesCount;
+      const step = MEDIA_CARD_DIV_WIDTH * visibleMediaItemsCount;
       const targetPage = Math.max(
         0,
         Math.min(currentPage + direction, totalPages)
@@ -99,7 +99,7 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
   };
 
   return (
-    movies.length > 0 && (
+    mediaItems.length > 0 && (
       <section className="group">
         <div className="flex justify-between items-end ml-4 sm:ml-12">
           <h2>{title}</h2>
@@ -129,8 +129,8 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
             {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
             <div className="shrink-0 w-2 sm:w-10"></div>
 
-            {movies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
+            {mediaItems.map((mediaItem) => (
+              <MediaCard key={mediaItem.id} media={mediaItem} />
             ))}
 
             {/** Acts as right padding/space when the user reaches the last page. */}
@@ -142,4 +142,4 @@ const MoviesRow = ({ title, fetchMovies }: Props) => {
   );
 };
 
-export default MoviesRow;
+export default MediaItemsRow;
