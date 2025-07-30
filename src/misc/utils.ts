@@ -1,4 +1,11 @@
-import { Media, Movie, TV } from "./types";
+import {
+  Media,
+  MediaDetails,
+  Movie,
+  MovieDetails,
+  TV,
+  TVDetails,
+} from "./types";
 
 /**
  * Shortens a string by trimming it to whole sentences until it fits within the given maxLength.
@@ -60,6 +67,20 @@ export const getTMDBImageURL = (path: string, quality: string = "500") => {
 export const normalizeMedia = (data: TV | Movie): Media => {
   const isMovie = "title" in data;
   const normalizedMedia: Media = {
+    ...data,
+    media_type: isMovie ? "movie" : "tv",
+    title: isMovie ? data.title : data.name,
+    original_title: isMovie ? data.original_title : data.original_name,
+  };
+
+  return normalizedMedia;
+};
+
+export const normalizeMediaDetails = (
+  data: TVDetails | MovieDetails
+): MediaDetails => {
+  const isMovie = "title" in data;
+  const normalizedMedia: MediaDetails = {
     ...data,
     media_type: isMovie ? "movie" : "tv",
     title: isMovie ? data.title : data.name,

@@ -8,7 +8,7 @@ import {
   MediaDetails,
   MediaCreditsAPIResult,
 } from "./types";
-import { normalizeMedia } from "./utils";
+import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -122,7 +122,10 @@ export const getMediaItemDetails = async (
   mediaItemId: number
 ): Promise<MediaDetails> => {
   const url = new URL(`${API_BASE_URL}/${mediaType}/${mediaItemId}`);
-  return await get(url);
+
+  const response = await get(url);
+
+  return normalizeMediaDetails(response);
 };
 
 /**

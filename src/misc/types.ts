@@ -73,7 +73,7 @@ export interface MovieDetails {
   homepage: string;
   id: number;
   imbd_id: string;
-  original_language: string;
+  original_language: LanguageCode;
   original_title: string;
   overview: string;
   popularity: number;
@@ -120,7 +120,7 @@ export interface TVDetails {
   production_countries: ProductionCountries[];
   seasons: Season[];
   spoken_languages: SpokenLanguages[];
-  status: "Ended" | "Returning Series" | "Canceled" | "Pilot";
+  status: string;
   tagline: string;
   type: "Scripted" | "Reality" | "Documentary" | "Talk Show" | "Animation";
   vote_average: number;
