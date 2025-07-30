@@ -23,6 +23,14 @@ export type Media = { media_type: MediaType } & Omit<
 > &
   Required<Pick<MovieTVCombined, "title" | "original_title">>;
 
+type MovieTVDetailsCombined = CombineExclusiveOptional<MovieDetails, TVDetails>;
+
+export type MediaDetails = { media_type: MediaType } & Omit<
+  MovieTVDetailsCombined,
+  "name" | "original_name"
+> &
+  Required<Pick<MovieTVDetailsCombined, "title" | "original_title">>;
+
 export interface Movie {
   adult: boolean;
   backdrop_path: string;
@@ -240,10 +248,9 @@ export interface Crew {
   job: string;
 }
 
-export interface MovieCreditsAPIResult {
-  id: number;
-  cast: Cast[];
-  crew: Crew[];
+export interface NavLinks {
+  name: string;
+  path: string;
 }
 
 export interface GetMediaItemsAPIResult {
@@ -259,15 +266,7 @@ export interface GetMediaItemsAPINormalizedResult {
   total_results: number;
   results: Media[];
 }
-
-export interface DiscoverMoviesAPIResult {
-  page: number;
-  total_pages: number;
-  total_results: number;
-  results: Movie[];
-}
-
-export interface MovieImage {
+export interface MediaImage {
   aspect_ratio: number;
   height: number;
   iso_639_1: LanguageCode;
@@ -277,13 +276,14 @@ export interface MovieImage {
   width: number;
 }
 
-export interface MovieImagesResult {
-  backdrops: MovieImage[];
-  logos: MovieImage[];
-  posters: MovieImage[];
+export interface MediaImagesResult {
+  backdrops: MediaImage[];
+  logos: MediaImage[];
+  posters: MediaImage[];
 }
 
-export interface NavLinks {
-  name: string;
-  path: string;
+export interface MediaCreditsAPIResult {
+  id: number;
+  cast: Cast[];
+  crew: Crew[];
 }

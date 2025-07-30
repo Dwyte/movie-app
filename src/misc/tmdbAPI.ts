@@ -1,13 +1,12 @@
 import {
-  DiscoverMoviesAPIResult,
-  MovieCreditsAPIResult,
-  MovieDetails,
-  MovieImagesResult,
   WatchProvidersAPIResults,
   Genre,
   MediaType,
   GetMediaItemsAPIResult,
   GetMediaItemsAPINormalizedResult,
+  MediaImagesResult,
+  MediaDetails,
+  MediaCreditsAPIResult,
 } from "./types";
 import { normalizeMedia } from "./utils";
 
@@ -21,33 +20,19 @@ const API_OPTIONS = {
   },
 };
 
+const normalizedAPIResult = (apiResult: GetMediaItemsAPIResult) => {
+  return {
+    ...apiResult,
+    results: apiResult.results.map((mediaItem) => normalizeMedia(mediaItem)),
+  };
+};
+
 export const get = async (url: URL): Promise<any> => {
   const response = await fetch(url, API_OPTIONS);
   if (!response.ok) {
     throw new Error("Failed to fetch movies");
   }
   return await response.json();
-};
-
-export const getSearchMovies = async (
-  query: string
-): Promise<DiscoverMoviesAPIResult> => {
-  const url = new URL(`${API_BASE_URL}/search/movie`);
-  url.searchParams.append("query", query);
-  return await get(url);
-};
-
-export const getDiscoverMovies = async (
-  genres: Genre[] = []
-): Promise<DiscoverMoviesAPIResult> => {
-  const url = new URL(`${API_BASE_URL}/discover/movie`);
-  url.searchParams.append("sort_by", "popularity.desc");
-
-  genres.forEach((genre) => {
-    url.searchParams.append("with_genres", genre.id.toString());
-  });
-
-  return await get(url);
 };
 
 /**
@@ -71,53 +56,101 @@ export const getDiscoverMediaItems = async (
 
   const response = (await get(url)) as GetMediaItemsAPIResult;
 
-  return {
-    ...response,
-    results: response.results.map((mediaItem) => normalizeMedia(mediaItem)),
-  };
+  return normalizedAPIResult(response);
 };
 
-export const getTrendingMovies = async (
+/**
+ * Search MediaItems by query
+ * @param mediaType movie or tv
+ * @param query
+ * @returns
+ */
+export const getSearchMediaItems = async (
+  mediaType: MediaType,
+  query: string
+): Promise<GetMediaItemsAPINormalizedResult> => {
+  const url = new URL(`${API_BASE_URL}/search/${mediaType}`);
+  url.searchParams.append("query", query);
+
+  const response = (await get(url)) as GetMediaItemsAPIResult;
+
+  return normalizedAPIResult(response);
+};
+
+/**
+ * Fetch the TrendingItems on TMDB
+ * @param mediaType movie or tv
+ * @param timeWindow day or week
+ * @returns
+ */
+export const getTrendingMediaItems = async (
+  mediaType: MediaType,
   timeWindow: "day" | "week"
-): Promise<DiscoverMoviesAPIResult> => {
-  const url = new URL(`${API_BASE_URL}/trending/movie/${timeWindow}`);
+): Promise<GetMediaItemsAPINormalizedResult> => {
+  const url = new URL(`${API_BASE_URL}/trending/${mediaType}/${timeWindow}`);
+
+  const response = (await get(url)) as GetMediaItemsAPIResult;
+
+  return normalizedAPIResult(response);
+};
+
+/**
+ * Get available images for MediaItem
+ * @param mediaType movie or tv
+ * @param mediaItemId
+ * @returns
+ */
+export const getMediaItemImages = async (
+  mediaType: MediaType,
+  mediaItemId: number
+): Promise<MediaImagesResult> => {
+  const url = new URL(`${API_BASE_URL}/${mediaType}/${mediaItemId}/images`);
+
+  const response = await get(url);
+
+  return response;
+};
+
+/**
+ * Fetches full details of MediaItem from the TMDB API
+ * @param mediaType movie or tv
+ * @param mediaItemId
+ * @returns
+ */
+export const getMediaItemDetails = async (
+  mediaType: MediaType,
+  mediaItemId: number
+): Promise<MediaDetails> => {
+  const url = new URL(`${API_BASE_URL}/${mediaType}/${mediaItemId}`);
   return await get(url);
 };
 
-export const getMovieImages = async (
-  movieId: number
-): Promise<MovieImagesResult> => {
-  const url = new URL(`${API_BASE_URL}/movie/${movieId}/images`);
-  return await get(url);
-};
-
-export const getMovieDetails = async (
-  movieId: number
-): Promise<MovieDetails> => {
-  const url = new URL(`${API_BASE_URL}/movie/${movieId}`);
-  return await get(url);
-};
-
-export const getMovieWatchProviders = async (
-  movieId: number
+/**
+ * Get Watch Providers for Media Item
+ * @param mediaType movie or tv
+ * @param mediaId
+ * @returns
+ */
+export const getMediaItemWatchProviders = async (
+  mediaType: MediaType,
+  mediaId: number
 ): Promise<WatchProvidersAPIResults> => {
-  const url = new URL(`${API_BASE_URL}/movie/${movieId}/watch/providers`);
+  const url = new URL(
+    `${API_BASE_URL}/${mediaType}/${mediaId}/watch/providers`
+  );
   return await get(url);
 };
 
-export const getMovieCredits = async (
-  movieId: number
-): Promise<MovieCreditsAPIResult> => {
-  const url = new URL(`${API_BASE_URL}/movie/${movieId}/credits`);
-  return await get(url);
-};
-
-export const getDiscoverTVShows = async (genres: Genre[]) => {
-  const url = new URL(`${API_BASE_URL}/discover/tv`);
-  genres.forEach((genre) => {
-    url.searchParams.append("with_genres", genre.id.toString());
-  });
-  url.searchParams.append("sort_by", "popularity.desc");
-
+/**
+ * Get Credits for Media Item
+ * @param mediaType movie or tv
+ * @param mediaId
+ * @returns
+ */
+export const getMediaItemCredits = async (
+  mediaType: MediaType,
+  mediaId: number
+): Promise<MediaCreditsAPIResult> => {
+  const url = new URL(`${API_BASE_URL}/${mediaType}/${mediaId}/credits`);
   return await get(url);
 };
