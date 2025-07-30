@@ -1,7 +1,7 @@
 import HeroSection from "../components/HeroSection";
-import MoviesRow from "../components/MoviesRow";
+import MediaItemsRow from "../components/MediaItemsRow";
 import { MOVIE_GENRES } from "../misc/constants";
-import { getDiscoverMovies, getTrendingMovies } from "../misc/tmdbAPI";
+import { getDiscoverMediaItems, getTrendingMediaItems } from "../misc/tmdbAPI";
 
 const Home = () => {
   return (
@@ -9,33 +9,39 @@ const Home = () => {
       <HeroSection />
       <div className="relative">
         <div className="flex flex-col gap-2 py-6 sm:absolute sm:top-[-200px] sm:pt-6 sm:pb-16">
-          <MoviesRow
+          <MediaItemsRow
             title="Popular Today"
-            fetchMovies={async () => {
-              const movies = await getTrendingMovies("day");
-              return movies.results;
+            fetchMedia={async () => {
+              const mediaItems = await getTrendingMediaItems("movie", "day");
+              return mediaItems.results;
             }}
           />
-          <MoviesRow
+          <MediaItemsRow
             title="Animation"
-            fetchMovies={async () => {
-              const movies = await getDiscoverMovies([MOVIE_GENRES[2]]);
-              return movies.results;
+            fetchMedia={async () => {
+              const mediaItems = await getDiscoverMediaItems("movie", [
+                MOVIE_GENRES[2],
+              ]);
+              return mediaItems.results;
             }}
           />
 
-          <MoviesRow
+          <MediaItemsRow
             title="Comedy"
-            fetchMovies={async () => {
-              const movies = await getDiscoverMovies([MOVIE_GENRES[3]]);
-              return movies.results;
+            fetchMedia={async () => {
+              const mediaItems = await getDiscoverMediaItems("movie", [
+                MOVIE_GENRES[3],
+              ]);
+              return mediaItems.results;
             }}
           />
-          <MoviesRow
+          <MediaItemsRow
             title="Horror"
-            fetchMovies={async () => {
-              const movies = await getDiscoverMovies([MOVIE_GENRES[10]]);
-              return movies.results;
+            fetchMedia={async () => {
+              const mediaItems = await getDiscoverMediaItems("movie", [
+                MOVIE_GENRES[10],
+              ]);
+              return mediaItems.results;
             }}
           />
         </div>
