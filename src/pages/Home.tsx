@@ -67,7 +67,10 @@ const Home = () => {
       <div className="relative">
         <div className="flex flex-col gap-2 py-6 sm:absolute sm:top-[-200px] sm:pt-6 sm:pb-16">
           {mediaItemsRows.map((mediaItemRowProps) => (
-            <MediaItemsRow {...mediaItemRowProps} />
+            <MediaItemsRow
+              key={mediaItemRowProps.title}
+              {...mediaItemRowProps}
+            />
           ))}
         </div>
       </div>

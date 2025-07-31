@@ -20,9 +20,10 @@ export interface MediaItemsRowProps {
 
 const MediaItemsRow = ({ title, fetchMedia }: MediaItemsRowProps) => {
   const [mediaItems, setMediaItems] = useState<Media[]>([]);
-  const scrollableDiv = useRef<HTMLDivElement | null>(null);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const scrollableDiv = useRef<HTMLDivElement | null>(null);
+  const isProgrammaticScroll = useRef<boolean>(false);
 
   const isOnMobile = useIsOnMobile();
 
@@ -42,7 +43,7 @@ const MediaItemsRow = ({ title, fetchMedia }: MediaItemsRowProps) => {
     loadMediaItems();
   }, []);
 
-  const handleResize = () => {
+  const computePaginationStates = () => {
     const currentDiv = scrollableDiv.current;
     if (!currentDiv) return;
 
@@ -51,6 +52,8 @@ const MediaItemsRow = ({ title, fetchMedia }: MediaItemsRowProps) => {
     const visibleMediaItemsCount = Math.floor(
       currentDiv.clientWidth / MEDIA_CARD_DIV_WIDTH
     );
+
+    console.log(currentDiv.scrollLeft);
 
     const step = MEDIA_CARD_DIV_WIDTH * visibleMediaItemsCount;
     const newTotalPages = Math.ceil(actualScrollWidth / step);
@@ -63,13 +66,35 @@ const MediaItemsRow = ({ title, fetchMedia }: MediaItemsRowProps) => {
   useEffect(() => {
     // Initial compute once the items are loaded.
     if (mediaItems.length > 0) {
-      handleResize();
+      computePaginationStates();
     }
   }, [mediaItems]);
 
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    if (!scrollableDiv.current) return;
+
+    const handleScroll = () => {
+      if (isProgrammaticScroll.current) return;
+      computePaginationStates();
+    };
+
+    const handleScrollEnd = () => {
+      isProgrammaticScroll.current = false;
+    };
+
+    scrollableDiv.current.addEventListener("scroll", handleScroll);
+    scrollableDiv.current.addEventListener("scrollend", handleScrollEnd);
+
+    return () => {
+      if (!scrollableDiv.current) return;
+      scrollableDiv.current.removeEventListener("scroll", handleScroll);
+      scrollableDiv.current.removeEventListener("scrollend", handleScrollEnd);
+    };
+  }, [scrollableDiv.current]);
+
+  useEffect(() => {
+    window.addEventListener("resize", computePaginationStates);
+    return () => window.removeEventListener("resize", computePaginationStates);
   }, []);
 
   /**
@@ -79,6 +104,8 @@ const MediaItemsRow = ({ title, fetchMedia }: MediaItemsRowProps) => {
   const shiftPage = (direction: -1 | 1) => {
     const currentDiv = scrollableDiv.current;
     if (currentDiv) {
+      isProgrammaticScroll.current = true;
+
       const visibleMediaItemsCount = Math.floor(
         currentDiv.clientWidth / MEDIA_CARD_DIV_WIDTH
       );
