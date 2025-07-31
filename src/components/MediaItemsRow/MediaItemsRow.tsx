@@ -13,12 +13,12 @@ const LEFT_END_SPACE_WIDTH = 48; // Includes 8px right-gap
 const RIGHT_END_SPACE_WIDTH = 16; // 16px, no right-gap
 const TOTAL_SPACE_WIDTH = LEFT_END_SPACE_WIDTH + RIGHT_END_SPACE_WIDTH;
 
-interface Props {
+export interface MediaItemsRowProps {
   title: string;
   fetchMedia: () => Promise<Media[]>;
 }
 
-const MediaItemsRow = ({ title, fetchMedia }: Props) => {
+const MediaItemsRow = ({ title, fetchMedia }: MediaItemsRowProps) => {
   const [mediaItems, setMediaItems] = useState<Media[]>([]);
   const scrollableDiv = useRef<HTMLDivElement | null>(null);
   const [totalPages, setTotalPages] = useState<number>(0);
