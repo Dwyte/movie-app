@@ -325,12 +325,12 @@ export interface DiscoverQueryParams {
   with_origin_country?: string;
 
   // Numeric filters flattened
-  with_runtime_gte?: number;
-  with_runtime_lte?: number;
-  vote_count_gte?: number;
-  vote_count_lte?: number;
-  vote_average_gte?: number;
-  vote_average_lte?: number;
+  "with_runtime.gte"?: number;
+  "with_runtime.lte"?: number;
+  "vote_count.gte"?: number;
+  "vote_count.lte"?: number;
+  "vote_average.gte"?: number;
+  "vote_average.lte"?: number;
 
   // Boolean flags
   include_adult?: boolean;
@@ -339,17 +339,17 @@ export interface DiscoverQueryParams {
   screened_theatrically?: boolean;
 
   // Movie-specific date filters
-  primary_release_date_gte?: string; // YYYY-MM-DD
-  primary_release_date_lte?: string;
-  release_date_gte?: string;
-  release_date_lte?: string;
+  "primary_release_date.gte"?: string; // YYYY-MM-DD
+  "primary_release_date.lte"?: string;
+  "release_date.gte"?: string;
+  "release_date.lte"?: string;
   with_release_type?: ReleaseType | number; // bitmask supported
 
   // TV-specific date filters
-  first_air_date_gte?: string; // YYYY-MM-DD
-  first_air_date_lte?: string;
-  air_date_gte?: string;
-  air_date_lte?: string;
+  "first_air_date.gte"?: string; // YYYY-MM-DD
+  "first_air_date.lte"?: string;
+  "air_date.gte"?: string;
+  "air_date.lte"?: string;
 
   // TV-specific filters
   with_status?: TvStatus;
