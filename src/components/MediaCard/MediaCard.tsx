@@ -14,11 +14,10 @@ const hoverHeight = "group-hover/mcard:h-40";
 
 interface Props {
   media: Media;
-  imgClassNames?: string;
   sourcePathName?: string;
 }
 
-const MediaCard = ({ media, imgClassNames, sourcePathName }: Props) => {
+const MediaCard = ({ media, sourcePathName }: Props) => {
   // Backdrop with Logo used for landscape versions
   const [backdropWithTitleFilePath, setBackdropWithTitleFilePath] = useState<
     string | null
@@ -101,9 +100,7 @@ const MediaCard = ({ media, imgClassNames, sourcePathName }: Props) => {
         className={`absolute group rounded-sm overflow-hidden ${hoverWidth} group-hover/mcard:z-1000`}
       >
         <img
-          className={`${
-            imgClassNames || "w-30 h-45 sm:w-66 sm:h-36"
-          } ${hoverWidth} ${hoverHeight} object-cover`}
+          className={`${`w-30 h-45 sm:w-66 sm:h-36 ${hoverWidth} ${hoverHeight}`}  object-cover`}
           src={imgSource}
           alt={media.title}
         />

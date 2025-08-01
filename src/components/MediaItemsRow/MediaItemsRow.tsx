@@ -16,11 +16,10 @@ const TOTAL_SPACE_WIDTH = LEFT_END_SPACE_WIDTH + RIGHT_END_SPACE_WIDTH;
 
 export interface MediaItemsRowProps {
   title: string;
-  fetchMedia: () => Promise<Media[]>;
+  mediaItems: Media[];
 }
 
-const MediaItemsRow = ({ title, fetchMedia }: MediaItemsRowProps) => {
-  const [mediaItems, setMediaItems] = useState<Media[]>([]);
+const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const scrollableDiv = useRef<HTMLDivElement | null>(null);
@@ -30,19 +29,6 @@ const MediaItemsRow = ({ title, fetchMedia }: MediaItemsRowProps) => {
 
   const canScrollLeft = currentPage > 0;
   const canScrollRight = currentPage < totalPages - 1;
-
-  useEffect(() => {
-    const loadMediaItems = async () => {
-      try {
-        const response = await fetchMedia();
-        setMediaItems(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    loadMediaItems();
-  }, []);
 
   const computePaginationStates = () => {
     const currentDiv = scrollableDiv.current;

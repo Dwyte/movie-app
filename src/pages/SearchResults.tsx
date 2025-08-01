@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import MediaCard from "../components/MediaCard";
 
 import { getSearchMediaItems } from "../misc/tmdbAPI";
 import { Media } from "../misc/types";
+import MediaItemsRow from "../components/MediaItemsRow";
 
 const SearchResults = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -40,18 +41,13 @@ const SearchResults = () => {
   }, [searchParams]);
 
   return (
-    <div className="px-4 pb-4 pt-20 sm:px-16">
-      <h2>Search Results for "{query}":</h2>
-      <div className="grid grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-3">
-        {results.map((mediaItem) => (
-          <MediaCard
-            key={mediaItem.id}
-            media={mediaItem}
-            imgClassNames="h-full"
-          />
-        ))}
+    query && (
+      <div className="mt-20 sm:mt-24">
+        <h1 className="hidden sm:block text-2xl text-stone-500 sm:mb-4 sm:pl-12">
+          Search Results for: <span className="text-white">"{query}"</span>
+        </h1>
       </div>
-    </div>
+    )
   );
 };
 

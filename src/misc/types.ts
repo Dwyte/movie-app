@@ -356,3 +356,15 @@ export interface DiscoverQueryParams {
   with_type?: TvType;
   with_networks?: string;
 }
+
+export interface MediaSectionConfig {
+  id: string;
+  title: string;
+  fetchMedia: () => Promise<Media[]>;
+}
+
+export interface MediaSection {
+  id: string;
+  title: string;
+  mediaItems: Media[];
+}
