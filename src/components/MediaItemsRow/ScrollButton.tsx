@@ -13,8 +13,8 @@ const icons = {
 };
 
 const styles = {
-  left: "justify-start left-0 bg-linear-to-r from-black to-black/0",
-  right: "justify-end right-0 bg-linear-to-l from-black to-black/0",
+  left: "justify-start left-0 bg-linear-to-r pl-2",
+  right: "justify-end right-0 bg-linear-to-l pr-2",
 };
 
 const ScrollButton = ({ direction, onClick, isVisible = true }: Props) => {
@@ -22,11 +22,11 @@ const ScrollButton = ({ direction, onClick, isVisible = true }: Props) => {
   return (
     <div
       className={`${
-        isVisible ? "hidden group-hover/root:flex z-5000" : "hidden"
-      } absolute items-center text-white w-16 h-36 ${styles[direction]}`}
+        isVisible ? "hidden group-hover/root:flex z-10000" : "hidden"
+      } absolute items-center text-white ${styles[direction]}`}
     >
-      <button onClick={onClick} className="px-2 h-full cursor-pointer">
-        <Icon className="text-2xl" />
+      <button onClick={onClick} className="p-2 icon-btn cursor-pointer">
+        <Icon className="text-xl" />
       </button>
     </div>
   );

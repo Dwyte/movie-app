@@ -128,7 +128,7 @@ const MediaItemsRow = ({ title, fetchMedia }: MediaItemsRowProps) => {
 
   return (
     mediaItems.length > 0 && (
-      <section className="group/root sm:relative sm:mt-[-36px]">
+      <section className="group/root sm:relative">
         <div className="sm:absolute sm:left-0 sm:right-0 flex justify-between items-end ml-4 sm:ml-12">
           <h2>{title}</h2>
           {!isOnMobile && (

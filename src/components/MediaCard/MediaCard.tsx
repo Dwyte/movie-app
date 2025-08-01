@@ -98,7 +98,7 @@ const MediaCard = ({ media, imgClassNames, sourcePathName }: Props) => {
       className="group/mcard relative flex items-center justify-center shrink-0 w-30 h-45 sm:w-66 sm:h-36 cursor-pointer"
     >
       <div
-        className={`absolute group rounded-sm overflow-hidden ${hoverWidth} group-hover/mcard:z-10000`}
+        className={`absolute group rounded-sm overflow-hidden ${hoverWidth} group-hover/mcard:z-1000`}
       >
         <img
           className={`${

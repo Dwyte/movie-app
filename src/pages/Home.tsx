@@ -67,10 +67,12 @@ const Home = () => {
       <div className="relative">
         <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-200px] sm:pt-6 sm:pb-6">
           {mediaItemsRows.map((mediaItemRowProps) => (
-            <MediaItemsRow
-              key={mediaItemRowProps.title}
-              {...mediaItemRowProps}
-            />
+            <div className="mt-[-50px]">
+              <MediaItemsRow
+                key={mediaItemRowProps.title}
+                {...mediaItemRowProps}
+              />
+            </div>
           ))}
         </div>
       </div>
