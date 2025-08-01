@@ -9,15 +9,17 @@ import useIsSmUp from "../../hooks/useIsSmUp";
 import { BsChevronDown, BsPlayFill, BsPlusLg, BsStar } from "react-icons/bs";
 import GenreList from "../GenreList";
 
+const defaultDimensions = "w-30 h-45 sm:w-66 sm:h-36";
 const hoverWidth = "group-hover/mcard:w-72";
 const hoverHeight = "group-hover/mcard:h-40";
 
 interface Props {
   media: Media;
   sourcePathName?: string;
+  flexible?: boolean;
 }
 
-const MediaCard = ({ media, sourcePathName }: Props) => {
+const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
   // Backdrop with Logo used for landscape versions
   const [backdropWithTitleFilePath, setBackdropWithTitleFilePath] = useState<
     string | null
@@ -94,19 +96,41 @@ const MediaCard = ({ media, sourcePathName }: Props) => {
   return (
     <div
       onClick={handleMediaCardClick}
-      className="group/mcard relative flex items-center justify-center shrink-0 w-30 h-45 sm:w-66 sm:h-36 cursor-pointer"
+      className={`group/mcard relative flex items-center justify-center shrink-0 ${
+        flexible ? "w-full h-full" : defaultDimensions
+      } cursor-pointer`}
     >
-      <div
-        className={`absolute group rounded-sm overflow-hidden ${hoverWidth} group-hover/mcard:z-1000`}
-      >
-        <div className="relative">
+      {flexible && (
+        <div className="relative rounded-sm overflow-hidden">
           <img
-            className={`${`w-30 h-45 sm:w-66 sm:h-36 ${hoverWidth} ${hoverHeight}`}  object-cover`}
+            className={`w-full h-full object-cover`}
             src={imgSource}
             alt={media.title}
           />
 
-          {!backdropWithTitleFilePath && (
+          {!backdropWithTitleFilePath && isSmUp && (
+            <h3 className="absolute text-sm text-white text-center font-bold left-0 bottom-0 right-0 bg-black/70">
+              {media.title}
+            </h3>
+          )}
+        </div>
+      )}
+
+      <div
+        className={`${
+          flexible && "hidden group-hover/mcard:block"
+        } absolute group rounded-sm overflow-hidden ${hoverWidth} group-hover/mcard:z-1000`}
+      >
+        <div className=" relative">
+          <img
+            className={`${`${
+              flexible ? "w-full h-full" : defaultDimensions
+            } ${hoverWidth} ${hoverHeight}`}  object-cover`}
+            src={imgSource}
+            alt={media.title}
+          />
+
+          {!backdropWithTitleFilePath && isSmUp && (
             <h3 className="absolute text-sm text-white text-center font-bold left-0 bottom-0 right-0 bg-black/70">
               {media.title}
             </h3>

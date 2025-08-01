@@ -286,6 +286,7 @@ const MediaPage = ({ mediaType }: Props) => {
                     <MediaCard
                       media={mediaItem}
                       sourcePathName={backgroundLocation}
+                      flexible={true}
                     />
                   </div>
                 );
