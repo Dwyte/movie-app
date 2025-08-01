@@ -94,9 +94,8 @@ const Home = () => {
       <div className="relative">
         <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-200px] sm:pt-6 sm:pb-6">
           {mediaSections.map((section) => (
-            <div className="mt-[-50px]">
+            <div key={section.id} className="sm:mt-[-50px]">
               <MediaItemsRow
-                key={section.id}
                 title={section.title}
                 mediaItems={section.mediaItems}
               />
