@@ -65,7 +65,7 @@ const Home = () => {
     <div>
       <HeroSection />
       <div className="relative">
-        <div className="flex flex-col gap-2 py-6 sm:absolute sm:top-[-200px] sm:pt-6 sm:pb-16">
+        <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-200px] sm:pt-6 sm:pb-6">
           {mediaItemsRows.map((mediaItemRowProps) => (
             <MediaItemsRow
               key={mediaItemRowProps.title}

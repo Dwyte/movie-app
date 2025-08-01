@@ -6,12 +6,18 @@ import { getTMDBImageURL } from "../../misc/utils";
 import { Media } from "../../misc/types";
 
 import useIsSmUp from "../../hooks/useIsSmUp";
+import { BsChevronDown, BsPlayFill, BsPlusLg, BsStar } from "react-icons/bs";
+import GenreList from "../GenreList";
+
+const hoverWidth = "group-hover/mcard:w-72";
+const hoverHeight = "group-hover/mcard:h-40";
 
 interface Props {
   media: Media;
   imgClassNames?: string;
   sourcePathName?: string;
 }
+
 const MediaCard = ({ media, imgClassNames, sourcePathName }: Props) => {
   // Backdrop with Logo used for landscape versions
   const [backdropWithTitleFilePath, setBackdropWithTitleFilePath] = useState<
@@ -87,14 +93,43 @@ const MediaCard = ({ media, imgClassNames, sourcePathName }: Props) => {
   }, [backdropWithTitleFilePath, isSmUp]);
 
   return (
-    <div onClick={handleMediaCardClick} className="shrink-0 cursor-pointer">
-      <img
-        className={`rounded-sm object-cover ${
-          imgClassNames || "w-30 h-45 sm:w-66 sm:h-36"
-        }`}
-        src={imgSource}
-        alt={media.title}
-      />
+    <div
+      onClick={handleMediaCardClick}
+      className="group/mcard relative flex items-center justify-center shrink-0 w-30 h-45 sm:w-66 sm:h-36 cursor-pointer"
+    >
+      <div
+        className={`absolute group rounded-sm overflow-hidden ${hoverWidth} group-hover/mcard:z-10000`}
+      >
+        <img
+          className={`${
+            imgClassNames || "w-30 h-45 sm:w-66 sm:h-36"
+          } ${hoverWidth} ${hoverHeight} object-cover`}
+          src={imgSource}
+          alt={media.title}
+        />
+
+        <div className="hidden p-2 group-hover/mcard:flex flex-col gap-2 bg-stone-900 text-white shadow-2xl">
+          <div className="flex gap-1">
+            <button className="icon-btn">
+              <BsPlayFill />
+            </button>
+            <button className="icon-btn">
+              <BsPlusLg />
+            </button>
+            <button className="icon-btn">
+              <BsStar />
+            </button>
+            <div className="flex-1"></div>
+            <button className="icon-btn">
+              <BsChevronDown />
+            </button>
+          </div>
+
+          <div className="text-sm">
+            <GenreList genreIds={media.genre_ids} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

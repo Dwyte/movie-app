@@ -5,7 +5,7 @@ interface Props {
 
 const PageIndicator = ({ totalPages, currentPage }: Props) => {
   return (
-    <div className="hidden text-white group-hover:flex gap-0.5 mb-1 mr-16">
+    <div className="hidden text-white group-hover/root:flex gap-0.5 mb-1 mr-16">
       {Array.from({ length: totalPages }, (_, index) => (
         <div
           key={index}

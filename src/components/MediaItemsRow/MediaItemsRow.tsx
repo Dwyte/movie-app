@@ -7,6 +7,7 @@ import MediaCard from "../MediaCard";
 import useIsOnMobile from "../../hooks/useIsOnMobile";
 
 import { Media } from "../../misc/types";
+import Test from "../../pages/Test";
 
 const MEDIA_CARD_DIV_WIDTH = 272; // Includes 8px right-gap
 const LEFT_END_SPACE_WIDTH = 48; // Includes 8px right-gap
@@ -127,8 +128,8 @@ const MediaItemsRow = ({ title, fetchMedia }: MediaItemsRowProps) => {
 
   return (
     mediaItems.length > 0 && (
-      <section className="group">
-        <div className="flex justify-between items-end ml-4 sm:ml-12">
+      <section className="group/root sm:relative sm:mt-[-36px]">
+        <div className="sm:absolute sm:left-0 sm:right-0 flex justify-between items-end ml-4 sm:ml-12">
           <h2>{title}</h2>
           {!isOnMobile && (
             <PageIndicator totalPages={totalPages} currentPage={currentPage} />
@@ -149,19 +150,18 @@ const MediaItemsRow = ({ title, fetchMedia }: MediaItemsRowProps) => {
               />
             </Fragment>
           )}
-          <div
-            ref={scrollableDiv}
-            className="flex items-center gap-2 scrollable"
-          >
-            {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
-            <div className="shrink-0 w-2 sm:w-10"></div>
+          <div ref={scrollableDiv} className="scrollable sm:pt-14 sm:pb-14">
+            <div className="flex items-center gap-2">
+              {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
+              <div className="shrink-0 w-2 sm:w-10 bg-white"></div>
 
-            {mediaItems.map((mediaItem) => (
-              <MediaCard key={mediaItem.id} media={mediaItem} />
-            ))}
+              {mediaItems.map((mediaItem) => (
+                <MediaCard key={mediaItem.id} media={mediaItem} />
+              ))}
 
-            {/** Acts as right padding/space when the user reaches the last page. */}
-            <div className="shrink-0 w-2 sm:w-4"></div>
+              {/** Acts as right padding/space when the user reaches the last page. */}
+              <div className="shrink-0 w-2 sm:w-4  h-1"></div>
+            </div>
           </div>
         </div>
       </section>
