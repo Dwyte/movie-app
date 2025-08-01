@@ -139,17 +139,17 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
 
         <div className="hidden p-2 group-hover/mcard:flex flex-col gap-2 bg-stone-900 text-white shadow-2xl">
           <div className="flex gap-1">
-            <button className="icon-btn">
+            <button className="primary-icon-btn">
               <BsPlayFill />
             </button>
-            <button className="icon-btn">
+            <button className="secondary-icon-btn">
               <BsPlusLg />
             </button>
-            <button className="icon-btn">
+            <button className="secondary-icon-btn">
               <BsStar />
             </button>
             <div className="flex-1"></div>
-            <button className="icon-btn">
+            <button className="secondary-icon-btn">
               <BsChevronDown />
             </button>
           </div>

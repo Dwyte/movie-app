@@ -164,7 +164,7 @@ const MediaPage = ({ mediaType }: Props) => {
         <div className="relative">
           <button
             onClick={closeModal}
-            className="icon-btn absolute right-3 top-3 border-0 z-100"
+            className="secondary-icon-btn absolute right-3 top-3 border-0 z-100"
           >
             <BsXLg />
           </button>
@@ -191,14 +191,14 @@ const MediaPage = ({ mediaType }: Props) => {
                 <span>Play</span>
               </button>
 
-              <button className="icon-btn">
+              <button className="secondary-icon-btn">
                 <BsPlusLg />
               </button>
-              <button className="icon-btn">
+              <button className="secondary-icon-btn">
                 <BsStar />
               </button>
               <div className="flex-1"></div>
-              <button className="icon-btn opacity-65">
+              <button className="secondary-icon-btn opacity-65">
                 <RiDownloadLine />
               </button>
             </div>
