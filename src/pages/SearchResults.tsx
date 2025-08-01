@@ -51,7 +51,6 @@ const SearchResults = () => {
         (media, index, self) =>
           index === self.findIndex((t) => t.id === media.id)
       )
-      .sort((a, b) => b.popularity - a.popularity)
       .slice(0, 12);
 
     console.log(movieSection, tvSection);
@@ -88,7 +87,7 @@ const SearchResults = () => {
         {mediaSections
           ?.filter((section) => section.mediaItems.length)
           .map((section, index) => (
-            <div className={index > 0 ? "mt-[-36px]" : ""}>
+            <div className={index > 0 ? "sm:mt-[-36px]" : ""}>
               <MediaItemsRow
                 key={section.id}
                 title={section.title}
