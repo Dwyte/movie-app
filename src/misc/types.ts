@@ -58,6 +58,7 @@ export interface TV {
   origin_country: CountryCode[];
   original_language: LanguageCode;
   original_name: string;
+  popularity: number;
   overview: string;
   poster_path: string;
   vote_average: number;
