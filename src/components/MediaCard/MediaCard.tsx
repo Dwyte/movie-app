@@ -99,11 +99,19 @@ const MediaCard = ({ media, sourcePathName }: Props) => {
       <div
         className={`absolute group rounded-sm overflow-hidden ${hoverWidth} group-hover/mcard:z-1000`}
       >
-        <img
-          className={`${`w-30 h-45 sm:w-66 sm:h-36 ${hoverWidth} ${hoverHeight}`}  object-cover`}
-          src={imgSource}
-          alt={media.title}
-        />
+        <div className="relative">
+          <img
+            className={`${`w-30 h-45 sm:w-66 sm:h-36 ${hoverWidth} ${hoverHeight}`}  object-cover`}
+            src={imgSource}
+            alt={media.title}
+          />
+
+          {!backdropWithTitleFilePath && (
+            <h3 className="absolute text-sm text-white text-center font-bold left-0 bottom-0 right-0 bg-black/70">
+              {media.title}
+            </h3>
+          )}
+        </div>
 
         <div className="hidden p-2 group-hover/mcard:flex flex-col gap-2 bg-stone-900 text-white shadow-2xl">
           <div className="flex gap-1">
