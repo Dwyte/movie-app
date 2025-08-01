@@ -25,7 +25,7 @@ const ScrollButton = ({ direction, onClick, isVisible = true }: Props) => {
         isVisible ? "hidden group-hover/root:flex z-10000" : "hidden"
       } absolute items-center text-white ${styles[direction]}`}
     >
-      <button onClick={onClick} className="p-2 icon-btn cursor-pointer">
+      <button onClick={onClick} className="p-2 secondary-icon-btn cursor-pointer">
         <Icon className="text-xl" />
       </button>
     </div>
