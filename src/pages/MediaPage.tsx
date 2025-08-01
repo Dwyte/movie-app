@@ -7,6 +7,8 @@ import {
   MediaDetails,
   Media,
   MediaType,
+  MediaCreditsAPIResult,
+  Crew,
 } from "../misc/types";
 import {
   getDurationString,
@@ -42,7 +44,8 @@ const MediaPage = ({ mediaType }: Props) => {
     null
   );
   const [similarMedia, setSimilarMedia] = useState<Media[]>([]);
-  const [mediaCasts, setMediaCasts] = useState<Cast[]>([]);
+  const [mediaCredits, setMediaCredits] =
+    useState<MediaCreditsAPIResult | null>(null);
   const [logo, setLogo] = useState<MediaImage | null>(null);
 
   const modalRef = useRef<HTMLDivElement | null>(null);
@@ -71,7 +74,7 @@ const MediaPage = ({ mediaType }: Props) => {
       setMediaItemDetails(_mediaItemDetails);
 
       const _mediaCasts = await getMediaItemCredits(mediaType, mediaId);
-      setMediaCasts(_mediaCasts.cast);
+      setMediaCredits(_mediaCasts);
     };
 
     fetchMediaDetails();
@@ -135,6 +138,18 @@ const MediaPage = ({ mediaType }: Props) => {
       behavior: "smooth",
     });
   };
+
+  const director = useMemo<Crew | null>(() => {
+    if (!mediaCredits) return null;
+
+    const directorDetails = mediaCredits.crew.filter(
+      (crew) => crew.job === "Director"
+    );
+
+    if (directorDetails.length > 0) return directorDetails[0];
+
+    return null;
+  }, [mediaCredits]);
 
   return (
     <div
@@ -239,15 +254,21 @@ const MediaPage = ({ mediaType }: Props) => {
             </div>
 
             <div className="flex flex-col gap-2 sm:flex-2">
-              {mediaCasts.length > 0 && (
+              {mediaCredits && mediaCredits?.cast.length > 0 && (
                 <div className="text-sm text-stone-400">
                   Casts: &#32;
                   <span className="text-white">
-                    {mediaCasts
+                    {mediaCredits.cast
                       .slice(0, 3)
                       .map((cast) => cast.name)
                       .join(", ")}
                   </span>
+                </div>
+              )}
+              {director && (
+                <div className="text-sm text-stone-400">
+                  Director: &#32;
+                  <span className="text-white">{director.name}</span>
                 </div>
               )}
               <div className="text-sm text-stone-400">
