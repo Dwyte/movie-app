@@ -9,6 +9,7 @@ import {
   Movie,
   TV,
   Media,
+  TVSeasonDetailsAPIResult,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -169,5 +170,13 @@ export const getMediaItemCredits = async (
   mediaId: number
 ): Promise<MediaCreditsAPIResult> => {
   const url = new URL(`${API_BASE_URL}/${mediaType}/${mediaId}/credits`);
+  return await get(url);
+};
+
+export const getTVSeasonDetails = async (
+  tvId: number,
+  seasonNumber: number
+): Promise<TVSeasonDetailsAPIResult> => {
+  const url = new URL(`${API_BASE_URL}/tv/${tvId}/season/${seasonNumber}`);
   return await get(url);
 };
