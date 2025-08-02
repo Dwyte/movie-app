@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { BsPlusLg, BsSend, BsStar } from "react-icons/bs";
 
 import {
@@ -14,6 +21,8 @@ import useIsSmUp from "../../hooks/useIsSmUp";
 import RelatedMediaSection from "./RelatedMediaSection";
 import MediaPageHeroSection from "./MediaPageHeroSection";
 import MediaPageDetailsSection from "./MediaPageDetailsSection";
+import MediaPageCastsSection from "./MediaPageCastsSection";
+import { MEDIA_PAGE_NAV_LINKS } from "../../misc/constants";
 
 interface Props {
   mediaType: MediaType;
@@ -88,7 +97,8 @@ const MediaPage = ({ mediaType }: Props) => {
           mediaItemDetails={mediaItemDetails}
           onClose={closeModal}
         />
-        <div className="flex flex-col gap-2 p-4 bg-black sm:px-10 sm:py-8 sm:gap-4">
+        <div className="flex flex-col gap-2 p-4 bg-black sm:px-10 sm:py-8 sm:gap-8">
+          {/** On desktop, h1 Title is at MediaPageHeroSection. */}
           {!isSmUp && (
             <h1 className="font-bold text-2xl sm:hidden">
               {mediaItemDetails && mediaItemDetails.title}
@@ -117,10 +127,34 @@ const MediaPage = ({ mediaType }: Props) => {
 
           {mediaItemDetails && (
             <div>
-              <h2 className="text-lg font-bold p-2 inline-block border-t-2 border-red-600 ">
-                More Like This
-              </h2>
-              <RelatedMediaSection mediaItemDetails={mediaItemDetails} />
+              <nav className="flex gap-4 mb-4 scrollable">
+                {MEDIA_PAGE_NAV_LINKS.map((navLink, index) => {
+                  if (navLink.path === "/episodes" && mediaType === "movie")
+                    return;
+
+                  return (
+                    <NavLink
+                      className={({ isActive }) =>
+                        `media-page-nav${isActive ? "-active" : ""}`
+                      }
+                      state={{ backgroundLocation }}
+                      to={`/${mediaType}/${mediaId}${navLink.path}`}
+                      end
+                    >
+                      {navLink.name}
+                    </NavLink>
+                  );
+                })}
+              </nav>
+              <Routes>
+                <Route
+                  path=""
+                  element={
+                    <RelatedMediaSection mediaItemDetails={mediaItemDetails} />
+                  }
+                />
+                <Route path="/casts" element={<MediaPageCastsSection />} />
+              </Routes>
             </div>
           )}
         </div>

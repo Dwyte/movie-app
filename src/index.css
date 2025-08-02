@@ -28,6 +28,14 @@
     @apply rounded-full bg-stone-900 text-stone-100 border-[1px] border-stone-600 p-2 flex cursor-pointer items-center hover:invert-100 hover:border-white/0;
   }
 
+  .media-page-nav-active {
+    @apply shrink-0 text-white sm:text-lg font-bold p-2 border-t-2 border-red-600;
+  }
+
+  .media-page-nav {
+    @apply shrink-0 text-stone-400 sm:text-lg font-bold p-2 border-t-2 border-black/0;
+  }
+
   /* Scrollable content but scroll bar not visible */
   .scrollable {
     @apply overflow-y-scroll;
