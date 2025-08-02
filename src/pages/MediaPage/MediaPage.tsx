@@ -135,6 +135,7 @@ const MediaPage = ({ mediaType }: Props) => {
 
                   return (
                     <NavLink
+                      key={navLink.path}
                       className={({ isActive }) =>
                         `media-page-nav${isActive ? "-active" : ""}`
                       }
@@ -164,7 +165,12 @@ const MediaPage = ({ mediaType }: Props) => {
                 />
                 <Route
                   path="/episodes"
-                  element={<MediaPageEpisodesSection mediaId={mediaId} />}
+                  element={
+                    <MediaPageEpisodesSection
+                      mediaId={mediaId}
+                      seasons={mediaItemDetails.seasons}
+                    />
+                  }
                 />
               </Routes>
             </div>
