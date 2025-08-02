@@ -153,7 +153,7 @@ const MediaPage = ({ mediaType }: Props) => {
                     <RelatedMediaSection mediaItemDetails={mediaItemDetails} />
                   }
                 />
-                <Route path="/casts" element={<MediaPageCastsSection />} />
+                <Route path="/casts" element={<MediaPageCastsSection mediaItemCredits={mediaItemCredits} />} />
               </Routes>
             </div>
           )}
