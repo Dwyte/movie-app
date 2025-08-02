@@ -23,6 +23,7 @@ import MediaPageHeroSection from "./MediaPageHeroSection";
 import MediaPageDetailsSection from "./MediaPageDetailsSection";
 import MediaPageCastsSection from "./MediaPageCastsSection";
 import { MEDIA_PAGE_NAV_LINKS } from "../../misc/constants";
+import MediaPageEpisodesSection from "./MediaPageEpisodesSection";
 
 interface Props {
   mediaType: MediaType;
@@ -153,7 +154,18 @@ const MediaPage = ({ mediaType }: Props) => {
                     <RelatedMediaSection mediaItemDetails={mediaItemDetails} />
                   }
                 />
-                <Route path="/casts" element={<MediaPageCastsSection mediaItemCredits={mediaItemCredits} />} />
+                <Route
+                  path="/casts"
+                  element={
+                    <MediaPageCastsSection
+                      mediaItemCredits={mediaItemCredits}
+                    />
+                  }
+                />
+                <Route
+                  path="/episodes"
+                  element={<MediaPageEpisodesSection mediaId={mediaId} />}
+                />
               </Routes>
             </div>
           )}
