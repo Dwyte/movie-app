@@ -10,6 +10,21 @@ export const NAV_LINKS: NavLinks[] = [
   { name: "My List", path: "/mylist" },
 ];
 
+export const MEDIA_PAGE_NAV_LINKS: NavLinks[] = [
+  {
+    name: "More Like This",
+    path: "",
+  },
+  {
+    name: "Episodes",
+    path: "/episodes",
+  },
+  {
+    name: "Casts & Crew",
+    path: "/casts",
+  },
+];
+
 export const MOVIE_GENRES: Genre[] = [
   {
     id: 28,
