@@ -1,27 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-
-import {
-  Cast,
-  MediaImage,
-  MediaDetails,
-  Media,
-  MediaType,
-  MediaCreditsAPIResult,
-  Crew,
-} from "../misc/types";
-import {
-  getDurationString,
-  shortenParagraph,
-  getTMDBImageURL,
-} from "../misc/utils";
 import { RiDownloadLine } from "react-icons/ri";
-import {
-  getMediaItemCredits,
-  getMediaItemDetails,
-  getMediaItemImages,
-  getDiscoverMediaItems,
-} from "../misc/tmdbAPI";
 import {
   BsBadgeCcFill,
   BsBadgeHdFill,
@@ -32,8 +11,30 @@ import {
   BsXLg,
 } from "react-icons/bs";
 
-import MediaCard from "../components/MediaCard";
-import useIsSmUp from "../hooks/useIsSmUp";
+import {
+  MediaImage,
+  MediaDetails,
+  Media,
+  MediaType,
+  MediaCreditsAPIResult,
+  Crew,
+} from "../../misc/types";
+
+import {
+  getDurationString,
+  shortenParagraph,
+  getTMDBImageURL,
+} from "../../misc/utils";
+
+import {
+  getMediaItemCredits,
+  getMediaItemDetails,
+  getMediaItemImages,
+  getDiscoverMediaItems,
+} from "../../misc/tmdbAPI";
+
+import MediaCard from "../../components/MediaCard";
+import useIsSmUp from "../../hooks/useIsSmUp";
 
 interface Props {
   mediaType: MediaType;
@@ -97,7 +98,7 @@ const MediaPage = ({ mediaType }: Props) => {
   }, [mediaId]);
 
   useEffect(() => {
-    const initializeRecommendations = async () => {
+    const fetchRecommendations = async () => {
       if (!mediaItemDetails) return;
 
       const newSimilarMediaItems = await getDiscoverMediaItems(mediaType, {
@@ -114,7 +115,7 @@ const MediaPage = ({ mediaType }: Props) => {
       setSimilarMedia(filteredSimilarMediaItems);
     };
 
-    initializeRecommendations();
+    fetchRecommendations();
   }, [mediaItemDetails]);
 
   const closeModal = () => {
@@ -159,7 +160,7 @@ const MediaPage = ({ mediaType }: Props) => {
       <div
         ref={modalRef}
         onClick={(e) => e.stopPropagation()}
-        className="sm:max-w-200 sm:mt-8 sm:rounded-sm scrollable"
+        className="sm:max-w-220 sm:mt-8 sm:rounded-sm scrollable"
       >
         <div className="relative">
           <button
@@ -300,7 +301,7 @@ const MediaPage = ({ mediaType }: Props) => {
 
           <div>
             <h2 className="text-lg font-bold my-2">More Like This</h2>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-3">
               {similarMedia.map((mediaItem) => {
                 return (
                   <div key={mediaItem.id} onClick={() => resetScroll()}>
