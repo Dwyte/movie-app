@@ -254,19 +254,13 @@ export interface NavLinks {
   path: string;
 }
 
-export interface GetMediaItemsAPIResult {
+export interface TMDBGetMediaAPIResponse<ResultType> {
   page: number;
   total_pages: number;
   total_results: number;
-  results: TV[] | Movie[];
+  results: ResultType[];
 }
 
-export interface GetMediaItemsAPINormalizedResult {
-  page: number;
-  total_pages: number;
-  total_results: number;
-  results: Media[];
-}
 export interface MediaImage {
   aspect_ratio: number;
   height: number;

@@ -1,13 +1,14 @@
 import {
   WatchProvidersAPIResults,
-  Genre,
   MediaType,
-  GetMediaItemsAPIResult,
-  GetMediaItemsAPINormalizedResult,
+  TMDBGetMediaAPIResponse,
   MediaImagesResult,
   MediaDetails,
   MediaCreditsAPIResult,
   DiscoverQueryParams,
+  Movie,
+  TV,
+  Media,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -21,7 +22,9 @@ const API_OPTIONS = {
   },
 };
 
-const normalizedAPIResult = (apiResult: GetMediaItemsAPIResult) => {
+const normalizedAPIResult = (
+  apiResult: TMDBGetMediaAPIResponse<TV | Movie>
+) => {
   return {
     ...apiResult,
     results: apiResult.results.map((mediaItem) => normalizeMedia(mediaItem)),
@@ -51,21 +54,21 @@ const toSearchParams = (
 /**
  * Fetch mediaItems from TMDB using filter and sort options.
  * @param mediaType movie or tv
- * @param queryParams - filter option   
- * see https://developer.themoviedb.org/reference/discover-movie    
+ * @param queryParams - filter option
+ * see https://developer.themoviedb.org/reference/discover-movie
  * and https://developer.themoviedb.org/reference/discover-tv
  * @returns
  */
 export const getDiscoverMediaItems = async (
   mediaType: MediaType,
   queryParams: DiscoverQueryParams = {}
-): Promise<GetMediaItemsAPINormalizedResult> => {
+): Promise<TMDBGetMediaAPIResponse<Media>> => {
   const urlSearchParams = new URLSearchParams(toSearchParams(queryParams));
   const url = new URL(
     `${API_BASE_URL}/discover/${mediaType}?${urlSearchParams.toString()}`
   );
 
-  const response = (await get(url)) as GetMediaItemsAPIResult;
+  const response = (await get(url)) as TMDBGetMediaAPIResponse<TV | Movie>;
 
   return normalizedAPIResult(response);
 };
@@ -79,11 +82,11 @@ export const getDiscoverMediaItems = async (
 export const getSearchMediaItems = async (
   mediaType: MediaType,
   query: string
-): Promise<GetMediaItemsAPINormalizedResult> => {
+): Promise<TMDBGetMediaAPIResponse<Media>> => {
   const url = new URL(`${API_BASE_URL}/search/${mediaType}`);
   url.searchParams.append("query", query);
 
-  const response = (await get(url)) as GetMediaItemsAPIResult;
+  const response = (await get(url)) as TMDBGetMediaAPIResponse<TV | Movie>;
 
   return normalizedAPIResult(response);
 };
@@ -97,10 +100,10 @@ export const getSearchMediaItems = async (
 export const getTrendingMediaItems = async (
   mediaType: MediaType,
   timeWindow: "day" | "week"
-): Promise<GetMediaItemsAPINormalizedResult> => {
+): Promise<TMDBGetMediaAPIResponse<Media>> => {
   const url = new URL(`${API_BASE_URL}/trending/${mediaType}/${timeWindow}`);
 
-  const response = (await get(url)) as GetMediaItemsAPIResult;
+  const response = (await get(url)) as TMDBGetMediaAPIResponse<TV | Movie>;
 
   return normalizedAPIResult(response);
 };
