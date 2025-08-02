@@ -35,6 +35,7 @@ import {
 
 import MediaCard from "../../components/MediaCard";
 import useIsSmUp from "../../hooks/useIsSmUp";
+import RelatedMediaSection from "./RelatedMediaSection";
 
 interface Props {
   mediaType: MediaType;
@@ -44,7 +45,6 @@ const MediaPage = ({ mediaType }: Props) => {
   const [mediaItemDetails, setMediaItemDetails] = useState<MediaDetails | null>(
     null
   );
-  const [similarMedia, setSimilarMedia] = useState<Media[]>([]);
   const [mediaCredits, setMediaCredits] =
     useState<MediaCreditsAPIResult | null>(null);
   const [logo, setLogo] = useState<MediaImage | null>(null);
@@ -97,27 +97,6 @@ const MediaPage = ({ mediaType }: Props) => {
     fetchMediaImages();
   }, [mediaId]);
 
-  useEffect(() => {
-    const fetchRecommendations = async () => {
-      if (!mediaItemDetails) return;
-
-      const newSimilarMediaItems = await getDiscoverMediaItems(mediaType, {
-        with_genres: mediaItemDetails.genres
-          .map((g) => g.id.toString())
-          .join(","),
-      });
-
-      // Remove current MediaItem
-      const filteredSimilarMediaItems = newSimilarMediaItems.results.filter(
-        (mediaItem) => mediaItem.id !== mediaItemDetails.id
-      );
-
-      setSimilarMedia(filteredSimilarMediaItems);
-    };
-
-    fetchRecommendations();
-  }, [mediaItemDetails]);
-
   const closeModal = () => {
     navigate(backgroundLocation);
   };
@@ -132,14 +111,6 @@ const MediaPage = ({ mediaType }: Props) => {
     }
   }, [mediaItemDetails]);
 
-  const resetScroll = () => {
-    if (!modalRef) return;
-    modalRef.current?.scrollBy({
-      top: -modalRef.current.scrollHeight,
-      behavior: "smooth",
-    });
-  };
-
   const director = useMemo<Crew | null>(() => {
     if (!mediaCredits) return null;
 
@@ -151,6 +122,18 @@ const MediaPage = ({ mediaType }: Props) => {
 
     return null;
   }, [mediaCredits]);
+
+  useEffect(() => {
+    const resetScroll = () => {
+      if (!modalRef) return;
+      modalRef.current?.scrollBy({
+        top: -modalRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    };
+
+    resetScroll();
+  }, [location.pathname]);
 
   return (
     <div
@@ -285,7 +268,7 @@ const MediaPage = ({ mediaType }: Props) => {
           </div>
 
           <div className="flex gap-2 sm:hidden">
-            <button className="flex flex-col justify-between items-center gap-1 px-3 py-2 min-w-16 border-b-2 border-b-red-600">
+            <button className="flex flex-col justify-between items-center gap-1 px-3 py-2 min-w-16">
               <BsPlusLg className="text-2xl p-[3px]" />
               <span className="text-sm">My List</span>
             </button>
@@ -299,22 +282,14 @@ const MediaPage = ({ mediaType }: Props) => {
             </button>
           </div>
 
-          <div>
-            <h2 className="text-lg font-bold my-2">More Like This</h2>
-            <div className="grid grid-cols-3 gap-3">
-              {similarMedia.map((mediaItem) => {
-                return (
-                  <div key={mediaItem.id} onClick={() => resetScroll()}>
-                    <MediaCard
-                      media={mediaItem}
-                      sourcePathName={backgroundLocation}
-                      flexible={true}
-                    />
-                  </div>
-                );
-              })}
+          {mediaItemDetails && (
+            <div>
+              <h2 className="text-lg font-bold p-2 inline-block border-t-2 border-red-600 ">
+                More Like This
+              </h2>
+              <RelatedMediaSection mediaItemDetails={mediaItemDetails} />
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
