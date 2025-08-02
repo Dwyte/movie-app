@@ -8,34 +8,23 @@ import {
   BsPlusLg,
   BsSend,
   BsStar,
-  BsXLg,
 } from "react-icons/bs";
 
 import {
   MediaImage,
   MediaDetails,
-  Media,
   MediaType,
   MediaCreditsAPIResult,
   Crew,
 } from "../../misc/types";
 
-import {
-  getDurationString,
-  shortenParagraph,
-  getTMDBImageURL,
-} from "../../misc/utils";
+import { getDurationString, shortenParagraph } from "../../misc/utils";
 
-import {
-  getMediaItemCredits,
-  getMediaItemDetails,
-  getMediaItemImages,
-  getDiscoverMediaItems,
-} from "../../misc/tmdbAPI";
+import { getMediaItemCredits, getMediaItemDetails } from "../../misc/tmdbAPI";
 
-import MediaCard from "../../components/MediaCard";
 import useIsSmUp from "../../hooks/useIsSmUp";
 import RelatedMediaSection from "./RelatedMediaSection";
+import MediaPageHeroSection from "./MediaPageHeroSection";
 
 interface Props {
   mediaType: MediaType;
@@ -47,7 +36,6 @@ const MediaPage = ({ mediaType }: Props) => {
   );
   const [mediaCredits, setMediaCredits] =
     useState<MediaCreditsAPIResult | null>(null);
-  const [logo, setLogo] = useState<MediaImage | null>(null);
 
   const modalRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
@@ -81,35 +69,9 @@ const MediaPage = ({ mediaType }: Props) => {
     fetchMediaDetails();
   }, [mediaId]);
 
-  useEffect(() => {
-    const fetchMediaImages = async () => {
-      if (!mediaId) return;
-      const images = await getMediaItemImages(mediaType, mediaId);
-
-      const logo = images.logos.find((logo) => logo.iso_639_1 === "en");
-      if (logo) {
-        setLogo(logo);
-      } else {
-        setLogo(null);
-      }
-    };
-
-    fetchMediaImages();
-  }, [mediaId]);
-
   const closeModal = () => {
     navigate(backgroundLocation);
   };
-
-  const imgSource = useMemo(() => {
-    try {
-      if (mediaItemDetails) {
-        return getTMDBImageURL(mediaItemDetails.backdrop_path, "1920");
-      }
-    } catch (error) {
-      return "/no-image-landscape.png";
-    }
-  }, [mediaItemDetails]);
 
   const director = useMemo<Crew | null>(() => {
     if (!mediaCredits) return null;
@@ -145,50 +107,10 @@ const MediaPage = ({ mediaType }: Props) => {
         onClick={(e) => e.stopPropagation()}
         className="sm:max-w-220 sm:mt-8 sm:rounded-sm scrollable"
       >
-        <div className="relative">
-          <button
-            onClick={closeModal}
-            className="secondary-icon-btn absolute right-3 top-3 border-0 z-100"
-          >
-            <BsXLg />
-          </button>
-          <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-black to-black/0 via-black/75 via-25% to-100%"></div>
-          <img
-            className="w-full sm:h-110 sm:object-cover"
-            src={imgSource}
-            alt=""
-          />
-
-          <div className="hidden sm:flex flex-col items-start px-10 gap-8 absolute left-0 right-0 bottom-0">
-            {logo ? (
-              <img
-                className="w-auto max-h-30"
-                src={getTMDBImageURL(logo.file_path)}
-                alt=""
-              />
-            ) : (
-              <h1 className="text-2xl font-bold">{mediaItemDetails?.title}</h1>
-            )}
-            <div className="flex items-center gap-4 w-full">
-              <button className="primary-btn justify-center min-w-30">
-                <BsPlayFill className="text-2xl mr-1" />
-                <span>Play</span>
-              </button>
-
-              <button className="secondary-icon-btn">
-                <BsPlusLg />
-              </button>
-              <button className="secondary-icon-btn">
-                <BsStar />
-              </button>
-              <div className="flex-1"></div>
-              <button className="secondary-icon-btn opacity-65">
-                <RiDownloadLine />
-              </button>
-            </div>
-          </div>
-        </div>
-
+        <MediaPageHeroSection
+          mediaItemDetails={mediaItemDetails}
+          onClose={closeModal}
+        />
         <div className="flex flex-col gap-2 p-4 bg-black sm:px-10 sm:py-8 sm:gap-4">
           {!isSmUp && (
             <h1 className="font-bold text-2xl sm:hidden">
