@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Season, TVSeasonDetailsAPIResult } from "../../misc/types";
+import { useState } from "react";
+import { MediaType, Season } from "../../misc/types";
 import { getTVSeasonDetails } from "../../misc/tmdbAPI";
 import {
   getDurationString,
@@ -7,6 +7,7 @@ import {
   shortenParagraph,
 } from "../../misc/utils";
 import Select, { Option } from "../../components/Select";
+import { useQuery } from "@tanstack/react-query";
 
 interface Props {
   mediaId: number | null;
@@ -14,30 +15,26 @@ interface Props {
 }
 
 const MediaPageEpisodesSection = ({ mediaId, seasons }: Props) => {
-  const [seasonDetails, setSeasonDetails] =
-    useState<TVSeasonDetailsAPIResult | null>(null);
-
   const [selectedSeason, setSelectedSeason] = useState<number>(0);
+  const { data: seasonDetails } = useQuery({
+    enabled: !!seasons && mediaId !== null,
+    queryKey: [
+      "tv",
+      mediaId,
+      "season",
+      seasons?.[selectedSeason].season_number,
+    ],
+    queryFn: ({ queryKey }) => {
+      const [mediaType, mediaId, _, seasonNumber] = queryKey as [
+        MediaType,
+        number,
+        string,
+        number
+      ];
 
-  useEffect(() => {
-    if (!seasons) return;
-    setSelectedSeason(0);
-  }, [seasons]);
-
-  useEffect(() => {
-    const fetchTVSeasonDetails = async () => {
-      if (!mediaId || !seasons) return;
-
-      const seasonDetails = await getTVSeasonDetails(
-        mediaId,
-        seasons[selectedSeason].season_number
-      );
-
-      setSeasonDetails(seasonDetails);
-    };
-
-    fetchTVSeasonDetails();
-  }, [selectedSeason]);
+      return getTVSeasonDetails(mediaId, seasonNumber);
+    },
+  });
 
   if (!seasons) return;
 
