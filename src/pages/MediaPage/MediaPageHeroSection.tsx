@@ -1,10 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { BsPlayFill, BsPlusLg, BsStar, BsXLg } from "react-icons/bs";
-import { getTMDBImageURL } from "../../misc/utils";
-import { MediaDetails, MediaImage } from "../../misc/types";
-import { RiDownloadLine } from "react-icons/ri";
+import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
+
+import { MediaDetails, MediaType } from "../../misc/types";
 import { getMediaItemImages } from "../../misc/tmdbAPI";
-import { useNavigate } from "react-router-dom";
+import { getTMDBImageURL } from "../../misc/utils";
+
+import { BsPlayFill, BsPlusLg, BsStar, BsXLg } from "react-icons/bs";
+import { RiDownloadLine } from "react-icons/ri";
+import { NO_IMAGE_LANDSCAPE_PATH } from "../../misc/constants";
 
 interface Props {
   mediaItemDetails: MediaDetails | null;
@@ -12,35 +15,29 @@ interface Props {
 }
 
 const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
-  const [logo, setLogo] = useState<MediaImage | null>(null);
+  const { data: mediaItemImages } = useQuery({
+    queryKey: [mediaItemDetails?.media_type, mediaItemDetails?.id, "images"],
+    queryFn: ({ queryKey }) => {
+      const [mediaType, mediaId, _] = queryKey as [MediaType, number, string];
 
-  useEffect(() => {
-    const fetchMediaImages = async () => {
-      if (!mediaItemDetails) return;
-      const images = await getMediaItemImages(
-        mediaItemDetails.media_type,
-        mediaItemDetails.id
-      );
+      return getMediaItemImages(mediaType, mediaId);
+    },
+  });
 
-      const logo = images.logos.find((logo) => logo.iso_639_1 === "en");
-      if (logo) {
-        setLogo(logo);
-      } else {
-        setLogo(null);
-      }
-    };
+  const logoImgSrc = useMemo(() => {
+    if (!mediaItemImages) return null;
+    const logo = mediaItemImages.logos.find((logo) => logo.iso_639_1 === "en");
+    return logo ? getTMDBImageURL(logo.file_path) : null;
+  }, [mediaItemImages]);
 
-    fetchMediaImages();
-  }, [mediaItemDetails]);
-
-  const imgSource = useMemo(() => {
-    try {
-      if (mediaItemDetails) {
-        return getTMDBImageURL(mediaItemDetails.backdrop_path, "1920");
-      }
-    } catch (error) {
-      return "/no-image-landscape.png";
+  const backdropImgSrc = useMemo(() => {
+    if (mediaItemDetails) {
+      return mediaItemDetails.backdrop_path
+        ? getTMDBImageURL(mediaItemDetails.backdrop_path, "1920")
+        : NO_IMAGE_LANDSCAPE_PATH;
     }
+
+    return NO_IMAGE_LANDSCAPE_PATH;
   }, [mediaItemDetails]);
 
   return (
@@ -52,15 +49,15 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
         <BsXLg />
       </button>
       <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-black to-black/0 via-black/75 via-25% to-100%"></div>
-      <img className="w-full sm:h-110 sm:object-cover" src={imgSource} alt="" />
+      <img
+        className="w-full sm:h-110 sm:object-cover"
+        src={backdropImgSrc}
+        alt=""
+      />
 
       <div className="hidden sm:flex flex-col items-start px-10 gap-8 absolute left-0 right-0 bottom-0">
-        {logo ? (
-          <img
-            className="w-auto max-h-30"
-            src={getTMDBImageURL(logo.file_path)}
-            alt=""
-          />
+        {logoImgSrc ? (
+          <img className="w-auto max-h-30" src={logoImgSrc} alt="" />
         ) : (
           <h1 className="text-2xl font-bold">{mediaItemDetails?.title}</h1>
         )}
