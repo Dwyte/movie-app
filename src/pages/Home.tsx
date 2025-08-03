@@ -5,6 +5,7 @@ import { MediaItemsRowProps } from "../components/MediaItemsRow/MediaItemsRow";
 import { MOVIE_GENRES, TV_SHOWS_GENRES } from "../misc/constants";
 import { getDiscoverMediaItems, getTrendingMediaItems } from "../misc/tmdbAPI";
 import { MediaSectionConfig, MediaSection } from "../misc/types";
+import { useQuery } from "@tanstack/react-query";
 
 const mediaSectionConfig: MediaSectionConfig[] = [
   {
@@ -67,26 +68,27 @@ const mediaSectionConfig: MediaSectionConfig[] = [
   },
 ];
 
+const queryFn = async () => {
+  const results = await Promise.all(
+    mediaSectionConfig.map(async (config) => {
+      return {
+        id: config.id,
+        title: config.title,
+        mediaItems: await config.fetchMedia(),
+      };
+    })
+  );
+
+  return results;
+};
+
 const Home = () => {
-  const [mediaSections, setMediaSections] = useState<MediaSection[]>([]);
+  const { data: mediaSections } = useQuery<MediaSection[]>({
+    queryKey: ["home"],
+    queryFn,
+  });
 
-  useEffect(() => {
-    const fetchMediaSections = async () => {
-      const results = await Promise.all(
-        mediaSectionConfig.map(async (config) => {
-          return {
-            id: config.id,
-            title: config.title,
-            mediaItems: await config.fetchMedia(),
-          };
-        })
-      );
-
-      setMediaSections(results);
-    };
-
-    fetchMediaSections();
-  }, []);
+  if (!mediaSections) return;
 
   return (
     <div>
