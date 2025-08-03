@@ -50,7 +50,7 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
     // Only need to find backdrop/landscape image in Desktop mode.
     // Portrait posters for mobile.
     enabled: isSmUp,
-    queryKey: ["media", media.id, "images"],
+    queryKey: [media.media_type, media.id, "images"],
     queryFn: async () => {
       return await getMediaItemImages(media.media_type, media.id);
     },
