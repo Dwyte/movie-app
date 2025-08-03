@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import MediaCard from "../components/MediaCard";
 
 import { getSearchMediaItems } from "../misc/tmdbAPI";
 import { Media } from "../misc/types";
-import MediaItemsRow from "../components/MediaItemsRow";
 
 const SearchResults = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -42,10 +41,16 @@ const SearchResults = () => {
 
   return (
     query && (
-      <div className="mt-20 sm:mt-24">
-        <h1 className="hidden sm:block text-2xl text-stone-500 sm:mb-4 sm:pl-12">
+      <div className="py-20 sm:py-24 px-4 sm:px-16">
+        <h1 className="hidden sm:block text-2xl text-stone-500 sm:mb-8">
           Search Results for: <span className="text-white">"{query}"</span>
         </h1>
+
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-6 sm:gap-y-8">
+          {results.map((media) => (
+            <MediaCard media={media} flexible />
+          ))}
+        </div>
       </div>
     )
   );
