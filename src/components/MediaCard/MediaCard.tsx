@@ -1,13 +1,18 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { getMediaItemImages } from "../../misc/tmdbAPI";
 import { getTMDBImageURL } from "../../misc/utils";
-import { Media } from "../../misc/types";
+import { Media, MediaImagesResult } from "../../misc/types";
 
 import useIsSmUp from "../../hooks/useIsSmUp";
-import { BsChevronDown, BsPlayFill, BsPlusLg, BsStar } from "react-icons/bs";
 import GenreList from "../GenreList";
+
+import { BsChevronDown, BsPlayFill, BsPlusLg, BsStar } from "react-icons/bs";
+import {
+  NO_IMAGE_LANDSCAPE_PATH,
+  NO_IMAGE_PORTRAIT_PATH,
+} from "../../misc/constants";
 
 const defaultDimensions = "w-30 h-45 sm:w-66 sm:h-36";
 const hoverWidth = "group-hover/mcard:w-72";
@@ -19,45 +24,37 @@ interface Props {
   flexible?: boolean;
 }
 
+/**
+ * @returns the file path of the backdrop image with title
+ */
+const findBackdropWithTitle = (mediaImages: MediaImagesResult) => {
+  if (!mediaImages) return null;
+
+  // We look for a backdrop that has "en" for language, meaning
+  // that backdrop image has the title/logo and we use that as preview
+  // for the media card so it's easier for the user to identify
+  const mediaBackdropWithTitle = mediaImages.backdrops.find(
+    (mediaImage) => mediaImage.iso_639_1 === "en" && mediaImage.aspect_ratio > 1
+  );
+
+  if (mediaBackdropWithTitle) return mediaBackdropWithTitle.file_path;
+  return null;
+};
+
 const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
-  // Backdrop with Logo used for landscape versions
-  const [backdropWithTitleFilePath, setBackdropWithTitleFilePath] = useState<
-    string | null
-  >(null);
-  const isSmUp = useIsSmUp();
   const navigate = useNavigate();
   const location = useLocation();
+  const isSmUp = useIsSmUp();
 
-  useEffect(() => {
-    const findMediaBackdrop = async () => {
-      try {
-        const mediaImages = await getMediaItemImages(
-          media.media_type,
-          media.id
-        );
-
-        // We look for a backdrop that has "en" for language, meaning
-        // that backdrop image has the title/logo and we use that as preview
-        // for the media card so it's easier for the user to identify
-        const mediaBackdropWithTitle = mediaImages.backdrops.find(
-          (mediaImage) =>
-            mediaImage.iso_639_1 === "en" && mediaImage.aspect_ratio > 1
-        );
-
-        if (mediaBackdropWithTitle) {
-          setBackdropWithTitleFilePath(mediaBackdropWithTitle?.file_path);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
+  const { data: mediaImages } = useQuery({
     // Only need to find backdrop/landscape image in Desktop mode.
     // Portrait posters for mobile.
-    if (isSmUp && backdropWithTitleFilePath === null) {
-      findMediaBackdrop();
-    }
-  }, [isSmUp]);
+    enabled: isSmUp,
+    queryKey: ["media", media.id, "images"],
+    queryFn: async () => {
+      return await getMediaItemImages(media.media_type, media.id);
+    },
+  });
 
   const handleMediaCardClick = () => {
     // Goto MediaPage and set backgroundLocation to tell what page to render
@@ -71,27 +68,27 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
     });
   };
 
-  // On Desktop we use landscape/backdrop image, on mobile we use
-  // portrait/poster image (this always has the title)
-  const imgSource = useMemo(() => {
+  const backdropWithTitleFilePath: string | null = mediaImages
+    ? findBackdropWithTitle(mediaImages)
+    : null;
+
+  /**
+   * On Desktop we use landscape/backdrop image, on mobile we use
+   * portrait/poster image (this always has the title)
+   * @returns source url for img attribute src
+   */
+  const decideImagePreviewSource = () => {
     if (isSmUp) {
-      if (backdropWithTitleFilePath !== null) {
-        return getTMDBImageURL(backdropWithTitleFilePath);
-      }
-
-      if (media.backdrop_path) {
-        return getTMDBImageURL(media.backdrop_path);
-      }
-
-      return "/no-image-landscape.png";
+      const imagePath = backdropWithTitleFilePath ?? media.backdrop_path;
+      return imagePath ? getTMDBImageURL(imagePath) : NO_IMAGE_LANDSCAPE_PATH;
     }
 
-    if (media.poster_path) {
-      return getTMDBImageURL(media.poster_path);
-    }
+    return media.poster_path
+      ? getTMDBImageURL(media.poster_path)
+      : NO_IMAGE_PORTRAIT_PATH;
+  };
 
-    return "no-image-portrait.png";
-  }, [backdropWithTitleFilePath, isSmUp]);
+  const previewImageSource = decideImagePreviewSource();
 
   return (
     <div
@@ -104,7 +101,7 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
         <div className="relative rounded-sm overflow-hidden">
           <img
             className={`w-full h-full object-cover`}
-            src={imgSource}
+            src={previewImageSource}
             alt={media.title}
           />
 
@@ -126,7 +123,7 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
             className={`${`${
               flexible ? "w-full h-full" : defaultDimensions
             } ${hoverWidth} ${hoverHeight}`}  object-cover`}
-            src={imgSource}
+            src={previewImageSource}
             alt={media.title}
           />
 

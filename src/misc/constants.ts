@@ -1,5 +1,8 @@
 import { Genre, NavLinks } from "./types";
 
+export const NO_IMAGE_PORTRAIT_PATH = "/no-image-portrait.png";
+export const NO_IMAGE_LANDSCAPE_PATH = "/no-image-landscape.png";
+
 export const NAV_LINKS: NavLinks[] = [
   {
     name: "Home",
