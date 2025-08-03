@@ -6,6 +6,7 @@ import {
   getTMDBImageURL,
   shortenParagraph,
 } from "../../misc/utils";
+import Select, { Option } from "../../components/Select";
 
 interface Props {
   mediaId: number | null;
@@ -43,18 +44,20 @@ const MediaPageEpisodesSection = ({ mediaId, seasons }: Props) => {
   return (
     <div className="flex flex-col gap-2 sm:gap-4">
       <div className="flex items-center">
-        <h2 className="flex-1 m-0">{seasons[selectedSeason].name}</h2>
-        <select
-          value={selectedSeason}
-          onChange={(event) => setSelectedSeason(parseInt(event.target.value))}
-          className="p-2 cursor-pointer border-1 border-stone-500 rounded-sm"
-        >
-          {seasons.map((season, index) => (
-            <option key={season.id} value={index}>
-              Season {season.season_number}
-            </option>
-          ))}
-        </select>
+        <h2 className="flex-1 m-0 text-2xl">{seasons[selectedSeason].name}</h2>
+        <div className="w-32">
+          <Select
+            selectedLabel={seasons[selectedSeason].name}
+            value={selectedSeason}
+            onChange={(value) => setSelectedSeason(value)}
+          >
+            {seasons.map((season, index) => (
+              <Option key={season.id} value={index}>
+                {season.name}
+              </Option>
+            ))}
+          </Select>
+        </div>
       </div>
 
       <div className="flex flex-col max-h-100 sm:max-h-200 scrollable">
