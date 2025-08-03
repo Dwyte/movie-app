@@ -48,7 +48,6 @@ const HeroSection = () => {
   });
 
   const [backdropImgSrc, logoImgSrc] = useMemo(() => {
-    console.log(mediaItemImages, mediaItem);
     if (!mediaItemImages || !mediaItem) return ["/hero-image.jpg", null];
 
     const backdrop = mediaItemImages.backdrops.filter(
