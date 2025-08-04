@@ -10,6 +10,7 @@ import {
   TV,
   Media,
   TVSeasonDetailsAPIResult,
+  TimeWindow,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -100,7 +101,7 @@ export const getSearchMediaItems = async (
  */
 export const getTrendingMediaItems = async (
   mediaType: MediaType,
-  timeWindow: "day" | "week"
+  timeWindow: TimeWindow
 ): Promise<TMDBGetMediaAPIResponse<Media>> => {
   const url = new URL(`${API_BASE_URL}/trending/${mediaType}/${timeWindow}`);
 

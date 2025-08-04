@@ -392,3 +392,5 @@ export interface TVSeasonDetailsAPIResult {
   season_number: number;
   vote_average: number;
 }
+
+export type TimeWindow = "day" | "week";

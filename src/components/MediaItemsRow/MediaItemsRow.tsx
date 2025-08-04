@@ -40,8 +40,6 @@ const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
       currentDiv.clientWidth / MEDIA_CARD_DIV_WIDTH
     );
 
-    console.log(currentDiv.scrollLeft);
-
     const step = MEDIA_CARD_DIV_WIDTH * visibleMediaItemsCount;
     const newTotalPages = Math.ceil(actualScrollWidth / step);
     const newCurrentPage = Math.round(currentDiv.scrollLeft / step);

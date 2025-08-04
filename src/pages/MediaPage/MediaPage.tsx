@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
 import {
   NavLink,
   Route,
@@ -9,20 +10,16 @@ import {
 } from "react-router-dom";
 import { BsPlusLg, BsSend, BsStar } from "react-icons/bs";
 
-import {
-  MediaDetails,
-  MediaType,
-  MediaCreditsAPIResult,
-} from "../../misc/types";
+import useIsSmUp from "../../hooks/useIsSmUp";
 
 import { getMediaItemCredits, getMediaItemDetails } from "../../misc/tmdbAPI";
+import { MEDIA_PAGE_NAV_LINKS } from "../../misc/constants";
+import { MediaType } from "../../misc/types";
 
-import useIsSmUp from "../../hooks/useIsSmUp";
 import RelatedMediaSection from "./RelatedMediaSection";
 import MediaPageHeroSection from "./MediaPageHeroSection";
 import MediaPageDetailsSection from "./MediaPageDetailsSection";
 import MediaPageCastsSection from "./MediaPageCastsSection";
-import { MEDIA_PAGE_NAV_LINKS } from "../../misc/constants";
 import MediaPageEpisodesSection from "./MediaPageEpisodesSection";
 
 interface Props {
@@ -30,12 +27,6 @@ interface Props {
 }
 
 const MediaPage = ({ mediaType }: Props) => {
-  const [mediaItemDetails, setMediaItemDetails] = useState<MediaDetails | null>(
-    null
-  );
-  const [mediaItemCredits, setMediaItemCredits] =
-    useState<MediaCreditsAPIResult | null>(null);
-
   const modalRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -46,32 +37,33 @@ const MediaPage = ({ mediaType }: Props) => {
     ? location.state.backgroundLocation
     : "/";
 
-  useEffect(() => {
-    // Disable main body scrolling
-    document.body.style.overflowY = "hidden";
+  const { data: mediaItemDetails } = useQuery({
+    queryKey: [mediaType, mediaId, "details"],
+    initialData: null,
+    queryFn: ({ queryKey }) => {
+      const [mediaType, mediaId, _] = queryKey as [MediaType, number, string];
+      return getMediaItemDetails(mediaType, mediaId);
+    },
+  });
 
+  const { data: mediaItemCredits } = useQuery({
+    queryKey: [mediaType, mediaId, "credits"],
+    initialData: null,
+    queryFn: ({ queryKey }) => {
+      const [mediaType, mediaId, _] = queryKey as [MediaType, number, string];
+      return getMediaItemCredits(mediaType, mediaId);
+    },
+  });
+
+  // Disable main body scrolling
+  useEffect(() => {
+    document.body.style.overflowY = "hidden";
     return () => {
       document.body.style.overflowY = "scroll";
     };
   }, []);
 
-  useEffect(() => {
-    const fetchMediaDetails = async () => {
-      if (!mediaId) return;
-      const _mediaItemDetails = await getMediaItemDetails(mediaType, mediaId);
-      setMediaItemDetails(_mediaItemDetails);
-
-      const _mediaCasts = await getMediaItemCredits(mediaType, mediaId);
-      setMediaItemCredits(_mediaCasts);
-    };
-
-    fetchMediaDetails();
-  }, [mediaId]);
-
-  const closeModal = () => {
-    navigate(backgroundLocation);
-  };
-
+  // Scroll to the Top when selecting a new Media to view from related media section.
   useEffect(() => {
     const resetScroll = () => {
       if (!modalRef) return;
@@ -83,6 +75,10 @@ const MediaPage = ({ mediaType }: Props) => {
 
     resetScroll();
   }, [location.pathname]);
+
+  const closeModal = () => {
+    navigate(backgroundLocation);
+  };
 
   return (
     <div
