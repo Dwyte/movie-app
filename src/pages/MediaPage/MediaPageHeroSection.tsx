@@ -16,10 +16,10 @@ interface Props {
 
 const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
   const { data: mediaItemImages } = useQuery({
+    enabled: !!mediaItemDetails,
     queryKey: [mediaItemDetails?.media_type, mediaItemDetails?.id, "images"],
     queryFn: ({ queryKey }) => {
       const [mediaType, mediaId, _] = queryKey as [MediaType, number, string];
-
       return getMediaItemImages(mediaType, mediaId);
     },
   });
