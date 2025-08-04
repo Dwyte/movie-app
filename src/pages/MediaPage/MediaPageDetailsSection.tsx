@@ -3,8 +3,17 @@ import { RiDownloadLine } from "react-icons/ri";
 
 import { BsBadgeCcFill, BsBadgeHdFill, BsPlayFill } from "react-icons/bs";
 
-import { Crew, MediaCreditsAPIResult, MediaDetails } from "../../misc/types";
+import {
+  Crew,
+  Media,
+  MediaCreditsAPIResult,
+  MediaDetails,
+  MediaType,
+  TimeWindow,
+} from "../../misc/types";
 import { getDurationString, shortenParagraph } from "../../misc/utils";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getTrendingMediaItems } from "../../misc/tmdbAPI";
 
 interface Props {
   mediaItemDetails: MediaDetails | null;
@@ -15,6 +24,21 @@ const MediaPageDetailsSection = ({
   mediaItemDetails,
   mediaItemCredits,
 }: Props) => {
+  const queryClient = useQueryClient();
+  const { data: trendingMediaToday } = useQuery({
+    enabled: !!mediaItemDetails,
+    queryKey: ["trending", mediaItemDetails?.media_type, "day"],
+    queryFn: async ({ queryKey }) => {
+      const [_, mediaType, timeWindow] = queryKey as [
+        string,
+        MediaType,
+        TimeWindow
+      ];
+
+      return (await getTrendingMediaItems(mediaType, timeWindow)).results;
+    },
+  });
+
   const director = useMemo<Crew | null>(() => {
     if (!mediaItemCredits) return null;
 
@@ -26,6 +50,16 @@ const MediaPageDetailsSection = ({
 
     return null;
   }, [mediaItemCredits]);
+
+  const rankInTrendingToday = useMemo(() => {
+    if (!trendingMediaToday) return -1;
+
+    const rank = trendingMediaToday
+      .slice(0, 10)
+      .findIndex((media) => media.id === mediaItemDetails?.id);
+
+    return rank === -1 ? -1 : rank + 1;
+  }, [mediaItemDetails, trendingMediaToday]);
 
   return (
     <div className="flex flex-col gap-2 sm:flex sm:flex-row sm:gap-12">
@@ -47,12 +81,16 @@ const MediaPageDetailsSection = ({
           <BsBadgeCcFill className="text-xl" />
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="flex flex-col items-center leading-none text-[8px] font-bold bg-red-600 p-[3px] rounded-[2px]">
-            <span>TOP</span> <span className="text-[11px]">10</span>
+        {rankInTrendingToday !== -1 && (
+          <div className="flex items-center gap-2">
+            <div className="flex flex-col items-center leading-none text-[8px] font-bold bg-red-600 p-[3px] rounded-[2px]">
+              <span>TOP</span> <span className="text-[11px]">10</span>
+            </div>
+            <h3 className="font-bold text-lg">
+              #{rankInTrendingToday} in TV Shows Today
+            </h3>
           </div>
-          <h3 className="font-bold text-lg">#1 in TV Shows Today</h3>
-        </div>
+        )}
 
         <button className="primary-btn justify-center sm:hidden">
           <BsPlayFill className="text-2xl mr-1" />
