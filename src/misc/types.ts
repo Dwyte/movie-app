@@ -1,3 +1,4 @@
+import { UseQueryOptions } from "@tanstack/react-query";
 import { COUNTRY_CODES, LANGUAGE_CODES } from "./constants";
 
 type RequiredKeys<T, U> = keyof T & keyof U;
@@ -350,12 +351,6 @@ export interface DiscoverQueryParams {
   with_status?: TvStatus;
   with_type?: TvType;
   with_networks?: string;
-}
-
-export interface MediaSectionConfig {
-  id: string;
-  title: string;
-  fetchMedia: () => Promise<Media[]>;
 }
 
 export interface MediaSection {
