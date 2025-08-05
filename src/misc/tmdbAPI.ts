@@ -15,13 +15,11 @@ import {
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
+const API_BASE_URL_V4= "https://api.themoviedb.org/4";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const API_OPTIONS = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${API_KEY}`,
-  },
+const HEADERS = {
+  accept: "application/json",
+  Authorization: `Bearer ${API_KEY}`,
 };
 
 const normalizedAPIResult = (
@@ -33,11 +31,21 @@ const normalizedAPIResult = (
   };
 };
 
-export const get = async (url: URL): Promise<any> => {
-  const response = await fetch(url, API_OPTIONS);
+const get = async (url: URL): Promise<any> => {
+  const response = await fetch(url, { method: "GET", headers: HEADERS });
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${url}`);
+  }
+  return await response.json();
+};
+
+const post = async (url: URL): Promise<any> => {
+  const response = await fetch(url, { method: "POST", headers: HEADERS });
+
   if (!response.ok) {
     throw new Error("Failed to fetch movies");
   }
+
   return await response.json();
 };
 
