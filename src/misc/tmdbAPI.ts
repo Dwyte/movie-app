@@ -11,6 +11,8 @@ import {
   Media,
   TVSeasonDetailsAPIResult,
   TimeWindow,
+  TMDBApiRequestTokenResponse,
+  TMDBApiAccessTokenResponse,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -190,7 +192,9 @@ export const getCreateGuestSession = async () => {
  * This is the step #3 from tmdb user authentication page.
  * @returns
  */
-export const postCreateAccessToken = async (requestToken: string) => {
+export const postCreateAccessToken = async (
+  requestToken: string
+): Promise<TMDBApiAccessTokenResponse> => {
   const url = new URL(`${API_BASE_URL_V4}/auth/access_token`);
   const response = await fetch(url, {
     method: "POST",
@@ -204,15 +208,15 @@ export const postCreateAccessToken = async (requestToken: string) => {
  * This is the step #1 from tmdb user authentication page.
  * @returns
  */
-export const postCreateRequestToken = async (requestToken: string) => {
-  const url = new URL(`${API_BASE_URL_V4}/auth/request_token`);
-  const response = await fetch(url, {
-    method: "POST",
-    headers: HEADERS,
-    body: JSON.stringify({ request_token: requestToken }),
-  });
-  return await response.json();
-};
+export const postCreateRequestToken =
+  async (): Promise<TMDBApiRequestTokenResponse> => {
+    const url = new URL(`${API_BASE_URL_V4}/auth/request_token`);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: HEADERS,
+    });
+    return await response.json();
+  };
 
 export const deleteLogoutUser = async (requestToken: string) => {
   const url = new URL(`${API_BASE_URL_V4}/auth/access_token`);
