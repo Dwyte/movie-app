@@ -5,6 +5,7 @@ import { BsChevronDown } from "react-icons/bs";
 import SearchBox from "./SearchBox";
 
 import { NAV_LINKS } from "../../misc/constants";
+import UserProfile from "./UserProfile";
 
 function Header() {
   const location = useLocation();
@@ -48,11 +49,7 @@ function Header() {
 
         <div className="flex flex-1 sm:max-w-75 items-center gap-4">
           <SearchBox />
-          <img
-            className="rounded-sm w-10 h-10 sm:block"
-            src="/profile-picture.jpg"
-            alt="Smiley Icon"
-          />
+          <UserProfile />
         </div>
       </nav>
 
