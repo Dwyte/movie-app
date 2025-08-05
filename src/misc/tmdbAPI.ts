@@ -1,3 +1,4 @@
+import { Account } from "appwrite";
 import {
   WatchProvidersAPIResults,
   MediaType,
@@ -13,6 +14,7 @@ import {
   TimeWindow,
   TMDBApiRequestTokenResponse,
   TMDBApiAccessTokenResponse,
+  TMDBApiCreateSessionAPIResponse,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -226,4 +228,26 @@ export const deleteLogoutUser = async (requestToken: string) => {
     body: JSON.stringify({ request_token: requestToken }),
   });
   return await response.json();
+};
+
+export const postCreateSessionFromV4Token = async (
+  accessToken: string
+): Promise<TMDBApiCreateSessionAPIResponse> => {
+  const url = new URL(`${API_BASE_URL}/authentication/session/convert/4`);
+  const response = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify({ access_token: accessToken }),
+    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
+  });
+
+  return response.json();
+};
+
+export const getAccountDetails = async (
+  accountId: string,
+  sessionId: string
+): Promise<Account> => {
+  const url = new URL(`${API_BASE_URL}/account/${accountId}`);
+  url.searchParams.append("session_id", sessionId);
+  return await get(url);
 };

@@ -393,11 +393,36 @@ export type TimeWindow = "day" | "week";
 export interface TMDBApiRequestTokenResponse {
   status_code: number;
   success: boolean;
-  status_message: "Success.";
+  status_message: string;
   request_token: string;
 }
 
 export interface TMDBApiAccessTokenResponse {
+  status_code: number;
+  success: boolean;
+  status_message: string;
+  access_token: string;
+  account_id: string;
+}
+
+export interface TMDBApiCreateSessionAPIResponse {
   success: boolean;
   session_id: string;
+}
+
+export interface AccountDetails {
+  avatar: {
+    gravatar: {
+      hash: string;
+    };
+    tmdb: {
+      avatar_path: null;
+    };
+  };
+  id: number;
+  iso_639_1: LanguageCode;
+  iso_3166_1: CountryCode;
+  name: string;
+  include_adult: boolean;
+  username: string;
 }

@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import { postCreateAccessToken, postCreateRequestToken } from "../misc/tmdbAPI";
+import {
+  getAccountDetails,
+  postCreateAccessToken,
+  postCreateRequestToken,
+  postCreateSessionFromV4Token,
+} from "../misc/tmdbAPI";
 
 const Test = () => {
   const { data: requestToken } = useQuery({
@@ -18,9 +22,19 @@ const Test = () => {
   const access = async () => {
     if (!requestToken) return;
 
-    const session = await postCreateAccessToken(requestToken?.request_token);
-
-    console.log(session);
+    const accessToken = await postCreateAccessToken(
+      requestToken?.request_token
+    );
+    console.log(accessToken);
+    const sessionId = await postCreateSessionFromV4Token(
+      accessToken.access_token
+    );
+    console.log(sessionId);
+    const account = await getAccountDetails(
+      accessToken.account_id,
+      sessionId.session_id
+    );
+    console.log(account);
   };
 
   return (
