@@ -15,7 +15,7 @@ import {
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
-const API_BASE_URL_V4= "https://api.themoviedb.org/4";
+const API_BASE_URL_V4 = "https://api.themoviedb.org/4";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const HEADERS = {
   accept: "application/json",
@@ -187,5 +187,10 @@ export const getTVSeasonDetails = async (
   seasonNumber: number
 ): Promise<TVSeasonDetailsAPIResult> => {
   const url = new URL(`${API_BASE_URL}/tv/${tvId}/season/${seasonNumber}`);
+  return await get(url);
+};
+
+export const getCreateGuestSession = async () => {
+  const url = new URL(`${API_BASE_URL}/authentication/guest_session/new`);
   return await get(url);
 };
