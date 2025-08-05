@@ -19,6 +19,7 @@ const API_BASE_URL_V4 = "https://api.themoviedb.org/4";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const HEADERS = {
   accept: "application/json",
+  "Content-Type": "application/json",
   Authorization: `Bearer ${API_KEY}`,
 };
 
@@ -36,16 +37,6 @@ const get = async (url: URL): Promise<any> => {
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}`);
   }
-  return await response.json();
-};
-
-const post = async (url: URL): Promise<any> => {
-  const response = await fetch(url, { method: "POST", headers: HEADERS });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch movies");
-  }
-
   return await response.json();
 };
 
@@ -193,4 +184,42 @@ export const getTVSeasonDetails = async (
 export const getCreateGuestSession = async () => {
   const url = new URL(`${API_BASE_URL}/authentication/guest_session/new`);
   return await get(url);
+};
+
+/**
+ * This is the step #3 from tmdb user authentication page.
+ * @returns
+ */
+export const postCreateAccessToken = async (requestToken: string) => {
+  const url = new URL(`${API_BASE_URL_V4}/auth/access_token`);
+  const response = await fetch(url, {
+    method: "POST",
+    headers: HEADERS,
+    body: JSON.stringify({ request_token: requestToken }),
+  });
+  return await response.json();
+};
+
+/**
+ * This is the step #1 from tmdb user authentication page.
+ * @returns
+ */
+export const postCreateRequestToken = async (requestToken: string) => {
+  const url = new URL(`${API_BASE_URL_V4}/auth/request_token`);
+  const response = await fetch(url, {
+    method: "POST",
+    headers: HEADERS,
+    body: JSON.stringify({ request_token: requestToken }),
+  });
+  return await response.json();
+};
+
+export const deleteLogoutUser = async (requestToken: string) => {
+  const url = new URL(`${API_BASE_URL_V4}/auth/access_token`);
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: HEADERS,
+    body: JSON.stringify({ request_token: requestToken }),
+  });
+  return await response.json();
 };
