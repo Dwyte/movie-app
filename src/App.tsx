@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Header from "./components/Header";
 import useIsSmUp from "./hooks/useIsSmUp";
 import Test from "./pages/Test";
+import LoginPage from "./pages/LoginPage";
 
 const App = () => {
   const location = useLocation();
@@ -27,6 +28,7 @@ const App = () => {
         <Routes location={isSmUp ? backgroundLocation || location : location}>
           <Route path="/search" element={<SearchResults />} />
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/test" element={<Test />} />
           {/** In mobile, render the MoviePage as standalone page. */}
           <Route path="/tv/:mediaId/*" element={<MediaPage mediaType="tv" />} />
