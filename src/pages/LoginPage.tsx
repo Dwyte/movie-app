@@ -6,8 +6,14 @@ import {
 } from "../misc/tmdbAPI";
 import { useState } from "react";
 
+enum LoginState {
+  INITIAL,
+  FOR_APPROVAL,
+  APPROVED,
+}
+
 const LoginPage = () => {
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [loginState, setLoginState] = useState<LoginState>(LoginState.INITIAL);
 
   const { data: requestToken } = useQuery({
     queryKey: ["request_token"],
@@ -16,7 +22,7 @@ const LoginPage = () => {
   });
 
   useQuery({
-    enabled: requestToken?.success && isLoggingIn,
+    enabled: requestToken?.success && loginState === LoginState.FOR_APPROVAL,
     queryKey: ["access_token"],
     queryFn: async () => {
       if (!requestToken) return null;
@@ -36,7 +42,13 @@ const LoginPage = () => {
       localStorage.setItem("access_token", JSON.stringify(accessToken));
       localStorage.setItem("session_id", JSON.stringify(sessionId));
 
-      setIsLoggingIn(false);
+      setLoginState(LoginState.APPROVED);
+
+      // Redirect to home
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000);
+
       return { accessToken, sessionId };
     },
     refetchInterval: (data) => {
@@ -45,7 +57,7 @@ const LoginPage = () => {
   });
 
   const login = async () => {
-    setIsLoggingIn(true);
+    setLoginState(LoginState.FOR_APPROVAL);
 
     window.open(
       `https://www.themoviedb.org/auth/access?request_token=${requestToken?.request_token}`
@@ -64,9 +76,14 @@ const LoginPage = () => {
         >
           Log-in via TheMovieDatabase
         </button>
-        {isLoggingIn && (
+        {loginState === LoginState.FOR_APPROVAL && (
           <p className="mt-4 text-sm text-stone-300 animate-pulse">
             Waiting for authorization... Please approve Log-in on TMDB...
+          </p>
+        )}
+        {loginState === LoginState.APPROVED && (
+          <p className="mt-4 text-sm text-stone-300 animate-pulse">
+            Log-in approved, redirecting...
           </p>
         )}
       </div>
