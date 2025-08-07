@@ -390,14 +390,14 @@ export interface TVSeasonDetailsAPIResult {
 
 export type TimeWindow = "day" | "week";
 
-export interface TMDBApiRequestTokenResponse {
+export interface TMDBRequestToken {
   status_code: number;
   success: boolean;
   status_message: string;
   request_token: string;
 }
 
-export interface TMDBApiAccessTokenResponse {
+export interface TMDBAccessToken {
   status_code: number;
   success: boolean;
   status_message: string;
@@ -405,7 +405,7 @@ export interface TMDBApiAccessTokenResponse {
   account_id: string;
 }
 
-export interface TMDBApiCreateSessionAPIResponse {
+export interface TMDBSession {
   success: boolean;
   session_id: string;
 }
