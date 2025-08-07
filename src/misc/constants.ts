@@ -616,3 +616,5 @@ export const TV_SHOWS_GENRES: Genre[] = [
     name: "Western",
   },
 ];
+
+export const TMDBProfileBaseURL = "https://www.themoviedb.org/u";
