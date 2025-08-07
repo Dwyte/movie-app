@@ -4,7 +4,8 @@ import {
   postCreateRequestToken,
   postCreateSessionFromV4Token,
 } from "../misc/tmdbAPI";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 enum LoginState {
   INITIAL,
@@ -14,6 +15,7 @@ enum LoginState {
 
 const LoginPage = () => {
   const [loginState, setLoginState] = useState<LoginState>(LoginState.INITIAL);
+  const { login, isLoggedIn } = useAuth();
 
   const { data: requestToken } = useQuery({
     queryKey: ["request_token"],
@@ -35,34 +37,43 @@ const LoginPage = () => {
         throw Error("still unapproved login...");
       }
 
-      const sessionId = await postCreateSessionFromV4Token(
+      const session = await postCreateSessionFromV4Token(
         accessToken.access_token
       );
 
-      localStorage.setItem("access_token", JSON.stringify(accessToken));
-      localStorage.setItem("session_id", JSON.stringify(sessionId));
-
       setLoginState(LoginState.APPROVED);
+
+      login(
+        session.session_id,
+        accessToken.access_token,
+        accessToken.account_id
+      );
 
       // Redirect to home
       setTimeout(() => {
         window.location.href = "/";
       }, 2000);
 
-      return { accessToken, sessionId };
+      return { accessToken, session };
     },
     refetchInterval: (data) => {
       return data ? false : 1000 * 3;
     },
   });
 
-  const login = async () => {
+  const startLogin = async () => {
     setLoginState(LoginState.FOR_APPROVAL);
 
     window.open(
       `https://www.themoviedb.org/auth/access?request_token=${requestToken?.request_token}`
     );
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      window.location.href = "/";
+    }
+  }, [isLoggedIn]);
 
   return (
     <div className="text-white h-full flex flex-col items-center justify-center">
@@ -71,7 +82,7 @@ const LoginPage = () => {
         <h2>Sign-in</h2>
         <button
           className="w-full font-bold bg-red-700 px-8 py-4 rounded-sm cursor-pointer hover:opacity-70"
-          onClick={login}
+          onClick={startLogin}
           disabled={!requestToken?.success}
         >
           Log-in via TheMovieDatabase

@@ -1,4 +1,3 @@
-import { Account } from "appwrite";
 import {
   WatchProvidersAPIResults,
   MediaType,
@@ -15,6 +14,7 @@ import {
   TMDBSession,
   TMDBAccessToken,
   TMDBRequestToken,
+  AccountDetails,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -219,12 +219,22 @@ export const postCreateRequestToken = async (): Promise<TMDBRequestToken> => {
   return await response.json();
 };
 
-export const deleteLogoutUser = async (requestToken: string) => {
+export const deleteLogoutAccessToken = async (accessToken: string) => {
   const url = new URL(`${API_BASE_URL_V4}/auth/access_token`);
   const response = await fetch(url, {
     method: "DELETE",
+    body: JSON.stringify({ access_token: accessToken }),
+    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
+  });
+  return await response.json();
+};
+
+export const deleteLogoutSession = async (sessionId: string) => {
+  const url = new URL(`${API_BASE_URL}/authentication/session`);
+  const response = await fetch(url, {
+    method: "DELETE",
+    body: JSON.stringify({ session_id: sessionId }),
     headers: HEADERS,
-    body: JSON.stringify({ request_token: requestToken }),
   });
   return await response.json();
 };
@@ -245,7 +255,7 @@ export const postCreateSessionFromV4Token = async (
 export const getAccountDetails = async (
   accountId: string,
   sessionId: string
-): Promise<Account> => {
+): Promise<AccountDetails> => {
   const url = new URL(`${API_BASE_URL}/account/${accountId}`);
   url.searchParams.append("session_id", sessionId);
   return await get(url);
