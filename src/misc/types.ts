@@ -456,3 +456,11 @@ export interface ListDetails {
     [key: string]: string | null;
   };
 }
+
+export interface ListOptions {
+  name: string;
+  iso_639_1: CountryCode;
+  description?: string;
+  public?: boolean;
+  iso_3166_1?: string;
+}

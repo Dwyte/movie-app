@@ -15,6 +15,7 @@ import {
   TMDBAccessToken,
   TMDBRequestToken,
   AccountDetails,
+  ListOptions,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -249,7 +250,7 @@ export const postCreateSessionFromV4Token = async (
     headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
   });
 
-  return response.json();
+  return await response.json();
 };
 
 export const getAccountDetails = async (
@@ -259,4 +260,18 @@ export const getAccountDetails = async (
   const url = new URL(`${API_BASE_URL}/account/${accountId}`);
   url.searchParams.append("session_id", sessionId);
   return await get(url);
+};
+
+export const postCreateList = async (
+  accessToken: string,
+  options: ListOptions
+) => {
+  const url = new URL(`${API_BASE_URL_V4}/list`);
+  const response = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(options),
+    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
+  });
+
+  return await response.json();
 };
