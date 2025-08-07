@@ -426,3 +426,33 @@ export interface AccountDetails {
   include_adult: boolean;
   username: string;
 }
+
+export interface ListDetails {
+  average_rating: number;
+  backdrop_path: string;
+  results: (Movie | TV)[];
+  created_by: {
+    avatar_path: string;
+    gravatar_hash: string;
+    id: string;
+    name: string;
+    username: string;
+  };
+  description: string;
+  id: number;
+  iso_3166_1: CountryCode;
+  iso_639_1: LanguageCode;
+  item_count: number;
+  name: string;
+  page: number;
+  poster_path: string;
+  public: true;
+  revenue: number;
+  runtime: number;
+  sort_by: string;
+  total_pages: number;
+  total_results: number;
+  comments: {
+    [key: string]: string | null;
+  };
+}
