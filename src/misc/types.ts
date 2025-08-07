@@ -464,3 +464,33 @@ export interface ListOptions {
   public?: boolean;
   iso_3166_1?: string;
 }
+
+export interface List {
+  account_object_id: string;
+  adult: number;
+  average_rating: number;
+  backdrop_path: string | null;
+  created_at: string;
+  description: string;
+  featured: number;
+  id: number;
+  iso_3166_1: LanguageCode;
+  iso_639_1: CountryCode;
+  name: string;
+  number_of_items: number;
+  poster_path: string | null;
+  public: number;
+  revenue: number;
+  runtime: number;
+  sort_by: number;
+  updated_at: string;
+}
+
+export type AccountLists = TMDBGetMediaAPIResponse<List>;
+
+export interface TMDBCreateListResponse {
+  status_message: string;
+  id: number;
+  success: boolean;
+  status_code: number;
+}

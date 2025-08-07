@@ -16,6 +16,7 @@ import {
   TMDBRequestToken,
   AccountDetails,
   ListOptions,
+  AccountLists,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -273,5 +274,17 @@ export const postCreateList = async (
     headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
   });
 
+  return await response.json();
+};
+
+export const getAccountLists = async (
+  accessToken: string,
+  accountId: string
+): Promise<AccountLists> => {
+  const url = new URL(`${API_BASE_URL_V4}/account/${accountId}/lists`);
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
+  });
   return await response.json();
 };
