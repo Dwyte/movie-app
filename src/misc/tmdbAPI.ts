@@ -17,6 +17,9 @@ import {
   AccountDetails,
   ListOptions,
   AccountLists,
+  LanguageCode,
+  ListDetails,
+  TMDBCreateListResponse,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -266,7 +269,7 @@ export const getAccountDetails = async (
 export const postCreateList = async (
   accessToken: string,
   options: ListOptions
-) => {
+): Promise<TMDBCreateListResponse> => {
   const url = new URL(`${API_BASE_URL_V4}/list`);
   const response = await fetch(url, {
     method: "POST",
@@ -286,5 +289,23 @@ export const getAccountLists = async (
     method: "POST",
     headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
   });
+  return await response.json();
+};
+
+export const getListDetails = async (
+  accessToken: string,
+  listId: string,
+  page: number = 1,
+  language: LanguageCode = "en"
+): Promise<ListDetails> => {
+  const url = new URL(`${API_BASE_URL_V4}/list/${listId}`);
+  url.searchParams.append("page", encodeURIComponent(page));
+  url.searchParams.append("language", encodeURIComponent(language));
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
+  });
+
   return await response.json();
 };

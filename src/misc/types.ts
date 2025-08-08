@@ -490,7 +490,7 @@ export type AccountLists = TMDBGetMediaAPIResponse<List>;
 
 export interface TMDBCreateListResponse {
   status_message: string;
-  id: number;
+  id?: number;
   success: boolean;
   status_code: number;
 }
