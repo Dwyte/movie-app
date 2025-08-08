@@ -503,3 +503,8 @@ export interface TMDBListItemsResponse extends TMDBStatusResponse {
 
 export type TMDBListItemStatusResponse = TMDBStatusResponse &
   MediaRef & { id: number };
+
+export type TMDBListClearItemsResponse = TMDBStatusResponse & {
+  id?: number;
+  items_deleted?: number;
+};

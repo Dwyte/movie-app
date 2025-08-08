@@ -24,6 +24,7 @@ import {
   TMDBListItemsResponse,
   TMDBListItemStatusResponse,
   TMDBStatusResponse,
+  TMDBListClearItemsResponse,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -371,6 +372,20 @@ export const deleteList = async (
 
   const response = await fetch(url, {
     method: "DELETE",
+    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
+  });
+
+  return await response.json();
+};
+
+export const getListClearItems = async (
+  accessToken: string,
+  listId: string
+): Promise<TMDBListClearItemsResponse> => {
+  const url = new URL(`${API_BASE_URL_V4}/list/${listId}/clear`);
+
+  const response = await fetch(url, {
+    method: "GET",
     headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
   });
 
