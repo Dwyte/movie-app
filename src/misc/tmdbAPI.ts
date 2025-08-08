@@ -20,6 +20,7 @@ import {
   LanguageCode,
   ListDetails,
   TMDBCreateListResponse,
+  MediaRef,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -305,6 +306,22 @@ export const getListDetails = async (
   const response = await fetch(url, {
     method: "GET",
     headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
+  });
+
+  return await response.json();
+};
+
+export const postListAddItems = async (
+  accessToken: string,
+  listId: string,
+  items: MediaRef[]
+) => {
+  const url = new URL(`${API_BASE_URL_V4}/list/${listId}/items`);
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify({ items }),
   });
 
   return await response.json();

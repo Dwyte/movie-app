@@ -390,17 +390,17 @@ export interface TVSeasonDetailsAPIResult {
 
 export type TimeWindow = "day" | "week";
 
-export interface TMDBRequestToken {
+export interface TMDBStatusResponse {
   status_code: number;
   success: boolean;
   status_message: string;
+}
+
+export interface TMDBRequestToken extends TMDBStatusResponse {
   request_token: string;
 }
 
-export interface TMDBAccessToken {
-  status_code: number;
-  success: boolean;
-  status_message: string;
+export interface TMDBAccessToken extends TMDBStatusResponse {
   access_token: string;
   account_id: string;
 }
@@ -488,9 +488,15 @@ export interface List {
 
 export type AccountLists = TMDBGetMediaAPIResponse<List>;
 
-export interface TMDBCreateListResponse {
-  status_message: string;
+export interface TMDBCreateListResponse extends TMDBStatusResponse {
   id?: number;
-  success: boolean;
-  status_code: number;
+}
+
+export type MediaRef = {
+  media_type: MediaType;
+  media_id: number;
+};
+
+export interface TMDBAddItemsResponse extends TMDBStatusResponse {
+  results: (MediaRef & { error?: string[]; success: boolean })[];
 }
