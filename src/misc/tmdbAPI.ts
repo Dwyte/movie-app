@@ -406,3 +406,20 @@ export const putUpdateList = async (
 
   return await response.json();
 };
+
+export const putUpdateListItem = async (
+  accessToken: string,
+  listId: string,
+  item: MediaRef,
+  comment: string
+): Promise<TMDBListItemsResponse> => {
+  const url = new URL(`${API_BASE_URL_V4}/list/${listId}/items`);
+
+  const response = await fetch(url, {
+    method: "PUT",
+    body: JSON.stringify({ ...item, comment }),
+    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
+  });
+
+  return await response.json();
+};

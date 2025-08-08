@@ -517,3 +517,6 @@ export type TMDBListClearItemsResponse = TMDBStatusResponse & {
   id?: number;
   items_deleted?: number;
 };
+
+export type TMDBUpdateListItemResponse = TMDBStatusResponse &
+  MediaRef & { comment: string };
