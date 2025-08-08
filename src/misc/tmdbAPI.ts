@@ -391,3 +391,18 @@ export const getListClearItems = async (
 
   return await response.json();
 };
+
+export const putUpdateList = async (
+  accessToken: string,
+  listId: string,
+  options: ListOptions
+) => {
+  const url = new URL(`${API_BASE_URL_V4}/list/${listId}`);
+  const response = await fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(options),
+    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
+  });
+
+  return await response.json();
+};

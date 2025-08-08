@@ -463,6 +463,15 @@ export interface ListOptions {
   description?: string;
   public?: boolean;
   iso_3166_1?: string;
+  sort_by?:
+    | "original_order.asc"
+    | "original_order.desc"
+    | "primary_release_date.asc"
+    | "primary_release_date.desc"
+    | "title.asc"
+    | "title.desc"
+    | "vote_average.asc"
+    | "vote_average.desc";
 }
 
 export interface List {
