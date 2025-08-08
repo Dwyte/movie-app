@@ -497,6 +497,6 @@ export type MediaRef = {
   media_id: number;
 };
 
-export interface TMDBAddItemsResponse extends TMDBStatusResponse {
+export interface TMDBListItemsResponse extends TMDBStatusResponse {
   results: (MediaRef & { error?: string[]; success: boolean })[];
 }

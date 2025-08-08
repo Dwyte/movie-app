@@ -21,6 +21,7 @@ import {
   ListDetails,
   TMDBCreateListResponse,
   MediaRef,
+  TMDBListItemsResponse,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -315,11 +316,27 @@ export const postListAddItems = async (
   accessToken: string,
   listId: string,
   items: MediaRef[]
-) => {
+): Promise<TMDBListItemsResponse> => {
   const url = new URL(`${API_BASE_URL_V4}/list/${listId}/items`);
 
   const response = await fetch(url, {
     method: "POST",
+    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify({ items }),
+  });
+
+  return await response.json();
+};
+
+export const deleteListItems = async (
+  accessToken: string,
+  listId: string,
+  items: MediaRef[]
+): Promise<TMDBListItemsResponse> => {
+  const url = new URL(`${API_BASE_URL_V4}/list/${listId}/items`);
+
+  const response = await fetch(url, {
+    method: "DELETE",
     headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
     body: JSON.stringify({ items }),
   });
