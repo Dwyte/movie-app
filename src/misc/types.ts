@@ -390,11 +390,11 @@ export interface TVSeasonDetailsAPIResult {
 
 export type TimeWindow = "day" | "week";
 
-export interface TMDBStatusResponse {
+export type TMDBStatusResponse = {
   status_code: number;
   success: boolean;
   status_message: string;
-}
+};
 
 export interface TMDBRequestToken extends TMDBStatusResponse {
   request_token: string;
@@ -500,3 +500,6 @@ export type MediaRef = {
 export interface TMDBListItemsResponse extends TMDBStatusResponse {
   results: (MediaRef & { error?: string[]; success: boolean })[];
 }
+
+export type TMDBListItemStatusResponse = TMDBStatusResponse &
+  MediaRef & { id: number };

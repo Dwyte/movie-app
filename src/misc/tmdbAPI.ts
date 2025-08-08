@@ -22,6 +22,7 @@ import {
   TMDBCreateListResponse,
   MediaRef,
   TMDBListItemsResponse,
+  TMDBListItemStatusResponse,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -339,6 +340,23 @@ export const deleteListItems = async (
     method: "DELETE",
     headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
     body: JSON.stringify({ items }),
+  });
+
+  return await response.json();
+};
+
+export const getListItemStatus = async (
+  accessToken: string,
+  listId: string,
+  item: MediaRef
+): Promise<TMDBListItemStatusResponse> => {
+  const url = new URL(`${API_BASE_URL_V4}/list/${listId}/items_status`);
+  url.searchParams.append("media_id", encodeURIComponent(item.media_id));
+  url.searchParams.append("media_type", encodeURIComponent(item.media_type));
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
   });
 
   return await response.json();
