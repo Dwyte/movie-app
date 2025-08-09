@@ -291,7 +291,7 @@ export const getAccountLists = async (
 ): Promise<AccountLists> => {
   const url = new URL(`${API_BASE_URL_V4}/account/${accountId}/lists`);
   const response = await fetch(url, {
-    method: "POST",
+    method: "GET",
     headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
   });
   return await response.json();
