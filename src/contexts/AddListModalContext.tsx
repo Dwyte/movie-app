@@ -12,7 +12,7 @@ const AddListModalContext = createContext<AddListModalContextValue | undefined>(
 
 const AddListModalProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [mediaToAdd, setMediaToAdd] = useState<Object | null>({ x: 1 });
+  const [mediaToAdd, setMediaToAdd] = useState<MediaRef | null>();
 
   const showAddListModal = (media: MediaRef) => {
     setIsOpen(true);
@@ -21,13 +21,14 @@ const AddListModalProvider = ({ children }: { children: ReactNode }) => {
 
   const handleCloseListModal = () => {
     setIsOpen(false);
+    setMediaToAdd(null);
   };
 
   return (
     <AddListModalContext.Provider value={{ showAddListModal }}>
       {children}
       {isOpen && mediaToAdd && (
-        <AddListModal media={mediaToAdd} onClose={handleCloseListModal} />
+        <AddListModal mediaRef={mediaToAdd} onClose={handleCloseListModal} />
       )}
     </AddListModalContext.Provider>
   );

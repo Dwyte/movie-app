@@ -317,7 +317,7 @@ export const getListDetails = async (
 
 export const postListAddItems = async (
   accessToken: string,
-  listId: string,
+  listId: number,
   items: MediaRef[]
 ): Promise<TMDBListItemsResponse> => {
   const url = new URL(`${API_BASE_URL_V4}/list/${listId}/items`);

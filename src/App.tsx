@@ -8,7 +8,6 @@ import Header from "./components/Header";
 import useIsSmUp from "./hooks/useIsSmUp";
 import Test from "./pages/Test";
 import LoginPage from "./pages/LoginPage";
-import AddListModal from "./components/AddListModal";
 
 const App = () => {
   const location = useLocation();
