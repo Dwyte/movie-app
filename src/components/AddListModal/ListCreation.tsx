@@ -12,7 +12,7 @@ const ListCreation = ({ mediaRef, onClose }: Props) => {
   const [listName, setListName] = useState("");
   const [isListPublic, setIsListPublic] = useState(true);
 
-  const auth = useAuth();
+  const { authDetails } = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,12 +21,12 @@ const ListCreation = ({ mediaRef, onClose }: Props) => {
       return;
     }
 
-    if (auth.accessToken === null) {
-      console.error("Unauthorized - No AccessToken");
+    if (!authDetails) {
+      console.error("Unauthorized - No User Logged In");
       return;
     }
 
-    const newList = await postCreateList(auth.accessToken, {
+    const newList = await postCreateList(authDetails.accessToken, {
       name: listName,
       iso_639_1: "US",
       public: isListPublic,
@@ -37,9 +37,11 @@ const ListCreation = ({ mediaRef, onClose }: Props) => {
       return;
     }
 
-    const addedItem = await postListAddItems(auth.accessToken, newList.id, [
-      mediaRef,
-    ]);
+    const addedItem = await postListAddItems(
+      authDetails.accessToken,
+      newList.id,
+      [mediaRef]
+    );
 
     if (addedItem.success) {
       alert("Added to the list.");

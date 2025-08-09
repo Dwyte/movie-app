@@ -1,4 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
 import { BsPlusLg } from "react-icons/bs";
+import { useAuth } from "../../contexts/AuthContext";
+import { getAccountLists } from "../../misc/tmdbAPI";
 
 const lists = [
   {
@@ -20,22 +23,41 @@ interface Props {
 }
 
 const ListSelection = ({ onCreate }: Props) => {
+  const { authDetails, isLoggedIn } = useAuth();
+
+  const { data: userLists } = useQuery({
+    enabled: isLoggedIn,
+    initialData: null,
+    queryKey: ["lists", authDetails?.accountId],
+    queryFn: async () => {
+      if (!authDetails) return null;
+
+      const response = await getAccountLists(
+        authDetails.accessToken,
+        authDetails.accountId
+      );
+
+      return response.results;
+    },
+  });
+
   return (
     <>
       <h3 className="text-2xl text-white font-bold sm:text-xl">
         Add Media to...
       </h3>
-      <div className="flex flex-col flex-1 gap-2 sm:overflow-y">
-        {lists.map((item) => {
-          return (
-            <button
-              key={item.id}
-              className="secondary-btn font-normal rounded-sm text-white text-xl p-4 sm:text-base sm:p-3"
-            >
-              {item.name}
-            </button>
-          );
-        })}
+      <div className="flex flex-col flex-1 max-h-75 scrollable gap-2 sm:overflow-y">
+        {userLists &&
+          userLists.map((item) => {
+            return (
+              <button
+                key={item.id}
+                className="secondary-btn font-normal rounded-sm text-white text-xl p-4 sm:text-base sm:p-3"
+              >
+                {item.name}
+              </button>
+            );
+          })}
       </div>
       <button
         onClick={onCreate}
