@@ -21,6 +21,7 @@ import MediaPageHeroSection from "./MediaPageHeroSection";
 import MediaPageDetailsSection from "./MediaPageDetailsSection";
 import MediaPageCastsSection from "./MediaPageCastsSection";
 import MediaPageEpisodesSection from "./MediaPageEpisodesSection";
+import { useAddListModal } from "../../contexts/AddListModalContext";
 
 interface Props {
   mediaType: MediaType;
@@ -36,6 +37,8 @@ const MediaPage = ({ mediaType }: Props) => {
   const backgroundLocation = location.state
     ? location.state.backgroundLocation
     : "/";
+
+  const { showAddListModal } = useAddListModal();
 
   const { data: mediaItemDetails } = useQuery({
     queryKey: [mediaType, mediaId, "details"],
@@ -108,9 +111,18 @@ const MediaPage = ({ mediaType }: Props) => {
           />
 
           <div className="flex gap-2 sm:hidden">
-            <button className="flex flex-col justify-between items-center gap-1 px-3 py-2 min-w-16">
+            <button
+              onClick={() => {
+                if (mediaItemDetails)
+                  showAddListModal({
+                    media_id: mediaItemDetails.id,
+                    media_type: mediaItemDetails.media_type,
+                  });
+              }}
+              className="flex flex-col justify-between items-center gap-1 px-3 py-2 min-w-16"
+            >
               <BsPlusLg className="text-2xl p-[3px]" />
-              <span className="text-sm">My List</span>
+              <span className="text-sm">My Lists</span>
             </button>
             <button className="flex flex-col justify-between items-center px-3 py-2 min-w-16">
               <BsSend className="text-2xl p-[3px]" />
