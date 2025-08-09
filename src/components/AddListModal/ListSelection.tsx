@@ -1,28 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { BsPlusLg } from "react-icons/bs";
 import { useAuth } from "../../contexts/AuthContext";
-import { getAccountLists } from "../../misc/tmdbAPI";
-
-const lists = [
-  {
-    id: 1,
-    name: "Comfort Movies",
-  },
-  {
-    id: 2,
-    name: "My Top Recommended",
-  },
-  {
-    id: 3,
-    name: "Watch Later",
-  },
-];
+import { getAccountLists, postListAddItems } from "../../misc/tmdbAPI";
+import { MediaRef } from "../../misc/types";
 
 interface Props {
+  mediaRef: MediaRef;
   onCreate: () => void;
+  onClose: () => void;
 }
 
-const ListSelection = ({ onCreate }: Props) => {
+const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
   const { authDetails, isLoggedIn } = useAuth();
 
   const { data: userLists } = useQuery({
@@ -41,6 +29,22 @@ const ListSelection = ({ onCreate }: Props) => {
     },
   });
 
+  const handleSelect = async (listId: number) => {
+    if (!authDetails) return;
+
+    const response = await postListAddItems(authDetails?.accessToken, listId, [
+      mediaRef,
+    ]);
+
+    if (response.success) {
+      alert(response.status_message);
+    } else {
+      console.error(response);
+    }
+
+    onClose();
+  };
+
   return (
     <>
       <h3 className="text-2xl text-white font-bold sm:text-xl">
@@ -48,13 +52,14 @@ const ListSelection = ({ onCreate }: Props) => {
       </h3>
       <div className="flex flex-col flex-1 max-h-75 scrollable gap-2 sm:overflow-y">
         {userLists &&
-          userLists.map((item) => {
+          userLists.map((listItem) => {
             return (
               <button
-                key={item.id}
+                key={listItem.id}
+                onClick={() => handleSelect(listItem.id)}
                 className="secondary-btn font-normal rounded-sm text-white text-xl p-4 sm:text-base sm:p-3"
               >
-                {item.name}
+                {listItem.name}
               </button>
             );
           })}

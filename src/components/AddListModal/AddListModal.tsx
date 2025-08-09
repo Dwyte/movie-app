@@ -37,7 +37,11 @@ const AddListModal = ({ mediaRef, onClose }: Props) => {
         className="fixed left-0 right-0 bottom-0 flex flex-col gap-4 bg-stone-900 rounded-t-xl p-6 sm:gap-2 sm:static sm: min-w-100 sm:rounded-lg"
       >
         {currentState === AddListModalStates.LIST_SELECTION && (
-          <ListSelection onCreate={handleCreateNewList} />
+          <ListSelection
+            mediaRef={mediaRef}
+            onCreate={handleCreateNewList}
+            onClose={handleClose}
+          />
         )}
         {currentState === AddListModalStates.LIST_CREATION && (
           <ListCreation mediaRef={mediaRef} onClose={handleClose} />
