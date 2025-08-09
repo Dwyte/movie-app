@@ -8,8 +8,7 @@ import {
 } from "../misc/tmdbAPI";
 
 interface AuthContextType {
-  sessionId: string | null;
-  accessToken: string | null;
+  authDetails: AuthDetails | null;
   account: AccountDetails | null;
   isLoggedIn: boolean;
   login: (sessionId: string, accessToken: string, accountId: string) => void;
@@ -79,8 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <AuthContext.Provider
       value={{
-        sessionId: authDetails?.sessionId || null,
-        accessToken: authDetails?.accessToken || null,
+        authDetails,
         account,
         isLoggedIn: !!authDetails && !!account,
         login,
