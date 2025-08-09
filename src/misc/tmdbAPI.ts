@@ -299,7 +299,7 @@ export const getAccountLists = async (
 
 export const getListDetails = async (
   accessToken: string,
-  listId: string,
+  listId: number,
   page: number = 1,
   language: LanguageCode = "en"
 ): Promise<ListDetails> => {
@@ -333,7 +333,7 @@ export const postListAddItems = async (
 
 export const deleteListItems = async (
   accessToken: string,
-  listId: string,
+  listId: number,
   items: MediaRef[]
 ): Promise<TMDBListItemsResponse> => {
   const url = new URL(`${API_BASE_URL_V4}/list/${listId}/items`);
@@ -349,7 +349,7 @@ export const deleteListItems = async (
 
 export const getListItemStatus = async (
   accessToken: string,
-  listId: string,
+  listId: number,
   item: MediaRef
 ): Promise<TMDBListItemStatusResponse> => {
   const url = new URL(`${API_BASE_URL_V4}/list/${listId}/items_status`);
@@ -366,7 +366,7 @@ export const getListItemStatus = async (
 
 export const deleteList = async (
   accessToken: string,
-  listId: string
+  listId: number
 ): Promise<TMDBStatusResponse> => {
   const url = new URL(`${API_BASE_URL_V4}/list/${listId}`);
 
@@ -380,7 +380,7 @@ export const deleteList = async (
 
 export const getListClearItems = async (
   accessToken: string,
-  listId: string
+  listId: number
 ): Promise<TMDBListClearItemsResponse> => {
   const url = new URL(`${API_BASE_URL_V4}/list/${listId}/clear`);
 
@@ -394,9 +394,9 @@ export const getListClearItems = async (
 
 export const putUpdateList = async (
   accessToken: string,
-  listId: string,
-  options: ListOptions
-) => {
+  listId: number,
+  options: Partial<ListOptions>
+): Promise<TMDBStatusResponse> => {
   const url = new URL(`${API_BASE_URL_V4}/list/${listId}`);
   const response = await fetch(url, {
     method: "PUT",
@@ -409,7 +409,7 @@ export const putUpdateList = async (
 
 export const putUpdateListItem = async (
   accessToken: string,
-  listId: string,
+  listId: number,
   item: MediaRef,
   comment: string
 ): Promise<TMDBListItemsResponse> => {

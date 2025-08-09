@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { BsPlusLg } from "react-icons/bs";
+import { BsGlobeAmericas, BsLockFill, BsPlusLg } from "react-icons/bs";
 import { useAuth } from "../../contexts/AuthContext";
 import { getAccountLists, postListAddItems } from "../../misc/tmdbAPI";
 import { MediaRef } from "../../misc/types";
@@ -57,9 +57,10 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
               <button
                 key={listItem.id}
                 onClick={() => handleSelect(listItem.id)}
-                className="secondary-btn font-normal rounded-sm text-white text-xl p-4 sm:text-base sm:p-3"
+                className="secondary-btn rounded-sm text-white font-normal text-lg p-4 sm:text-base sm:p-3"
               >
-                {listItem.name}
+                <span className="flex-1 text-left">{listItem.name}</span>
+                {listItem.public ? <BsGlobeAmericas /> : <BsLockFill />}
               </button>
             );
           })}

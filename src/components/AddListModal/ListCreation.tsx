@@ -45,7 +45,7 @@ const ListCreation = ({ mediaRef, onClose }: Props) => {
     const newList = await postCreateList(authDetails.accessToken, {
       name: listName,
       iso_639_1: "US",
-      public: isListPublic,
+      public: isListPublic ? 1 : 0,
     });
 
     if (!newList.success || !newList.id) {
@@ -62,7 +62,6 @@ const ListCreation = ({ mediaRef, onClose }: Props) => {
     if (addedItem.success) {
       alert("Added to the list.");
       onClose();
-      return;
     }
   };
 
@@ -98,7 +97,9 @@ const ListCreation = ({ mediaRef, onClose }: Props) => {
                 <div className="text-white flex gap-2 items-center bg-stone-700 px-4 py-2 peer-checked:bg-stone-800">
                   <div className="flex flex-col flex-1">
                     <span className="">{option.name}</span>
-                    <span className="text-xs text-stone-300">{option.description}</span>
+                    <span className="text-xs text-stone-300">
+                      {option.description}
+                    </span>
                   </div>
                   {isListPublic === option.isPublic && (
                     <BsCheckLg className="text-xl" />
