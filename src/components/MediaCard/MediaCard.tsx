@@ -13,6 +13,7 @@ import {
   NO_IMAGE_LANDSCAPE_PATH,
   NO_IMAGE_PORTRAIT_PATH,
 } from "../../misc/constants";
+import { useAddListModal } from "../../contexts/AddListModalContext";
 
 const defaultDimensions = "w-30 h-45 sm:w-66 sm:h-36";
 const hoverWidth = "group-hover/mcard:w-72";
@@ -45,6 +46,8 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isSmUp = useIsSmUp();
+
+  const { showAddListModal } = useAddListModal();
 
   const { data: mediaImages } = useQuery({
     // Only need to find backdrop/landscape image in Desktop mode.
@@ -92,7 +95,7 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
 
   return (
     <div
-      onClick={handleMediaCardClick}
+      // onClick={handleMediaCardClick}
       className={`group/mcard relative flex items-center justify-center shrink-0 ${
         flexible ? "w-full h-full" : defaultDimensions
       } cursor-pointer`}
@@ -114,6 +117,7 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
       )}
 
       <div
+        onClick={(e) => e.stopPropagation()}
         className={`${
           flexible && "hidden group-hover/mcard:block"
         } absolute group rounded-sm overflow-hidden ${hoverWidth} group-hover/mcard:z-1000`}
@@ -139,7 +143,15 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
             <button className="primary-icon-btn">
               <BsPlayFill />
             </button>
-            <button className="secondary-icon-btn">
+            <button
+              onClick={() => {
+                showAddListModal({
+                  media_id: media.id,
+                  media_type: media.media_type,
+                });
+              }}
+              className="secondary-icon-btn"
+            >
               <BsPlusLg />
             </button>
             <button className="secondary-icon-btn">

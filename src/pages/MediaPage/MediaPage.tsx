@@ -110,6 +110,7 @@ const MediaPage = ({ mediaType }: Props) => {
             mediaItemCredits={mediaItemCredits}
           />
 
+          {/* In Mobile */}
           <div className="flex gap-2 sm:hidden">
             <button
               onClick={() => {

@@ -1,13 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
+import { useAddListModal } from "../../contexts/AddListModalContext";
+
+import { NO_IMAGE_LANDSCAPE_PATH } from "../../misc/constants";
 import { MediaDetails, MediaType } from "../../misc/types";
 import { getMediaItemImages } from "../../misc/tmdbAPI";
 import { getTMDBImageURL } from "../../misc/utils";
 
 import { BsPlayFill, BsPlusLg, BsStar, BsXLg } from "react-icons/bs";
 import { RiDownloadLine } from "react-icons/ri";
-import { NO_IMAGE_LANDSCAPE_PATH } from "../../misc/constants";
 
 interface Props {
   mediaItemDetails: MediaDetails | null;
@@ -23,6 +25,8 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
       return getMediaItemImages(mediaType, mediaId);
     },
   });
+
+  const { showAddListModal } = useAddListModal();
 
   const logoImgSrc = useMemo(() => {
     if (!mediaItemImages) return null;
@@ -67,7 +71,17 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
             <span>Play</span>
           </button>
 
-          <button className="secondary-icon-btn">
+          <button
+            onClick={() => {
+              if (!mediaItemDetails) return;
+
+              showAddListModal({
+                media_id: mediaItemDetails.id,
+                media_type: mediaItemDetails.media_type,
+              });
+            }}
+            className="secondary-icon-btn"
+          >
             <BsPlusLg />
           </button>
           <button className="secondary-icon-btn">
