@@ -5,6 +5,7 @@ import { getAccountLists } from "../../misc/tmdbAPI";
 
 import ListItem from "./ListItem";
 import ListListItem from "./ListListItem";
+import ListContainer from "./ListContainer";
 
 const MyLists = () => {
   const { authDetails, isLoggedIn } = useAuth();
@@ -28,13 +29,13 @@ const MyLists = () => {
   return (
     <div className="mx-4 mt-20 mb-4 sm:px-12 sm:mx-0 sm:my-24">
       <h1 className="text-3xl text-white mb-2 sm:mb-6">My Lists</h1>
-      <div className="flex flex-col sm:border-t-stone-800 sm:border-1">
+      <ListContainer>
         {userLists?.map((listItem) => (
           <ListItem>
             <ListListItem listItem={listItem} />
           </ListItem>
         ))}
-      </div>
+      </ListContainer>
     </div>
   );
 };
