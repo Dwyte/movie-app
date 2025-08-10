@@ -10,7 +10,7 @@ export const NAV_LINKS: NavLinks[] = [
   },
   { name: "Movies", path: "/movies" },
   { name: "Series", path: "/series" },
-  { name: "My List", path: "/mylist" },
+  { name: "My Lists", path: "/mylists" },
 ];
 
 export const MEDIA_PAGE_NAV_LINKS: NavLinks[] = [

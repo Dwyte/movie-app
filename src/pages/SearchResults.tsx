@@ -30,7 +30,7 @@ const SearchResults = () => {
   if (!results) return;
 
   return (
-    <div className="py-20 sm:py-24 px-4 sm:px-16">
+    <div className="py-20 sm:py-24 px-4 sm:px-12">
       <h1 className="hidden sm:block text-2xl text-stone-500 sm:mb-8">
         Search Results for: <span className="text-white">"{searchQuery}"</span>
       </h1>

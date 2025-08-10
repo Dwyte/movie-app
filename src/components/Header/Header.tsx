@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 import { BsChevronDown } from "react-icons/bs";
@@ -35,15 +35,15 @@ function Header() {
           } fixed flex flex-col items-center justify-center gap-10 bg-black/60 backdrop-blur-sm inset-0 text-4xl sm:static sm:justify-start sm:flex-row sm:text-base sm:bg-transparent sm:bg-none sm:backdrop-blur-none sm:flex-1 sm:gap-8 sm:flex`}
         >
           {NAV_LINKS.map((link) => (
-            <Link
+            <NavLink
               key={link.path}
-              className={`text-stone-500 ${
-                location.pathname === link.path && "text-white font-bold"
-              }`}
+              className={({ isActive }) =>
+                `text-stone-500 ${isActive && "text-white font-bold"}`
+              }
               to={link.path}
             >
               {link.name}
-            </Link>
+            </NavLink>
           ))}
         </div>
 
@@ -54,7 +54,7 @@ function Header() {
       </nav>
 
       {/** Discover button for activating fullscreen NavLinks in Mobile */}
-      {location.pathname !== "/search" && (
+      {!["/search", "/mylists"].includes(location.pathname) && (
         <button
           onClick={() => setIsMobileNavVisible(true)}
           className="flex items-center gap-1 justify-center w-full text-white cursor-pointer sm:hidden"

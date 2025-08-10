@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import useIsSmUp from "./hooks/useIsSmUp";
 import Test from "./pages/Test";
 import LoginPage from "./pages/LoginPage";
+import MyLists from "./pages/MyLists";
 
 const App = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/test" element={<Test />} />
+          <Route path="/mylists" element={<MyLists />} />
           {/** In mobile, render the MoviePage as standalone page. */}
           <Route path="/tv/:mediaId/*" element={<MediaPage mediaType="tv" />} />
           <Route
