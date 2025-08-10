@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MediaRef } from "../../misc/types";
 import ListSelection from "./ListSelection";
 import ListCreation from "./ListCreation";
@@ -26,6 +26,14 @@ const AddListModal = ({ mediaRef, onClose }: Props) => {
     setCurrentState(AddListModalStates.LIST_SELECTION);
     onClose();
   };
+
+  // Disable main body scrolling
+  useEffect(() => {
+    document.body.style.overflowY = "hidden";
+    return () => {
+      document.body.style.overflowY = "scroll";
+    };
+  }, []);
 
   return (
     <div

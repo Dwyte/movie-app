@@ -95,7 +95,7 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
 
   return (
     <div
-      // onClick={handleMediaCardClick}
+      onClick={handleMediaCardClick}
       className={`group/mcard relative flex items-center justify-center shrink-0 ${
         flexible ? "w-full h-full" : defaultDimensions
       } cursor-pointer`}
@@ -117,7 +117,6 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
       )}
 
       <div
-        onClick={(e) => e.stopPropagation()}
         className={`${
           flexible && "hidden group-hover/mcard:block"
         } absolute group rounded-sm overflow-hidden ${hoverWidth} group-hover/mcard:z-1000`}
@@ -138,7 +137,10 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
           )}
         </div>
 
-        <div className="hidden p-2 group-hover/mcard:flex flex-col gap-2 bg-stone-900 text-white shadow-2xl">
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="hidden p-2 group-hover/mcard:flex flex-col gap-2 bg-stone-900 text-white shadow-2xl"
+        >
           <div className="flex gap-1">
             <button className="primary-icon-btn">
               <BsPlayFill />
