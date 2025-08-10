@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { BsGlobeAmericas, BsLockFill, BsPlusLg } from "react-icons/bs";
+import { BsGlobeAmericas, BsLockFill, BsPlusLg, BsXLg } from "react-icons/bs";
 import { useAuth } from "../../contexts/AuthContext";
 import { getAccountLists, postListAddItems } from "../../misc/tmdbAPI";
 import { MediaRef } from "../../misc/types";
@@ -47,9 +47,14 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
 
   return (
     <>
-      <h3 className="text-2xl text-white font-bold sm:text-xl">
-        Add Media to...
-      </h3>
+      <div className="text-white flex items-start">
+        <h3 className="text-2xl flex-1 font-bold sm:text-xl">
+          Add Media to...
+        </h3>
+        <button className="cursor-pointer" onClick={onClose}>
+          <BsXLg className="text-xl" />
+        </button>
+      </div>
       <div className="flex flex-col flex-1 max-h-75 scrollable gap-2 sm:overflow-y">
         {userLists &&
           userLists.map((listItem) => {
