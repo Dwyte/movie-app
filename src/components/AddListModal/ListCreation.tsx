@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { postCreateList, postListAddItems } from "../../misc/tmdbAPI";
 import { MediaRef } from "../../misc/types";
-import { BsCheckLg, BsGlobe } from "react-icons/bs";
+import { BsCheckLg } from "react-icons/bs";
 
 const visibilityOptions = [
   {
@@ -101,9 +101,11 @@ const ListCreation = ({ mediaRef, onClose }: Props) => {
                       {option.description}
                     </span>
                   </div>
-                  {isListPublic === option.isPublic && (
-                    <BsCheckLg className="text-xl" />
-                  )}
+                  <BsCheckLg
+                    className={`text-xl ${
+                      isListPublic !== option.isPublic && "invisible"
+                    }`}
+                  />
                 </div>
               </label>
             );
