@@ -7,6 +7,7 @@ import { BsPlusCircleFill } from "react-icons/bs";
 import { FaInfoCircle } from "react-icons/fa";
 
 import { getMediaItemImages, getTrendingMediaItems } from "../misc/tmdbAPI";
+import { useAddListModal } from "../contexts/AddListModalContext";
 import { shortenParagraph, getTMDBImageURL } from "../misc/utils";
 import { MediaType, TimeWindow } from "../misc/types";
 
@@ -15,6 +16,7 @@ import GenreList from "./GenreList";
 const HeroSection = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { showAddListModal } = useAddListModal();
 
   const { data: trendingMediaItems } = useQuery({
     queryKey: ["trending", "movie", "week"],
@@ -99,7 +101,15 @@ const HeroSection = () => {
               className="text-center sm:text-left"
             />
             <div className="flex gap-4 justify-center sm:justify-start">
-              <button className="primary-btn">
+              <button
+                onClick={() =>
+                  showAddListModal({
+                    media_id: mediaItem.id,
+                    media_type: mediaItem.media_type,
+                  })
+                }
+                className="primary-btn"
+              >
                 <BsPlusCircleFill className="text-md mr-2" />
                 Add to my List
               </button>
