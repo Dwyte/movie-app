@@ -3,6 +3,7 @@ import { BsGlobeAmericas, BsLockFill, BsPlusLg, BsXLg } from "react-icons/bs";
 import { useAuth } from "../../contexts/AuthContext";
 import { getAccountLists, postListAddItems } from "../../misc/tmdbAPI";
 import { MediaRef } from "../../misc/types";
+import { MEDIA_TYPE_NAME } from "../../misc/constants";
 
 interface Props {
   mediaRef: MediaRef;
@@ -49,7 +50,7 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
     <>
       <div className="text-white flex items-start">
         <h3 className="text-2xl flex-1 font-bold sm:text-xl">
-          Add Media to...
+          Add {MEDIA_TYPE_NAME[mediaRef.media_type]} to...
         </h3>
         <button className="cursor-pointer" onClick={onClose}>
           <BsXLg className="text-xl" />
