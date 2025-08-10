@@ -6,6 +6,7 @@ import { getAccountLists } from "../../misc/tmdbAPI";
 import ListItem from "./ListItem";
 import ListListItem from "./ListListItem";
 import ListContainer from "./ListContainer";
+import PageContainer from "../../components/PageContainer";
 
 const MyLists = () => {
   const { authDetails, isLoggedIn } = useAuth();
@@ -27,7 +28,7 @@ const MyLists = () => {
   });
 
   return (
-    <div className="mx-4 mt-20 mb-4 sm:px-12 sm:mx-0 sm:my-24">
+    <PageContainer>
       <h1 className="text-3xl text-white mb-2 sm:mb-6">My Lists</h1>
       <ListContainer>
         {userLists?.map((listItem) => (
@@ -36,7 +37,7 @@ const MyLists = () => {
           </ListItem>
         ))}
       </ListContainer>
-    </div>
+    </PageContainer>
   );
 };
 

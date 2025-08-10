@@ -5,6 +5,7 @@ import MediaCard from "../components/MediaCard";
 import { getSearchMediaItems } from "../misc/tmdbAPI";
 import { useQuery } from "@tanstack/react-query";
 import { Media } from "../misc/types";
+import PageContainer from "../components/PageContainer";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
@@ -30,7 +31,7 @@ const SearchResults = () => {
   if (!results) return;
 
   return (
-    <div className="py-20 sm:py-24 px-4 sm:px-12">
+    <PageContainer>
       <h1 className="hidden sm:block text-2xl text-stone-500 sm:mb-8">
         Search Results for: <span className="text-white">"{searchQuery}"</span>
       </h1>
@@ -40,7 +41,7 @@ const SearchResults = () => {
           <MediaCard key={media.id} media={media} flexible />
         ))}
       </div>
-    </div>
+    </PageContainer>
   );
 };
 
