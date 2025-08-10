@@ -7,6 +7,7 @@ import ListItem from "./ListItem";
 import ListListItem from "./ListListItem";
 import ListContainer from "./ListContainer";
 import PageContainer from "../../components/PageContainer";
+import { Link } from "react-router-dom";
 
 const MyLists = () => {
   const { authDetails, isLoggedIn } = useAuth();
@@ -32,9 +33,11 @@ const MyLists = () => {
       <h1 className="text-3xl text-white mb-2 sm:mb-6">My Lists</h1>
       <ListContainer>
         {userLists?.map((listItem) => (
-          <ListItem>
-            <ListListItem listItem={listItem} />
-          </ListItem>
+          <Link to={`/list/${listItem.id}`}>
+            <ListItem>
+              <ListListItem listItem={listItem} />
+            </ListItem>
+          </Link>
         ))}
       </ListContainer>
     </PageContainer>
