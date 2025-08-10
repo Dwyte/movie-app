@@ -312,7 +312,14 @@ export const getListDetails = async (
     headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
   });
 
-  return await response.json();
+  const listDetails = await response.json();
+  const normalizedResults = listDetails.results.map((media: TV | Movie) =>
+    normalizeMedia(media)
+  );
+
+  listDetails.results = normalizedResults;
+
+  return listDetails;
 };
 
 export const postListAddItems = async (

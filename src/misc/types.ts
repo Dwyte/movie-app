@@ -430,7 +430,7 @@ export interface AccountDetails {
 export interface ListDetails {
   average_rating: number;
   backdrop_path: string;
-  results: (Movie | TV)[];
+  results: Media[];
   created_by: {
     avatar_path: string;
     gravatar_hash: string;
