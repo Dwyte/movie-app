@@ -33,7 +33,7 @@ const MyLists = () => {
       <h1 className="text-3xl text-white mb-2 sm:mb-6">My Lists</h1>
       <ListContainer>
         {userLists?.map((listItem) => (
-          <Link to={`/list/${listItem.id}`}>
+          <Link key={listItem.id} to={`/list/${listItem.id}`}>
             <ListItem>
               <ListListItem listItem={listItem} />
             </ListItem>
