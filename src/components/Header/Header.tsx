@@ -35,7 +35,7 @@ function Header() {
           onClick={handleNavModalClick}
           className={`${
             !isMobileNavVisible && "hidden"
-          } fixed flex flex-col items-center justify-center gap-10 bg-black/60 backdrop-blur-sm inset-0 text-4xl sm:static sm:justify-start sm:flex-row sm:text-base sm:bg-transparent sm:bg-none sm:backdrop-blur-none sm:flex-1 sm:gap-8 sm:flex`}
+          } z-1001 fixed flex flex-col items-center justify-center gap-10 bg-black/75 backdrop-blur-lg inset-0 text-4xl sm:static sm:justify-start sm:flex-row sm:text-base sm:bg-transparent sm:bg-none sm:backdrop-blur-none sm:flex-1 sm:gap-8 sm:flex`}
         >
           {NAV_LINKS.map((link) => (
             <NavLink
