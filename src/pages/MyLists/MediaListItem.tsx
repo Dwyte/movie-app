@@ -9,8 +9,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 interface Props {
   media: Media;
-  onDelete: () => void;
   isDeleting: boolean;
+  onDelete: ((ref: MediaRef) => void) | null;
 }
 
 const MediaListItem = ({ media, isDeleting, onDelete }: Props) => {
@@ -50,15 +50,19 @@ const MediaListItem = ({ media, isDeleting, onDelete }: Props) => {
         </div>
         <FiveStarRating rating={media.vote_average} />
       </div>
-      <div onClick={(e) => e.stopPropagation()}>
-        <button
-          onClick={onDelete}
-          className="cursor-pointer hover:text-red-600 text-lg"
-          disabled={isDeleting}
-        >
-          <BsXLg />
-        </button>
-      </div>
+      {onDelete && (
+        <div onClick={(e) => e.stopPropagation()}>
+          <button
+            onClick={() =>
+              onDelete({ media_id: media.id, media_type: media.media_type })
+            }
+            className="cursor-pointer hover:text-red-600 text-lg"
+            disabled={isDeleting}
+          >
+            <BsXLg />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

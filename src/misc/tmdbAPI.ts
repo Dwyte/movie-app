@@ -298,8 +298,8 @@ export const getAccountLists = async (
 };
 
 export const getListDetails = async (
-  accessToken: string,
   listId: number,
+  accessToken?: string,
   page: number = 1,
   language: LanguageCode = "en"
 ): Promise<ListDetails> => {
@@ -307,9 +307,11 @@ export const getListDetails = async (
   url.searchParams.append("page", encodeURIComponent(page));
   url.searchParams.append("language", encodeURIComponent(language));
 
+  const token = accessToken ? accessToken : API_KEY;
+
   const response = await fetch(url, {
     method: "GET",
-    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
+    headers: { ...HEADERS, Authorization: `Bearer ${token}` },
   });
 
   const listDetails = await response.json();

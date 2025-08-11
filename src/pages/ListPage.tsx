@@ -11,7 +11,7 @@ import { ListDetails, MediaRef } from "../misc/types";
 import { NO_IMAGE_LANDSCAPE_PATH } from "../misc/constants";
 import { getDurationString, getTMDBImageURL } from "../misc/utils";
 import FiveStarRating from "../components/FiveStarRating";
-import { BsBoxArrowUpRight, BsPencil, BsPencilSquare } from "react-icons/bs";
+import { BsBoxArrowUpRight, BsPencilSquare } from "react-icons/bs";
 import VisibilityIcon from "../components/VisibilityIcon";
 
 const ListDetailsDataField = ({
@@ -31,19 +31,18 @@ const ListDetailsDataField = ({
 
 const ListPage = () => {
   const queryClient = useQueryClient();
-  const { authDetails } = useAuth();
+  const { authDetails, account } = useAuth();
   const params = useParams();
 
   const listId = params?.listId ? parseInt(params?.listId) : null;
   const queryKey = ["listDetails", listId];
 
   const { data: listDetails } = useQuery({
-    enabled: !!authDetails && !!listId,
+    enabled: !!listId,
     queryKey: queryKey,
     queryFn: async () => {
-      if (!authDetails || !listId) return null;
-
-      const response = await getListDetails(authDetails?.accessToken, listId);
+      if (!listId) return null;
+      const response = await getListDetails(listId, authDetails?.accessToken);
       return response;
     },
     staleTime: 1000 * 60 * 10,
@@ -100,20 +99,24 @@ const ListPage = () => {
 
   if (!listDetails) return;
 
+  const isUserOwner =
+    authDetails && authDetails.accountId === listDetails.created_by.id;
   return (
     <PageContainer>
       <div className="relative mb-8 rounded-sm overflow-hidden">
         <img className="h-80 sm:h-80 sm:w-full object-cover" src={thumbnail} />
         <div className="bg-black/33 w-full h-full absolute top-0"></div>
 
-        <div className="absolute top-0 right-0 p-4 flex flex-col gap-2">
-          <button onClick={handleShare} className="secondary-icon-btn p-3">
-            <BsBoxArrowUpRight />
-          </button>
-          <button className="secondary-icon-btn p-3">
-            <BsPencilSquare />
-          </button>
-        </div>
+        {isUserOwner && (
+          <div className="absolute top-0 right-0 p-4 flex flex-col gap-2">
+            <button onClick={handleShare} className="secondary-icon-btn p-3">
+              <BsBoxArrowUpRight />
+            </button>
+            <button className="secondary-icon-btn p-3">
+              <BsPencilSquare />
+            </button>
+          </div>
+        )}
 
         <div className="flex flex-col absolute bottom-0 text-white w-full">
           <div className="p-2 sm:p-4">
@@ -153,12 +156,7 @@ const ListPage = () => {
             <ListItem key={media.id}>
               <MediaListItem
                 media={media}
-                onDelete={() =>
-                  deleteMutation.mutate({
-                    media_id: media.id,
-                    media_type: media.media_type,
-                  })
-                }
+                onDelete={isUserOwner ? deleteMutation.mutate : null}
                 isDeleting={deleteMutation.isPending}
               />
             </ListItem>
