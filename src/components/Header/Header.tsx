@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useMatch } from "react-router-dom";
 import { useState } from "react";
 
 import { BsChevronDown } from "react-icons/bs";
@@ -9,6 +9,9 @@ import UserProfile from "./UserProfile";
 
 function Header() {
   const location = useLocation();
+  const searchMatch = useMatch("/search");
+  const myListsMatch = useMatch("/myLists");
+  const listPageMatch = useMatch("/list/:id");
 
   const [isMobileNavVisible, setIsMobileNavVisible] = useState(false);
 
@@ -54,7 +57,7 @@ function Header() {
       </nav>
 
       {/** Discover button for activating fullscreen NavLinks in Mobile */}
-      {!["/search", "/mylists"].includes(location.pathname) && (
+      {!(searchMatch || myListsMatch || listPageMatch) && (
         <button
           onClick={() => setIsMobileNavVisible(true)}
           className="flex items-center gap-1 justify-center w-full text-white cursor-pointer sm:hidden"

@@ -42,7 +42,7 @@ const MediaListItem = ({ media, isDeleting, onDelete }: Props) => {
         </div>
       </div>
 
-      <div className="flex gap-4 items-center">
+      <div className="hidden sm:flex gap-4 items-center">
         <div className="text-white">
           {new Date(media.first_air_date || media.release_date || 0)
             .getFullYear()
