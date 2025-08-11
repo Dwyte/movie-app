@@ -1,6 +1,8 @@
+import { MOVIE_GENRES, TV_SHOWS_GENRES } from "./constants";
 import {
   Media,
   MediaDetails,
+  MediaType,
   Movie,
   MovieDetails,
   TV,
@@ -88,4 +90,18 @@ export const normalizeMediaDetails = (
   };
 
   return normalizedMedia;
+};
+
+export const getGenreNameFromId = (genreId: number, mediaType: MediaType) => {
+  const MEDIA_GENRES_LIST = {
+    movie: MOVIE_GENRES,
+    tv: TV_SHOWS_GENRES,
+  };
+
+  const genreFound = MEDIA_GENRES_LIST[mediaType].find(
+    (genre) => genre.id === genreId
+  );
+
+  if (!genreFound) return null;
+  return genreFound.name;
 };

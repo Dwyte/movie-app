@@ -112,11 +112,6 @@ export const MOVIE_GENRES: Genre[] = [
   },
 ];
 
-export const genreIdsToName: { [key: number]: string } = {};
-MOVIE_GENRES.forEach(
-  (movieGenre) => (genreIdsToName[movieGenre.id] = movieGenre.name)
-);
-
 export const COUNTRY_CODES = [
   "AF",
   "AX",
