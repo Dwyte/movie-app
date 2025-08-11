@@ -7,11 +7,11 @@ import { useAuth } from "../contexts/AuthContext";
 import ListContainer from "./MyLists/ListContainer";
 import ListItem from "./MyLists/ListItem";
 import MediaListItem from "./MyLists/MediaListItem";
-import { List, ListDetails, Media, MediaRef } from "../misc/types";
-import { MdNearbyError } from "react-icons/md";
+import { ListDetails, MediaRef } from "../misc/types";
 import { NO_IMAGE_LANDSCAPE_PATH } from "../misc/constants";
 import { getDurationString, getTMDBImageURL } from "../misc/utils";
 import FiveStarRating from "../components/FiveStarRating";
+import { BsBoxArrowUpRight, BsPencil, BsPencilSquare } from "react-icons/bs";
 
 const ListDetailsDataField = ({
   label,
@@ -93,11 +93,24 @@ const ListPage = () => {
       ? getTMDBImageURL(listDetails.backdrop_path, "1920")
       : NO_IMAGE_LANDSCAPE_PATH;
 
+  const handleShare = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+  };
+
   return (
     <PageContainer>
       <div className="relative mb-8 rounded-sm overflow-hidden">
         <img className="h-80 sm:h-80 sm:w-full object-cover" src={thumbnail} />
         <div className="bg-black/33 w-full h-full absolute top-0"></div>
+
+        <div className="absolute top-0 right-0 p-4 flex flex-col gap-2">
+          <button onClick={handleShare} className="secondary-icon-btn p-3">
+            <BsBoxArrowUpRight />
+          </button>
+          <button className="secondary-icon-btn p-3">
+            <BsPencilSquare />
+          </button>
+        </div>
 
         <div className="flex flex-col absolute bottom-0 text-white w-full">
           <div className="p-2 sm:p-4">
