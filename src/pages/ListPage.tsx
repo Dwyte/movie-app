@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import PageContainer from "../components/PageContainer";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -9,6 +9,24 @@ import ListItem from "./MyLists/ListItem";
 import MediaListItem from "./MyLists/MediaListItem";
 import { List, ListDetails, Media, MediaRef } from "../misc/types";
 import { MdNearbyError } from "react-icons/md";
+import { NO_IMAGE_LANDSCAPE_PATH } from "../misc/constants";
+import { getDurationString, getTMDBImageURL } from "../misc/utils";
+import FiveStarRating from "../components/FiveStarRating";
+
+const ListDetailsDataField = ({
+  label,
+  value,
+}: {
+  label: ReactNode | string;
+  value: ReactNode | string;
+}) => {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-stone-400">{label}</span>
+      {value}
+    </div>
+  );
+};
 
 const ListPage = () => {
   const queryClient = useQueryClient();
@@ -70,9 +88,47 @@ const ListPage = () => {
     },
   });
 
+  const thumbnail =
+    listDetails && listDetails.backdrop_path
+      ? getTMDBImageURL(listDetails.backdrop_path, "1920")
+      : NO_IMAGE_LANDSCAPE_PATH;
+
   return (
     <PageContainer>
-      <h1 className="text-white text-3xl mb-4">List {listDetails?.name}</h1>
+      <div className="relative mb-8 rounded-sm overflow-hidden">
+        <img className="h-80 sm:h-80 sm:w-full object-cover" src={thumbnail} />
+        <div className="bg-black/33 w-full h-full absolute top-0"></div>
+
+        <div className="flex flex-col absolute bottom-0 text-white w-full">
+          <div className="p-2 sm:p-4">
+            <h1 className="text-4xl font-bold">{listDetails?.name}</h1>
+            <p className="text-base">
+              {listDetails?.description || "No description."}
+            </p>
+          </div>
+
+          <div className="flex text-sm sm:text-base flex-col sm:flex-row sm:gap-8 sm:items-center sm:bg-black/80 p-2 sm:p-4">
+            <ListDetailsDataField
+              label={"Created by:"}
+              value={listDetails?.created_by.username}
+            />
+            <ListDetailsDataField
+              label={"Shows Count:"}
+              value={listDetails?.item_count}
+            />
+            <ListDetailsDataField
+              label={"Total Runtime:"}
+              value={getDurationString(listDetails?.runtime || 0)}
+            />
+            <ListDetailsDataField
+              label={"Average Rating:"}
+              value={
+                <FiveStarRating rating={listDetails?.average_rating || 0} />
+              }
+            />
+          </div>
+        </div>
+      </div>
 
       <ListContainer>
         {listDetails?.results.map((media) => {
