@@ -3,7 +3,7 @@ import { Media } from "../../misc/types";
 import FiveStarRating from "../../components/FiveStarRating";
 
 import { MEDIA_TYPE_NAME, NO_IMAGE_LANDSCAPE_PATH } from "../../misc/constants";
-import { getTMDBImageURL } from "../../misc/utils";
+import { getGenreNameFromId, getTMDBImageURL } from "../../misc/utils";
 import { BsXLg } from "react-icons/bs";
 
 interface Props {
@@ -28,12 +28,13 @@ const MediaListItem = ({ media }: Props) => {
       </div>
 
       <div className="flex gap-4 items-center">
-        <div className="text-stone-400">
-          {media.first_air_date || media.release_date}
+        <div className="text-white">
+          {new Date(media.first_air_date || media.release_date || 0)
+            .getFullYear()
+            .toString()}
         </div>
         <FiveStarRating rating={media.vote_average} />
       </div>
-
       <div>
         <button className="cursor-pointer hover:text-red-600 text-lg">
           <BsXLg />
