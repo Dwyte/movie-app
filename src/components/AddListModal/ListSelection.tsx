@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { getAccountLists, postListAddItems } from "../../misc/tmdbAPI";
 import { ListDetails, MediaRef } from "../../misc/types";
 import { MEDIA_TYPE_NAME } from "../../misc/constants";
+import VisibilityIcon from "../VisibilityIcon";
 
 interface Props {
   mediaRef: MediaRef;
@@ -67,7 +68,7 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
                 className="secondary-btn rounded-sm text-white font-normal text-lg p-4 sm:text-base sm:p-3"
               >
                 <span className="flex-1 text-left">{listItem.name}</span>
-                {listItem.public ? <BsGlobeAmericas /> : <BsLockFill />}
+                <VisibilityIcon isPublic={listItem.public === 1} />
               </button>
             );
           })}

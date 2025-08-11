@@ -12,6 +12,7 @@ import { NO_IMAGE_LANDSCAPE_PATH } from "../misc/constants";
 import { getDurationString, getTMDBImageURL } from "../misc/utils";
 import FiveStarRating from "../components/FiveStarRating";
 import { BsBoxArrowUpRight, BsPencil, BsPencilSquare } from "react-icons/bs";
+import VisibilityIcon from "../components/VisibilityIcon";
 
 const ListDetailsDataField = ({
   label,
@@ -97,6 +98,8 @@ const ListPage = () => {
     await navigator.clipboard.writeText(window.location.href);
   };
 
+  if (!listDetails) return;
+
   return (
     <PageContainer>
       <div className="relative mb-8 rounded-sm overflow-hidden">
@@ -114,30 +117,31 @@ const ListPage = () => {
 
         <div className="flex flex-col absolute bottom-0 text-white w-full">
           <div className="p-2 sm:p-4">
-            <h1 className="text-4xl font-bold">{listDetails?.name}</h1>
+            <h1 className="text-4xl font-bold flex gap-2 items-center">
+              {listDetails.name}
+            </h1>
             <p className="text-base">
-              {listDetails?.description || "No description."}
+              {listDetails.description || "No description."}
             </p>
           </div>
 
           <div className="flex text-sm sm:text-base flex-col sm:flex-row sm:gap-8 sm:items-center sm:bg-black/80 p-2 sm:p-4">
+            <VisibilityIcon isPublic={listDetails.public} showLabel />
             <ListDetailsDataField
               label={"Created by:"}
-              value={listDetails?.created_by.username}
+              value={listDetails.created_by.username}
             />
             <ListDetailsDataField
               label={"Shows Count:"}
-              value={listDetails?.item_count}
+              value={listDetails.item_count}
             />
             <ListDetailsDataField
               label={"Total Runtime:"}
-              value={getDurationString(listDetails?.runtime || 0)}
+              value={getDurationString(listDetails.runtime)}
             />
             <ListDetailsDataField
               label={"Average Rating:"}
-              value={
-                <FiveStarRating rating={listDetails?.average_rating || 0} />
-              }
+              value={<FiveStarRating rating={listDetails.average_rating} />}
             />
           </div>
         </div>

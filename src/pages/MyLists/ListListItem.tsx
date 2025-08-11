@@ -6,6 +6,7 @@ import { NO_IMAGE_LANDSCAPE_PATH } from "../../misc/constants";
 import { getTMDBImageURL } from "../../misc/utils";
 
 import { BsGlobeAmericas, BsLockFill } from "react-icons/bs";
+import VisibilityIcon from "../../components/VisibilityIcon";
 
 interface Props {
   listItem: List;
@@ -34,7 +35,7 @@ const ListListItem = ({ listItem }: Props) => {
         rating={listItem.average_rating}
       />
       <div className="text-sm">
-        {listItem.public ? <BsGlobeAmericas /> : <BsLockFill />}
+        <VisibilityIcon isPublic={listItem?.public === 1} />
       </div>
     </div>
   );
