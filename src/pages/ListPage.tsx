@@ -16,7 +16,7 @@ const ListPage = () => {
   const params = useParams();
 
   const listId = params?.listId ? parseInt(params?.listId) : null;
-  const queryKey = ["list", listId];
+  const queryKey = ["listDetails", listId];
 
   const { data: listDetails } = useQuery({
     enabled: !!authDetails && !!listId,
@@ -27,6 +27,7 @@ const ListPage = () => {
       const response = await getListDetails(authDetails?.accessToken, listId);
       return response;
     },
+    staleTime: 1000 * 60 * 10,
   });
 
   const deleteMutation = useMutation({

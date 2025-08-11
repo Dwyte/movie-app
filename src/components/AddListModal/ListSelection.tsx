@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BsGlobeAmericas, BsLockFill, BsPlusLg, BsXLg } from "react-icons/bs";
 import { useAuth } from "../../contexts/AuthContext";
 import { getAccountLists, postListAddItems } from "../../misc/tmdbAPI";
-import { MediaRef } from "../../misc/types";
+import { ListDetails, MediaRef } from "../../misc/types";
 import { MEDIA_TYPE_NAME } from "../../misc/constants";
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
 
 const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
   const { authDetails, isLoggedIn } = useAuth();
+  const queryClient = useQueryClient();
 
   const { data: userLists } = useQuery({
     enabled: isLoggedIn,
@@ -30,21 +31,21 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
     },
   });
 
-  const handleSelect = async (listId: number) => {
-    if (!authDetails) return;
-
-    const response = await postListAddItems(authDetails?.accessToken, listId, [
-      mediaRef,
-    ]);
-
-    if (response.success) {
+  const listAddItemsMutation = useMutation({
+    mutationFn: (listId: number) => {
+      if (!authDetails) throw Error("Unauthorized");
+      return postListAddItems(authDetails.accessToken, listId, [mediaRef]);
+    },
+    onMutate: (listId: number) => {
+      queryClient.invalidateQueries({ queryKey: ["listDetails", listId] });
+    },
+    onSuccess: (response) => {
       alert(response.status_message);
-    } else {
-      console.error(response);
-    }
+      onClose();
+    },
+  });
 
-    onClose();
-  };
+  const handleSelect = (listId: number) => listAddItemsMutation.mutate(listId);
 
   return (
     <>
