@@ -70,8 +70,6 @@ const ListPage = () => {
     },
   });
 
-  console.log(listDetails);
-
   return (
     <PageContainer>
       <h1 className="text-white text-3xl mb-4">List {listDetails?.name}</h1>
@@ -79,7 +77,7 @@ const ListPage = () => {
       <ListContainer>
         {listDetails?.results.map((media) => {
           return (
-            <ListItem>
+            <ListItem key={media.id}>
               <MediaListItem
                 media={media}
                 onDelete={() =>

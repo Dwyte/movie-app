@@ -16,11 +16,11 @@ const FiveStarRating = ({ rating, ...rest }: Props) => {
     <div {...rest}>
       <div className="text-red-600 flex gap-1">
         {Array.from({ length: fullStarsCount }, (v, k) => (
-          <BsStarFill />
+          <BsStarFill key={k} />
         ))}
         {halfStarsCount === 1 && <BsStarHalf />}
         {Array.from({ length: Math.floor(emptyStarsCount) }, (v, k) => (
-          <BsStar />
+          <BsStar key={fullStarsCount + halfStarsCount + k} />
         ))}
       </div>
     </div>
