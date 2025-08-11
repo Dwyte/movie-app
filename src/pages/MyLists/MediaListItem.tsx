@@ -1,4 +1,4 @@
-import { Media } from "../../misc/types";
+import { Media, MediaRef } from "../../misc/types";
 
 import FiveStarRating from "../../components/FiveStarRating";
 
@@ -9,9 +9,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 interface Props {
   media: Media;
+  onDelete: () => void;
+  isDeleting: boolean;
 }
 
-const MediaListItem = ({ media }: Props) => {
+const MediaListItem = ({ media, isDeleting, onDelete }: Props) => {
   const thumbnail = media.backdrop_path
     ? getTMDBImageURL(media.backdrop_path)
     : NO_IMAGE_LANDSCAPE_PATH;
@@ -48,8 +50,12 @@ const MediaListItem = ({ media }: Props) => {
         </div>
         <FiveStarRating rating={media.vote_average} />
       </div>
-      <div>
-        <button className="cursor-pointer hover:text-red-600 text-lg">
+      <div onClick={(e) => e.stopPropagation()}>
+        <button
+          onClick={onDelete}
+          className="cursor-pointer hover:text-red-600 text-lg"
+          disabled={isDeleting}
+        >
           <BsXLg />
         </button>
       </div>
