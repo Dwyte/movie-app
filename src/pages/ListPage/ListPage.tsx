@@ -180,7 +180,7 @@ const ListPage = () => {
         <div className="bg-black/33 w-full h-full absolute top-0"></div>
 
         {isUserOwner && (
-          <div className="absolute top-0 right-0 p-4 flex flex-col gap-2">
+          <div className="absolute top-0 right-0 p-4 flex flex-col gap-2 z-1000">
             <button onClick={handleShare} className="secondary-icon-btn p-3">
               <BsBoxArrowUpRight />
             </button>
