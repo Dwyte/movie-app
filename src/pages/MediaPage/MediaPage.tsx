@@ -22,6 +22,7 @@ import MediaPageDetailsSection from "./MediaPageDetailsSection";
 import MediaPageCastsSection from "./MediaPageCastsSection";
 import MediaPageEpisodesSection from "./MediaPageEpisodesSection";
 import { useAddListModal } from "../../contexts/AddListModalContext";
+import DisableBodyScroll from "../../components/DisableBodyScroll";
 
 interface Props {
   mediaType: MediaType;
@@ -58,14 +59,6 @@ const MediaPage = ({ mediaType }: Props) => {
     },
   });
 
-  // Disable main body scrolling
-  useEffect(() => {
-    document.body.style.overflowY = "hidden";
-    return () => {
-      document.body.style.overflowY = "scroll";
-    };
-  }, []);
-
   // Scroll to the Top when selecting a new Media to view from related media section.
   useEffect(() => {
     const resetScroll = () => {
@@ -88,6 +81,7 @@ const MediaPage = ({ mediaType }: Props) => {
       onClick={closeModal}
       className="flex justify-center fixed inset-0 text-white z-10000 bg-black/60"
     >
+      <DisableBodyScroll />
       <div
         ref={modalRef}
         onClick={(e) => e.stopPropagation()}

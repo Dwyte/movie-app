@@ -3,6 +3,7 @@ import { MediaRef } from "../../misc/types";
 import ListSelection from "./ListSelection";
 import ListCreation from "./ListCreation";
 import ModalContainer from "../ModalContainer";
+import DisableBodyScroll from "../DisableBodyScroll";
 
 enum AddListModalStates {
   LIST_SELECTION,
@@ -28,16 +29,9 @@ const AddListModal = ({ mediaRef, onClose }: Props) => {
     onClose();
   };
 
-  // Disable main body scrolling
-  useEffect(() => {
-    document.body.style.overflowY = "hidden";
-    return () => {
-      document.body.style.overflowY = "scroll";
-    };
-  }, []);
-
   return (
     <ModalContainer onClose={handleClose}>
+      <DisableBodyScroll />
       {currentState === AddListModalStates.LIST_SELECTION && (
         <ListSelection
           mediaRef={mediaRef}

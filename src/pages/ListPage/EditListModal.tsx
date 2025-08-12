@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { putUpdateList } from "../../misc/tmdbAPI";
 import { useAuth } from "../../contexts/AuthContext";
 import { EditListState } from "./ListPage";
+import DisableBodyScroll from "../../components/DisableBodyScroll";
 
 interface Props {
   listDetails: ListDetails;
@@ -22,7 +23,7 @@ const ListBackdropEdit = ({
 }: Props) => {
   const queryClient = useQueryClient();
   const { authDetails } = useAuth();
-  
+
   const [selectedBackdrop, setSelectedBackdrop] = useState(
     listDetails.backdrop_path
   );
@@ -46,9 +47,10 @@ const ListBackdropEdit = ({
 
   if (currentState === null) return null;
   if (!authDetails) return null;
-  
+
   return (
     <ModalContainer onClose={onClose}>
+      <DisableBodyScroll />
       <div className="flex flex-col gap-4">
         <h2 className="m-0">Choose Cover Photo:</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 max-w-200 gap-2 max-h-120 scrollable rounded-sm">
