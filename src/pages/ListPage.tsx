@@ -176,9 +176,9 @@ const ListPage = () => {
       </div>
 
       <ListContainer>
-        {listDetails?.results.map((media) => {
+        {listDetails?.results.map((media, index) => {
           return (
-            <ListItem key={media.id}>
+            <ListItem index={index + 1} key={media.id}>
               <MediaListItem
                 media={media}
                 onDelete={isUserOwner ? deleteListItemMutation.mutate : null}

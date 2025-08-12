@@ -56,7 +56,7 @@ const MediaListItem = ({ media, isDeleting, onDelete }: Props) => {
             onClick={() =>
               onDelete({ media_id: media.id, media_type: media.media_type })
             }
-            className="cursor-pointer hover:text-red-600 text-lg"
+            className="cursor-pointer flex items-center justify-center hover:text-red-600 text-lg"
             disabled={isDeleting}
           >
             <BsXLg />

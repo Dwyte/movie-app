@@ -32,9 +32,9 @@ const MyLists = () => {
     <PageContainer>
       <h1 className="text-3xl text-white mb-2 sm:mb-6">My Lists</h1>
       <ListContainer>
-        {userLists?.map((listItem) => (
+        {userLists?.map((listItem, index) => (
           <Link key={listItem.id} to={`/list/${listItem.id}`}>
-            <ListItem>
+            <ListItem index={index + 1}>
               <ListListItem listItem={listItem} />
             </ListItem>
           </Link>
