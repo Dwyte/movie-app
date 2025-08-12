@@ -296,9 +296,11 @@ export const postCreateList = async (
 
 export const getAccountLists = async (
   accessToken: string,
-  accountId: string
+  accountId: string,
+  page?: number
 ): Promise<AccountLists> => {
   const url = new URL(`${API_BASE_URL_V4}/account/${accountId}/lists`);
+  if (page) url.searchParams.append("page", encodeURIComponent(page));
   return await get(url, accessToken);
 };
 

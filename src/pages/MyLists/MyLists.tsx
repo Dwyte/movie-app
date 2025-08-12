@@ -8,38 +8,52 @@ import ListListItem from "./ListListItem";
 import ListContainer from "./ListContainer";
 import PageContainer from "../../components/PageContainer";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import ListPagination from "../../components/ListPagination";
 
 const MyLists = () => {
   const { authDetails, isLoggedIn } = useAuth();
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { data: userLists } = useQuery({
     enabled: isLoggedIn,
     initialData: null,
-    queryKey: ["lists", authDetails?.accountId],
+    queryKey: ["lists", authDetails?.accountId, currentPage],
     queryFn: async () => {
       if (!authDetails) return null;
 
       const response = await getAccountLists(
         authDetails.accessToken,
-        authDetails.accountId
+        authDetails.accountId,
+        currentPage
       );
 
-      return response.results;
+      return response;
     },
   });
+
+  if (!userLists) return;
 
   return (
     <PageContainer>
       <h1 className="text-3xl text-white mb-2 sm:mb-6">My Lists</h1>
-      <ListContainer>
-        {userLists?.map((listItem, index) => (
-          <Link key={listItem.id} to={`/list/${listItem.id}`}>
-            <ListItem index={index + 1}>
-              <ListListItem listItem={listItem} />
-            </ListItem>
-          </Link>
-        ))}
-      </ListContainer>
+      <div className="flex flex-col gap-4">
+        <ListContainer>
+          {userLists.results.map((listItem, index) => (
+            <Link key={listItem.id} to={`/list/${listItem.id}`}>
+              <ListItem index={index + 1}>
+                <ListListItem listItem={listItem} />
+              </ListItem>
+            </Link>
+          ))}
+        </ListContainer>
+        <ListPagination
+          currentPage={currentPage}
+          totalPages={userLists.total_pages}
+          onPrevPage={() => setCurrentPage((p) => p - 1)}
+          onNextPage={() => setCurrentPage((p) => p + 1)}
+        />
+      </div>
     </PageContainer>
   );
 };
