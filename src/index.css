@@ -20,6 +20,10 @@
     @apply rounded-sm py-2 px-3 text-stone-100 font-semibold cursor-pointer bg-stone-800 flex items-center hover:invert-100;
   }
 
+  .input {
+    @apply w-full text-white p-4 bg-stone-700 rounded-sm outline-0;
+  }
+
   .primary-icon-btn {
     @apply rounded-full text-stone-900 bg-white border-[1px] p-2 flex cursor-pointer items-center hover:opacity-50 hover:invert-100 hover:border-white/0;
   }

@@ -8,6 +8,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { EditListState } from "./ListPage";
 import DisableBodyScroll from "../../components/DisableBodyScroll";
 import EditListBackdrop from "./EditListBackdrop";
+import EditListDetails from "./EditListDetails";
 
 interface Props {
   listDetails: ListDetails;
@@ -58,6 +59,12 @@ const ListBackdropEdit = ({
             setListOptions={setListOptions}
             currentListBackdrop={listDetails.backdrop_path}
             listResults={listResults}
+          />
+        )}
+        {currentState === EditListState.DETAILS && (
+          <EditListDetails
+            listDetails={listDetails}
+            setListOptions={setListOptions}
           />
         )}
 

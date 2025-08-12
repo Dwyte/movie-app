@@ -446,7 +446,7 @@ export interface ListDetails {
   name: string;
   page: number;
   poster_path: string;
-  public: true;
+  public: boolean;
   revenue: number;
   runtime: number;
   sort_by: string;

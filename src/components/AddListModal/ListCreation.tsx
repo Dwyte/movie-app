@@ -58,7 +58,7 @@ const ListCreation = ({ mediaRef, onClose }: Props) => {
         <input
           value={listName}
           onChange={(e) => setListName(e.target.value)}
-          className="w-full text-white p-4 bg-stone-700 rounded-sm outline-0"
+          className="input"
           type="text"
           placeholder="Choose a Title"
           autoFocus

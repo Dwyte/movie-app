@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BsBoxArrowUpRight, BsPencilSquare, BsTrash } from "react-icons/bs";
+import { BsBoxArrowUpRight, BsImages, BsPencilSquare, BsTrash } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 
@@ -188,6 +188,12 @@ const ListPage = () => {
               onClick={() => setCurrentEditState(EditListState.BACKDROP)}
               className="secondary-icon-btn p-3"
             >
+              <BsImages />
+            </button>
+            <button
+              onClick={() => setCurrentEditState(EditListState.DETAILS)}
+              className="secondary-icon-btn p-3"
+            >
               <BsPencilSquare />
             </button>
             <button
@@ -209,7 +215,7 @@ const ListPage = () => {
             </p>
           </div>
 
-          <div className="flex text-sm sm:text-base flex-col sm:flex-row sm:gap-8 sm:items-center sm:bg-black/80 p-2 sm:p-4">
+          <div className="flex bg-gradient-to-t from-black via-60% via-black/50 to-black/0 text-sm lg:text-base flex-col md:flex-row md:gap-4 lg:gap-8 md:items-center md:bg-none md:bg-black/75 p-2 md:p-4">
             <VisibilityIcon isPublic={listDetails.public} showLabel />
             <StyledKeyValue
               label={"Created by:"}
