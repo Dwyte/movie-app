@@ -472,6 +472,7 @@ export interface ListOptions {
     | "title.desc"
     | "vote_average.asc"
     | "vote_average.desc";
+  backdrop_path?: string;
 }
 
 export interface List {
