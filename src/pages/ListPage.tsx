@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import { useState } from "react";
 import PageContainer from "../components/PageContainer";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,64 +11,10 @@ import { ListDetails, MediaRef } from "../misc/types";
 import { NO_IMAGE_LANDSCAPE_PATH } from "../misc/constants";
 import { getDurationString, getTMDBImageURL } from "../misc/utils";
 import FiveStarRating from "../components/FiveStarRating";
-import {
-  BsBoxArrowUpRight,
-  BsChevronLeft,
-  BsChevronRight,
-  BsPencilSquare,
-  BsTrash,
-} from "react-icons/bs";
+import { BsBoxArrowUpRight, BsPencilSquare, BsTrash } from "react-icons/bs";
 import VisibilityIcon from "../components/VisibilityIcon";
-
-const ListPagination = ({
-  currentPage,
-  totalPages,
-  onPrevPage,
-  onNextPage,
-}: {
-  currentPage: number;
-  totalPages: number;
-  onPrevPage: () => void;
-  onNextPage: () => void;
-}) => {
-  return (
-    <div className="flex justify-center text-white gap-1 items-center">
-      <button
-        onClick={onPrevPage}
-        className="secondary-btn"
-        disabled={currentPage === 1}
-      >
-        <BsChevronLeft />
-      </button>
-      <div className="px-4 py-1 flex gap-2 bg-stone-800 rounded-sm">
-        <span>{currentPage}</span> OF
-        <span>{totalPages}</span>
-      </div>
-      <button
-        onClick={onNextPage}
-        className="secondary-btn"
-        disabled={currentPage === totalPages}
-      >
-        <BsChevronRight />
-      </button>
-    </div>
-  );
-};
-
-const ListDetailsDataField = ({
-  label,
-  value,
-}: {
-  label: ReactNode | string;
-  value: ReactNode | string;
-}) => {
-  return (
-    <div className="flex items-center gap-2">
-      <span className="text-stone-400">{label}</span>
-      {value}
-    </div>
-  );
-};
+import ListPagination from "../components/ListPagination";
+import StyledKeyValue from "../components/StyledKeyValue";
 
 const ListPage = () => {
   const queryClient = useQueryClient();
@@ -205,19 +151,20 @@ const ListPage = () => {
 
           <div className="flex text-sm sm:text-base flex-col sm:flex-row sm:gap-8 sm:items-center sm:bg-black/80 p-2 sm:p-4">
             <VisibilityIcon isPublic={listDetails.public} showLabel />
-            <ListDetailsDataField
+            <StyledKeyValue
               label={"Created by:"}
               value={listDetails.created_by.username}
             />
-            <ListDetailsDataField
+            <StyledKeyValue
               label={"Shows Count:"}
               value={listDetails.item_count}
             />
-            <ListDetailsDataField
+            <StyledKeyValue
               label={"Total Runtime:"}
               value={getDurationString(listDetails.runtime)}
             />
-            <ListDetailsDataField
+            <StyledKeyValue
+              className="items-center"
               label={"Average Rating:"}
               value={<FiveStarRating rating={listDetails.average_rating} />}
             />
@@ -226,16 +173,6 @@ const ListPage = () => {
       </div>
 
       <div className="flex flex-col justify-center gap-4">
-        <ListPagination
-          totalPages={listDetails.total_pages}
-          currentPage={listDetails.page}
-          onNextPage={() => {
-            setCurrentPage((prev) => prev + 1);
-          }}
-          onPrevPage={() => {
-            setCurrentPage((prev) => prev - 1);
-          }}
-        />
         <ListContainer>
           {listDetails?.results.map((media, index) => {
             return (
@@ -252,6 +189,16 @@ const ListPage = () => {
             );
           })}
         </ListContainer>
+        <ListPagination
+          totalPages={listDetails.total_pages}
+          currentPage={listDetails.page}
+          onNextPage={() => {
+            setCurrentPage((prev) => prev + 1);
+          }}
+          onPrevPage={() => {
+            setCurrentPage((prev) => prev - 1);
+          }}
+        />
       </div>
     </PageContainer>
   );

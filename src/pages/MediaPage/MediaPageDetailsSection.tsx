@@ -14,6 +14,7 @@ import {
 import { getDurationString, shortenParagraph } from "../../misc/utils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTrendingMediaItems } from "../../misc/tmdbAPI";
+import StyledKeyValue from "../../components/StyledKeyValue";
 
 interface Props {
   mediaItemDetails: MediaDetails | null;
@@ -106,31 +107,26 @@ const MediaPageDetailsSection = ({
         </p>
       </div>
 
-      <div className="flex flex-col gap-2 sm:flex-2">
+      <div className="flex flex-col gap-2 sm:flex-2 text-sm">
         {mediaItemCredits && mediaItemCredits?.cast.length > 0 && (
-          <div className="text-sm text-stone-400">
-            Casts: &#32;
-            <span className="text-white">
-              {mediaItemCredits.cast
-                .slice(0, 3)
-                .map((cast) => cast.name)
-                .join(", ")}
-            </span>
-          </div>
+          <StyledKeyValue
+            label="Casts: "
+            value={mediaItemCredits.cast
+              .slice(0, 3)
+              .map((cast) => cast.name)
+              .join(", ")}
+          />
         )}
         {director && (
-          <div className="text-sm text-stone-400">
-            Director: &#32;
-            <span className="text-white">{director.name}</span>
-          </div>
+          <StyledKeyValue label="Director: " value={director.name} />
         )}
-        <div className="text-sm text-stone-400">
-          Genres: &#32;
-          <span className="text-white">
-            {mediaItemDetails &&
-              mediaItemDetails.genres.map((genre) => genre.name).join(", ")}
-          </span>
-        </div>
+        <StyledKeyValue
+          label="Genres: "
+          value={
+            mediaItemDetails &&
+            mediaItemDetails.genres.map((g) => g.name).join(", ")
+          }
+        />
       </div>
     </div>
   );
