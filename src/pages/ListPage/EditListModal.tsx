@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import ModalContainer from "../../components/ModalContainer";
-import { ListDetails, Media } from "../../misc/types";
+import { ListDetails, ListOptions, Media } from "../../misc/types";
 import { getTMDBImageURL } from "../../misc/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { putUpdateList } from "../../misc/tmdbAPI";
 import { useAuth } from "../../contexts/AuthContext";
 import { EditListState } from "./ListPage";
 import DisableBodyScroll from "../../components/DisableBodyScroll";
+import EditListBackdrop from "./EditListBackdrop";
 
 interface Props {
   listDetails: ListDetails;
@@ -24,17 +25,17 @@ const ListBackdropEdit = ({
   const queryClient = useQueryClient();
   const { authDetails } = useAuth();
 
-  const [selectedBackdrop, setSelectedBackdrop] = useState(
-    listDetails.backdrop_path
-  );
+  const [listOptions, setListOptions] = useState<Partial<ListOptions>>({});
 
   const updateListBackdrop = useMutation({
     mutationFn: async () => {
       if (!authDetails) return;
 
-      await putUpdateList(authDetails?.accessToken, listDetails.id, {
-        backdrop_path: selectedBackdrop,
-      });
+      await putUpdateList(
+        authDetails?.accessToken,
+        listDetails.id,
+        listOptions
+      );
     },
     onSettled: () => {
       queryClient.invalidateQueries({
@@ -52,38 +53,22 @@ const ListBackdropEdit = ({
     <ModalContainer onClose={onClose}>
       <DisableBodyScroll />
       <div className="flex flex-col gap-4">
-        <h2 className="m-0">Choose Cover Photo:</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 max-w-200 gap-2 max-h-120 scrollable rounded-sm">
-          {listResults.map((media) => {
-            if (!media.backdrop_path) return;
-            return (
-              <div
-                key={media.id}
-                onClick={() => setSelectedBackdrop(media.backdrop_path)}
-                className="relative flex items-center justify-center rounded-sm overflow-hidden cursor-pointer hover:brightness-75 transition duration-200"
-              >
-                <img
-                  className="rounded-sm"
-                  src={getTMDBImageURL(media.backdrop_path)}
-                />
+        {currentState === EditListState.BACKDROP && (
+          <EditListBackdrop
+            setListOptions={setListOptions}
+            currentListBackdrop={listDetails.backdrop_path}
+            listResults={listResults}
+          />
+        )}
 
-                {selectedBackdrop === media.backdrop_path && (
-                  <div className="absolute bg-black font-bold text-white w-full p-1 text-center sm:p-2 sm:text-lg">
-                    SELECTED
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex h-12 text-lg flex-row-reverse [&>*]:flex-1 gap-2">
           <button
             onClick={() => updateListBackdrop.mutate()}
-            className="primary-btn"
+            className="primary-btn justify-center"
           >
             Save
           </button>
-          <button onClick={onClose} className="secondary-btn">
+          <button onClick={onClose} className="secondary-btn justify-center">
             Cancel
           </button>
         </div>
