@@ -28,13 +28,14 @@ import {
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
-const API_BASE_URL = "https://api.themoviedb.org/3";
+const API_BASE_URL_V3 = "https://api.themoviedb.org/3";
 const API_BASE_URL_V4 = "https://api.themoviedb.org/4";
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+const API_KEY_V4 = import.meta.env.VITE_TMDB_API_KEY;
+
 const HEADERS = {
   accept: "application/json",
   "Content-Type": "application/json",
-  Authorization: `Bearer ${API_KEY}`,
+  Authorization: `Bearer ${API_KEY_V4}`,
 };
 
 const normalizedAPIResult = (
@@ -80,7 +81,7 @@ export const getDiscoverMediaItems = async (
 ): Promise<TMDBGetMediaAPIResponse<Media>> => {
   const urlSearchParams = new URLSearchParams(toSearchParams(queryParams));
   const url = new URL(
-    `${API_BASE_URL}/discover/${mediaType}?${urlSearchParams.toString()}`
+    `${API_BASE_URL_V3}/discover/${mediaType}?${urlSearchParams.toString()}`
   );
 
   const response = (await get(url)) as TMDBGetMediaAPIResponse<TV | Movie>;
@@ -98,7 +99,7 @@ export const getSearchMediaItems = async (
   mediaType: MediaType,
   query: string
 ): Promise<TMDBGetMediaAPIResponse<Media>> => {
-  const url = new URL(`${API_BASE_URL}/search/${mediaType}`);
+  const url = new URL(`${API_BASE_URL_V3}/search/${mediaType}`);
   url.searchParams.append("query", query);
 
   const response = (await get(url)) as TMDBGetMediaAPIResponse<TV | Movie>;
@@ -116,7 +117,7 @@ export const getTrendingMediaItems = async (
   mediaType: MediaType,
   timeWindow: TimeWindow
 ): Promise<TMDBGetMediaAPIResponse<Media>> => {
-  const url = new URL(`${API_BASE_URL}/trending/${mediaType}/${timeWindow}`);
+  const url = new URL(`${API_BASE_URL_V3}/trending/${mediaType}/${timeWindow}`);
 
   const response = (await get(url)) as TMDBGetMediaAPIResponse<TV | Movie>;
 
@@ -133,7 +134,7 @@ export const getMediaItemImages = async (
   mediaType: MediaType,
   mediaItemId: number
 ): Promise<MediaImagesResult> => {
-  const url = new URL(`${API_BASE_URL}/${mediaType}/${mediaItemId}/images`);
+  const url = new URL(`${API_BASE_URL_V3}/${mediaType}/${mediaItemId}/images`);
 
   const response = await get(url);
 
@@ -150,7 +151,7 @@ export const getMediaItemDetails = async (
   mediaType: MediaType,
   mediaItemId: number
 ): Promise<MediaDetails> => {
-  const url = new URL(`${API_BASE_URL}/${mediaType}/${mediaItemId}`);
+  const url = new URL(`${API_BASE_URL_V3}/${mediaType}/${mediaItemId}`);
 
   const response = await get(url);
 
@@ -168,7 +169,7 @@ export const getMediaItemWatchProviders = async (
   mediaId: number
 ): Promise<WatchProvidersAPIResults> => {
   const url = new URL(
-    `${API_BASE_URL}/${mediaType}/${mediaId}/watch/providers`
+    `${API_BASE_URL_V3}/${mediaType}/${mediaId}/watch/providers`
   );
   return await get(url);
 };
@@ -183,7 +184,7 @@ export const getMediaItemCredits = async (
   mediaType: MediaType,
   mediaId: number
 ): Promise<MediaCreditsAPIResult> => {
-  const url = new URL(`${API_BASE_URL}/${mediaType}/${mediaId}/credits`);
+  const url = new URL(`${API_BASE_URL_V3}/${mediaType}/${mediaId}/credits`);
   return await get(url);
 };
 
@@ -191,12 +192,12 @@ export const getTVSeasonDetails = async (
   tvId: number,
   seasonNumber: number
 ): Promise<TVSeasonDetailsAPIResult> => {
-  const url = new URL(`${API_BASE_URL}/tv/${tvId}/season/${seasonNumber}`);
+  const url = new URL(`${API_BASE_URL_V3}/tv/${tvId}/season/${seasonNumber}`);
   return await get(url);
 };
 
 export const getCreateGuestSession = async () => {
-  const url = new URL(`${API_BASE_URL}/authentication/guest_session/new`);
+  const url = new URL(`${API_BASE_URL_V3}/authentication/guest_session/new`);
   return await get(url);
 };
 
@@ -240,7 +241,7 @@ export const deleteLogoutAccessToken = async (accessToken: string) => {
 };
 
 export const deleteLogoutSession = async (sessionId: string) => {
-  const url = new URL(`${API_BASE_URL}/authentication/session`);
+  const url = new URL(`${API_BASE_URL_V3}/authentication/session`);
   const response = await fetch(url, {
     method: "DELETE",
     body: JSON.stringify({ session_id: sessionId }),
@@ -252,7 +253,7 @@ export const deleteLogoutSession = async (sessionId: string) => {
 export const postCreateSessionFromV4Token = async (
   accessToken: string
 ): Promise<TMDBSession> => {
-  const url = new URL(`${API_BASE_URL}/authentication/session/convert/4`);
+  const url = new URL(`${API_BASE_URL_V3}/authentication/session/convert/4`);
   const response = await fetch(url, {
     method: "POST",
     body: JSON.stringify({ access_token: accessToken }),
@@ -266,7 +267,7 @@ export const getAccountDetails = async (
   accountId: string,
   sessionId: string
 ): Promise<AccountDetails> => {
-  const url = new URL(`${API_BASE_URL}/account/${accountId}`);
+  const url = new URL(`${API_BASE_URL_V3}/account/${accountId}`);
   url.searchParams.append("session_id", sessionId);
   return await get(url);
 };
@@ -307,7 +308,7 @@ export const getListDetails = async (
   url.searchParams.append("page", encodeURIComponent(page));
   url.searchParams.append("language", encodeURIComponent(language));
 
-  const token = accessToken ? accessToken : API_KEY;
+  const token = accessToken ? accessToken : API_KEY_V4;
 
   const response = await fetch(url, {
     method: "GET",
