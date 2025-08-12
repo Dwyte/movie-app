@@ -30,12 +30,12 @@ import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
 const API_BASE_URL_V3 = "https://api.themoviedb.org/3";
 const API_BASE_URL_V4 = "https://api.themoviedb.org/4";
-const API_KEY_V4 = import.meta.env.VITE_TMDB_API_KEY;
+const API_KEY_V4 = import.meta.env.VITE_TMDB_API_KEY_V4;
+const API_KEY_V3 = import.meta.env.VITE_TMDB_API_KEY_V3;
 
-const HEADERS = {
+const HEADERS: Record<string, string> = {
   accept: "application/json",
   "Content-Type": "application/json",
-  Authorization: `Bearer ${API_KEY_V4}`,
 };
 
 const normalizedAPIResult = (
@@ -47,11 +47,19 @@ const normalizedAPIResult = (
   };
 };
 
-const get = async (url: URL): Promise<any> => {
-  const response = await fetch(url, { method: "GET", headers: HEADERS });
+const get = async (url: URL, accessToken?: string): Promise<any> => {
+  url.searchParams.append("api_key", API_KEY_V3);
+
+  const headers = HEADERS;
+  if (accessToken) {
+    headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+  const response = await fetch(url, { method: "GET", headers });
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}`);
   }
+
   return await response.json();
 };
 
@@ -211,7 +219,7 @@ export const postCreateAccessToken = async (
   const url = new URL(`${API_BASE_URL_V4}/auth/access_token`);
   const response = await fetch(url, {
     method: "POST",
-    headers: HEADERS,
+    headers: { ...HEADERS, Authorization: `Bearer ${API_KEY_V4}` },
     body: JSON.stringify({ request_token: requestToken }),
   });
   return await response.json();
@@ -225,7 +233,7 @@ export const postCreateRequestToken = async (): Promise<TMDBRequestToken> => {
   const url = new URL(`${API_BASE_URL_V4}/auth/request_token`);
   const response = await fetch(url, {
     method: "POST",
-    headers: HEADERS,
+    headers: { ...HEADERS, Authorization: `Bearer ${API_KEY_V4}` },
   });
   return await response.json();
 };
@@ -291,11 +299,7 @@ export const getAccountLists = async (
   accountId: string
 ): Promise<AccountLists> => {
   const url = new URL(`${API_BASE_URL_V4}/account/${accountId}/lists`);
-  const response = await fetch(url, {
-    method: "GET",
-    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
-  });
-  return await response.json();
+  return await get(url, accessToken);
 };
 
 export const getListDetails = async (
@@ -308,14 +312,8 @@ export const getListDetails = async (
   url.searchParams.append("page", encodeURIComponent(page));
   url.searchParams.append("language", encodeURIComponent(language));
 
-  const token = accessToken ? accessToken : API_KEY_V4;
+  const listDetails = await get(url, accessToken);
 
-  const response = await fetch(url, {
-    method: "GET",
-    headers: { ...HEADERS, Authorization: `Bearer ${token}` },
-  });
-
-  const listDetails = await response.json();
   const normalizedResults = listDetails.results.map((media: TV | Movie) =>
     normalizeMedia(media)
   );
@@ -366,12 +364,7 @@ export const getListItemStatus = async (
   url.searchParams.append("media_id", encodeURIComponent(item.media_id));
   url.searchParams.append("media_type", encodeURIComponent(item.media_type));
 
-  const response = await fetch(url, {
-    method: "GET",
-    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
-  });
-
-  return await response.json();
+  return await get(url, accessToken);
 };
 
 export const deleteList = async (
@@ -394,12 +387,7 @@ export const getListClearItems = async (
 ): Promise<TMDBListClearItemsResponse> => {
   const url = new URL(`${API_BASE_URL_V4}/list/${listId}/clear`);
 
-  const response = await fetch(url, {
-    method: "GET",
-    headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
-  });
-
-  return await response.json();
+  return await get(url, accessToken);
 };
 
 export const putUpdateList = async (
