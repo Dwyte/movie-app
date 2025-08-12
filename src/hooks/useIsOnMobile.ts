@@ -1,5 +1,3 @@
-import React from "react";
-
 const mobileRegex = /Mobi|Android|iPhone|iPad|iPod/i;
 
 const useIsOnMobile = () => {

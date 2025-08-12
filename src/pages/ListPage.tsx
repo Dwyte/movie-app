@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import PageContainer from "../components/PageContainer";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteListItems, getListDetails } from "../misc/tmdbAPI";
+import { deleteList, deleteListItems, getListDetails } from "../misc/tmdbAPI";
 import { useAuth } from "../contexts/AuthContext";
 import ListContainer from "./MyLists/ListContainer";
 import ListItem from "./MyLists/ListItem";
@@ -11,7 +11,7 @@ import { ListDetails, MediaRef } from "../misc/types";
 import { NO_IMAGE_LANDSCAPE_PATH } from "../misc/constants";
 import { getDurationString, getTMDBImageURL } from "../misc/utils";
 import FiveStarRating from "../components/FiveStarRating";
-import { BsBoxArrowUpRight, BsPencilSquare } from "react-icons/bs";
+import { BsBoxArrowUpRight, BsPencilSquare, BsTrash } from "react-icons/bs";
 import VisibilityIcon from "../components/VisibilityIcon";
 
 const ListDetailsDataField = ({
@@ -31,8 +31,9 @@ const ListDetailsDataField = ({
 
 const ListPage = () => {
   const queryClient = useQueryClient();
-  const { authDetails, account } = useAuth();
+  const { authDetails } = useAuth();
   const params = useParams();
+  const navigate = useNavigate();
 
   const listId = params?.listId ? parseInt(params?.listId) : null;
   const queryKey = ["listDetails", listId];
@@ -48,7 +49,7 @@ const ListPage = () => {
     staleTime: 1000 * 60 * 10,
   });
 
-  const deleteMutation = useMutation({
+  const deleteListItemMutation = useMutation({
     mutationFn: (mediaRefToDelete: MediaRef) => {
       if (!authDetails?.accessToken) throw Error("Unauthorized");
       if (!listId) throw Error("No List Id");
@@ -88,6 +89,24 @@ const ListPage = () => {
     },
   });
 
+  const deleteListMutation = useMutation({
+    mutationFn: async () => {
+      if (!authDetails) throw Error("Unauthorized.");
+      if (!listId) throw Error("No ListId");
+
+      const response = await deleteList(authDetails.accessToken, listId);
+      return response;
+    },
+    onSettled: () => {
+      // Invalidated User's List cache to refetch and be synced with the server.
+      queryClient.invalidateQueries({
+        queryKey: ["lists", authDetails?.accountId],
+      });
+
+      navigate("/mylists");
+    },
+  });
+
   const thumbnail =
     listDetails && listDetails.backdrop_path
       ? getTMDBImageURL(listDetails.backdrop_path, "1920")
@@ -114,6 +133,12 @@ const ListPage = () => {
             </button>
             <button className="secondary-icon-btn p-3">
               <BsPencilSquare />
+            </button>
+            <button
+              onClick={() => deleteListMutation.mutate()}
+              className="secondary-icon-btn p-3"
+            >
+              <BsTrash />
             </button>
           </div>
         )}
@@ -156,8 +181,8 @@ const ListPage = () => {
             <ListItem key={media.id}>
               <MediaListItem
                 media={media}
-                onDelete={isUserOwner ? deleteMutation.mutate : null}
-                isDeleting={deleteMutation.isPending}
+                onDelete={isUserOwner ? deleteListItemMutation.mutate : null}
+                isDeleting={deleteListItemMutation.isPending}
               />
             </ListItem>
           );
