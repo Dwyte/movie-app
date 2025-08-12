@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import PageContainer from "../components/PageContainer";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,8 +11,49 @@ import { ListDetails, MediaRef } from "../misc/types";
 import { NO_IMAGE_LANDSCAPE_PATH } from "../misc/constants";
 import { getDurationString, getTMDBImageURL } from "../misc/utils";
 import FiveStarRating from "../components/FiveStarRating";
-import { BsBoxArrowUpRight, BsPencilSquare, BsTrash } from "react-icons/bs";
+import {
+  BsBoxArrowUpRight,
+  BsChevronLeft,
+  BsChevronRight,
+  BsPencilSquare,
+  BsTrash,
+} from "react-icons/bs";
 import VisibilityIcon from "../components/VisibilityIcon";
+
+const ListPagination = ({
+  currentPage,
+  totalPages,
+  onPrevPage,
+  onNextPage,
+}: {
+  currentPage: number;
+  totalPages: number;
+  onPrevPage: () => void;
+  onNextPage: () => void;
+}) => {
+  return (
+    <div className="flex justify-center text-white gap-1 items-center">
+      <button
+        onClick={onPrevPage}
+        className="secondary-btn"
+        disabled={currentPage === 1}
+      >
+        <BsChevronLeft />
+      </button>
+      <div className="px-4 py-1 flex gap-2 bg-stone-800 rounded-sm">
+        <span>{currentPage}</span> OF
+        <span>{totalPages}</span>
+      </div>
+      <button
+        onClick={onNextPage}
+        className="secondary-btn"
+        disabled={currentPage === totalPages}
+      >
+        <BsChevronRight />
+      </button>
+    </div>
+  );
+};
 
 const ListDetailsDataField = ({
   label,
@@ -35,15 +76,24 @@ const ListPage = () => {
   const params = useParams();
   const navigate = useNavigate();
 
+  const [currentPage, setCurrentPage] = useState(1);
+
   const listId = params?.listId ? parseInt(params?.listId) : null;
-  const queryKey = ["listDetails", listId];
+  if (!listId) return;
+
+  const queryKey = ["listDetails", listId, currentPage];
 
   const { data: listDetails } = useQuery({
     enabled: !!listId,
     queryKey: queryKey,
-    queryFn: async () => {
-      if (!listId) return null;
-      const response = await getListDetails(listId, authDetails?.accessToken);
+    queryFn: async ({ queryKey }) => {
+      const [_, listId, currentPage] = queryKey as [string, number, number];
+
+      const response = await getListDetails(
+        listId,
+        authDetails?.accessToken,
+        currentPage
+      );
       return response;
     },
     staleTime: 1000 * 60 * 10,
@@ -175,19 +225,34 @@ const ListPage = () => {
         </div>
       </div>
 
-      <ListContainer>
-        {listDetails?.results.map((media, index) => {
-          return (
-            <ListItem index={index + 1} key={media.id}>
-              <MediaListItem
-                media={media}
-                onDelete={isUserOwner ? deleteListItemMutation.mutate : null}
-                isDeleting={deleteListItemMutation.isPending}
-              />
-            </ListItem>
-          );
-        })}
-      </ListContainer>
+      <div className="flex flex-col justify-center gap-4">
+        <ListPagination
+          totalPages={listDetails.total_pages}
+          currentPage={listDetails.page}
+          onNextPage={() => {
+            setCurrentPage((prev) => prev + 1);
+          }}
+          onPrevPage={() => {
+            setCurrentPage((prev) => prev - 1);
+          }}
+        />
+        <ListContainer>
+          {listDetails?.results.map((media, index) => {
+            return (
+              <ListItem
+                index={(currentPage - 1) * 20 + index + 1}
+                key={media.id}
+              >
+                <MediaListItem
+                  media={media}
+                  onDelete={isUserOwner ? deleteListItemMutation.mutate : null}
+                  isDeleting={deleteListItemMutation.isPending}
+                />
+              </ListItem>
+            );
+          })}
+        </ListContainer>
+      </div>
     </PageContainer>
   );
 };
