@@ -11,6 +11,7 @@ interface AuthContextType {
   authDetails: AuthDetails | null;
   account: AccountDetails | null;
   isLoggedIn: boolean;
+  isAuthInitialized: boolean;
   login: (sessionId: string, accessToken: string, accountId: string) => void;
   logout: () => void;
 }
@@ -31,6 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [authDetails, setAuthDetails] = useState<AuthDetails | null>(null);
+  const [isAuthInitialized, setIsAuthInitialized] = useState(false);
 
   const { data: account } = useQuery({
     enabled: !!authDetails,
@@ -53,6 +55,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (sessionId && accessToken && accountId) {
       setAuthDetails({ sessionId, accessToken, accountId });
     }
+
+    setIsAuthInitialized(true);
   }, []);
 
   const login = (sessionId: string, accessToken: string, accountId: string) => {
@@ -81,6 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         authDetails,
         account,
         isLoggedIn: !!authDetails && !!account,
+        isAuthInitialized,
         login,
         logout,
       }}

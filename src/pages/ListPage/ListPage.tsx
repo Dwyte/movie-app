@@ -30,6 +30,7 @@ import ListPagination from "../../components/ListPagination";
 import StyledKeyValue from "../../components/StyledKeyValue";
 import EditListModal from "./EditListModal";
 import ScrollToTop from "../../components/ScrollToTop";
+import EmptyListPlaceholder from "./EmptyListPlaceholder";
 
 export enum EditListState {
   BACKDROP = "BACKDROP",
@@ -283,11 +284,7 @@ const ListPage = () => {
             );
           })}
 
-          {listResults.length === 0 && (
-            <div className="w-full text-lg font-bold text-stone-300 text-center py-8">
-              There are not items in this list.
-            </div>
-          )}
+          {listResults.length === 0 && <EmptyListPlaceholder />}
         </ListContainer>
       </div>
     </PageContainer>
