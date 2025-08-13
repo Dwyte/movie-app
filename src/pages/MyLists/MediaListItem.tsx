@@ -12,6 +12,7 @@ import {
   BsChatLeftDots,
   BsChatSquareDots,
   BsChatText,
+  BsChevronRight,
   BsXLg,
 } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -57,13 +58,13 @@ const MediaListItem = ({
       <img
         src={thumbnail}
         alt=""
-        className="h-32 sm:h-24 rounded-sm sm:rounded-none"
+        className="h-42 sm:h-24 rounded-sm sm:rounded-none"
       />
 
       <div className="flex flex-col gap-4 flex-1">
         <div className="flex gap-8 items-center justify-between">
           <div className="flex flex-col sm:w-50 sm:flex-col">
-            <div className="text-sm sm:text-base">{media.title}</div>
+            <div className="text-base sm:text-base">{media.title}</div>
             <div className="text-stone-500 text-xs sm:text-sm">
               {MEDIA_TYPE_NAME[media.media_type]}
             </div>
@@ -104,6 +105,14 @@ const MediaListItem = ({
                 disabled={isDeleting}
               >
                 <BsXLg />
+              </button>
+            )}
+            {!onComment && !onDelete && (
+              <button
+                onClick={handleOnClick}
+                className="secondary-icon-btn p-2"
+              >
+                <BsChevronRight />
               </button>
             )}
           </div>
