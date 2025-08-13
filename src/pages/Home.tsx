@@ -4,6 +4,7 @@ import HeroSection from "../components/HeroSection";
 import MediaItemsRow from "../components/MediaItemsRow";
 
 import { mediaSectionConfigs } from "../misc/mediaSectionConfigs";
+import ScrollToTop from "../components/ScrollToTop";
 
 const Home = () => {
   const mediaSectionsQueries = useQueries({
@@ -20,6 +21,7 @@ const Home = () => {
 
   return (
     <div>
+      <ScrollToTop />
       <HeroSection />
       <div className="relative">
         <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-200px] sm:pt-6 sm:pb-6">

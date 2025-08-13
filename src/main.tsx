@@ -16,7 +16,6 @@ createRoot(document.getElementById("root") as HTMLElement).render(
       <BrowserRouter>
         <AuthProvider>
           <AddListModalProvider>
-            <ScrollToTop />
             <App />
           </AddListModalProvider>
         </AuthProvider>

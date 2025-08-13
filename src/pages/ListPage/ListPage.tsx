@@ -29,6 +29,7 @@ import VisibilityIcon from "../../components/VisibilityIcon";
 import ListPagination from "../../components/ListPagination";
 import StyledKeyValue from "../../components/StyledKeyValue";
 import EditListModal from "./EditListModal";
+import ScrollToTop from "../../components/ScrollToTop";
 
 export enum EditListState {
   BACKDROP = "BACKDROP",
@@ -189,6 +190,8 @@ const ListPage = () => {
 
   return (
     <PageContainer>
+      <ScrollToTop />
+
       {authDetails && currentEditState && (
         <EditListModal
           onClose={closeEditModal}

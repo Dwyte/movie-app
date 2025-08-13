@@ -10,6 +10,7 @@ import PageContainer from "../../components/PageContainer";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ListPagination from "../../components/ListPagination";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const MyLists = () => {
   const { authDetails, isLoggedIn } = useAuth();
@@ -43,6 +44,7 @@ const MyLists = () => {
 
   return (
     <PageContainer>
+      <ScrollToTop />
       <h1 className="text-3xl text-white mb-2 sm:mb-6">My Lists</h1>
       <div className="flex flex-col gap-4">
         <ListContainer>
