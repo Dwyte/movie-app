@@ -4,16 +4,17 @@ import FiveStarRating from "../../components/FiveStarRating";
 
 import { MEDIA_TYPE_NAME, NO_IMAGE_LANDSCAPE_PATH } from "../../misc/constants";
 import { getTMDBImageURL } from "../../misc/utils";
-import { BsXLg } from "react-icons/bs";
+import { BsChatLeftDots, BsXLg } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface Props {
   media: Media;
   isDeleting: boolean;
   onDelete: ((ref: MediaRef) => void) | null;
+  onComment: ((listItem: Media) => void) | null;
 }
 
-const MediaListItem = ({ media, isDeleting, onDelete }: Props) => {
+const MediaListItem = ({ media, isDeleting, onDelete, onComment }: Props) => {
   const thumbnail = media.backdrop_path
     ? getTMDBImageURL(media.backdrop_path)
     : NO_IMAGE_LANDSCAPE_PATH;
@@ -26,6 +27,8 @@ const MediaListItem = ({ media, isDeleting, onDelete }: Props) => {
       state: { backgroundLocation: location },
     });
   };
+
+  const mediaRef = { media_id: media.id, media_type: media.media_type };
 
   return (
     <div
@@ -50,19 +53,26 @@ const MediaListItem = ({ media, isDeleting, onDelete }: Props) => {
         </div>
         <FiveStarRating rating={media.vote_average} />
       </div>
-      {onDelete && (
-        <div onClick={(e) => e.stopPropagation()}>
+      <div className="flex gap-4" onClick={(e) => e.stopPropagation()}>
+        {onComment && (
           <button
-            onClick={() =>
-              onDelete({ media_id: media.id, media_type: media.media_type })
-            }
+            onClick={() => onComment(media)}
+            className="cursor-pointer flex items-center justify-center hover:text-red-600 text-lg"
+            disabled={isDeleting}
+          >
+            <BsChatLeftDots />
+          </button>
+        )}
+        {onDelete && (
+          <button
+            onClick={() => onDelete(mediaRef)}
             className="cursor-pointer flex items-center justify-center hover:text-red-600 text-lg"
             disabled={isDeleting}
           >
             <BsXLg />
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

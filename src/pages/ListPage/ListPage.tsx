@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BsBoxArrowUpRight, BsImages, BsPencilSquare, BsTrash } from "react-icons/bs";
+import {
+  BsBoxArrowUpRight,
+  BsImages,
+  BsPencilSquare,
+  BsTrash,
+} from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 
@@ -26,8 +31,9 @@ import StyledKeyValue from "../../components/StyledKeyValue";
 import EditListModal from "./EditListModal";
 
 export enum EditListState {
-  BACKDROP,
-  DETAILS,
+  BACKDROP = "BACKDROP",
+  DETAILS = "DETAILS",
+  COMMENTS = "COMMENTS",
 }
 
 const ListPage = () => {
@@ -41,6 +47,8 @@ const ListPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentEditState, setCurrentEditState] =
     useState<EditListState | null>(null);
+  const [currentListItemToEdit, setCurrentListItemToEdit] =
+    useState<Media | null>(null);
 
   const listDetailsQueryKey = ["listDetails", listId];
   const { data: listDetails } = useQuery({
@@ -166,14 +174,22 @@ const ListPage = () => {
     ? paginatedListResults.flat()
     : listDetails.results;
 
+  const handleListItemEdit = (listItem: Media) => {
+    setCurrentListItemToEdit(listItem);
+    setCurrentEditState(EditListState.COMMENTS);
+  };
+
   return (
     <PageContainer>
-      <EditListModal
-        onClose={closeEditModal}
-        listResults={listResults}
-        currentState={currentEditState}
-        listDetails={listDetails}
-      />
+      {authDetails && currentEditState && (
+        <EditListModal
+          onClose={closeEditModal}
+          listResults={listResults}
+          currentState={currentEditState}
+          listDetails={listDetails}
+          listItem={currentListItemToEdit}
+        />
+      )}
 
       <div className="relative mb-8 rounded-sm overflow-hidden">
         <img className="h-80 sm:h-80 sm:w-full object-cover" src={thumbnail} />
@@ -250,6 +266,7 @@ const ListPage = () => {
                   media={media}
                   onDelete={isUserOwner ? deleteListItemMutation.mutate : null}
                   isDeleting={deleteListItemMutation.isPending}
+                  onComment={isUserOwner ? handleListItemEdit : null}
                 />
               </ListItem>
             );

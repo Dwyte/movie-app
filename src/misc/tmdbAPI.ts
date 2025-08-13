@@ -417,7 +417,7 @@ export const putUpdateListItem = async (
 
   const response = await fetch(url, {
     method: "PUT",
-    body: JSON.stringify({ ...item, comment }),
+    body: JSON.stringify({ items: [{ ...item, comment }] }),
     headers: { ...HEADERS, Authorization: `Bearer ${accessToken}` },
   });
 
