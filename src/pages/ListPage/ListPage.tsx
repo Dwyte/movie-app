@@ -279,6 +279,12 @@ const ListPage = () => {
               </ListItem>
             );
           })}
+
+          {listResults.length === 0 && (
+            <div className="w-full text-lg font-bold text-stone-300 text-center py-8">
+              There are not items in this list.
+            </div>
+          )}
         </ListContainer>
       </div>
     </PageContainer>
