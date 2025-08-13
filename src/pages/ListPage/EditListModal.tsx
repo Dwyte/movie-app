@@ -59,6 +59,8 @@ const EditListModal = ({
     },
   });
 
+  console.log(listOptions);
+
   const updateListItem = useMutation({
     mutationFn: async () => {
       if (!authDetails) return;

@@ -44,7 +44,7 @@ const EditListDetails = ({ listDetails, setListOptions }: Props) => {
         onChange={(isPublic: boolean) => {
           setIsPublic(isPublic);
           setListOptions((p) => {
-            return { ...p, public: isPublic ? 1 : 0 };
+            return { ...p, public: isPublic };
           });
         }}
       />

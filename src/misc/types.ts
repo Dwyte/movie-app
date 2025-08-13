@@ -461,7 +461,7 @@ export interface ListOptions {
   name: string;
   iso_639_1: CountryCode;
   description?: string;
-  public?: 0 | 1;
+  public?: 0 | 1 | boolean;
   iso_3166_1?: string;
   sort_by?:
     | "original_order.asc"

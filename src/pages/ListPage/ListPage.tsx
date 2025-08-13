@@ -44,7 +44,6 @@ const ListPage = () => {
 
   const listId = params?.listId ? parseInt(params?.listId) : null;
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [currentEditState, setCurrentEditState] =
     useState<EditListState | null>(null);
   const [currentListItemToEdit, setCurrentListItemToEdit] =
@@ -69,22 +68,26 @@ const ListPage = () => {
   });
 
   const listResultsQueryKey = ["listResults", listId];
-  const { data: paginatedListResults } = useQuery({
-    enabled: !!listDetails,
+  const { data: allListResults } = useQuery({
+    enabled: !!listId,
     queryKey: listResultsQueryKey,
     queryFn: async () => {
-      if (!listDetails || !listId) return;
-      const paginatedResults: Media[][] = [];
-      for (let page = 1; page <= listDetails.total_pages; page++) {
+      if (!listId) return;
+
+      const paginatedListResults: Media[][] = [];
+      let totalPages = 1;
+      for (let page = 1; page <= totalPages; page++) {
         const response = await getListDetails(
           listId,
           authDetails?.accessToken,
           page
         );
 
-        paginatedResults.push(response.results);
+        paginatedListResults.push(response.results);
+        totalPages = response.total_pages;
       }
-      return paginatedResults;
+
+      return paginatedListResults.flat();
     },
     staleTime: 1000 * 60 * 5,
   });
@@ -108,9 +111,9 @@ const ListPage = () => {
         queryClient.getQueryData(listResultsQueryKey);
 
       // Optimistic Update on ListResults
-      queryClient.setQueryData(listResultsQueryKey, (prev: Media[][]) => {
-        const newResults = prev.map((page) =>
-          page.filter((media) => mediaRefToDelete.media_id !== media.id)
+      queryClient.setQueryData(listResultsQueryKey, (prev: Media[]) => {
+        const newResults = prev.filter(
+          (media) => mediaRefToDelete.media_id !== media.id
         );
 
         return newResults;
@@ -170,20 +173,14 @@ const ListPage = () => {
     await navigator.clipboard.writeText(window.location.href);
   };
 
+  const listResults = allListResults || listDetails.results;
+
   const isUserOwner =
     authDetails && authDetails.accountId === listDetails.created_by.id;
 
   const closeEditModal = () => {
     setCurrentEditState(null);
   };
-
-  const currentPageListItems = paginatedListResults
-    ? paginatedListResults[currentPage - 1]
-    : listDetails.results;
-
-  const listResults = paginatedListResults
-    ? paginatedListResults.flat()
-    : listDetails.results;
 
   const handleListItemEdit = (listItem: Media) => {
     setCurrentListItemToEdit(listItem);
@@ -267,14 +264,11 @@ const ListPage = () => {
 
       <div className="flex flex-col justify-center gap-4">
         <ListContainer>
-          {currentPageListItems.map((media, index) => {
+          {listResults.map((media, index) => {
             const commentKey = `${media.media_type}:${media.id}`;
 
             return (
-              <ListItem
-                index={(currentPage - 1) * 20 + index + 1}
-                key={media.id}
-              >
+              <ListItem index={index + 1} key={media.id}>
                 <MediaListItem
                   media={media}
                   comment={listDetails.comments[commentKey]}
@@ -286,16 +280,6 @@ const ListPage = () => {
             );
           })}
         </ListContainer>
-        <ListPagination
-          totalPages={listDetails.total_pages}
-          currentPage={currentPage}
-          onNextPage={() => {
-            setCurrentPage((prev) => prev + 1);
-          }}
-          onPrevPage={() => {
-            setCurrentPage((prev) => prev - 1);
-          }}
-        />
       </div>
     </PageContainer>
   );
