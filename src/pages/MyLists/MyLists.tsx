@@ -7,12 +7,13 @@ import ListItem from "./ListItem";
 import ListListItem from "./ListListItem";
 import ListContainer from "./ListContainer";
 import PageContainer from "../../components/PageContainer";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import ListPagination from "../../components/ListPagination";
 
 const MyLists = () => {
   const { authDetails, isLoggedIn } = useAuth();
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data: userLists } = useQuery({
@@ -30,6 +31,12 @@ const MyLists = () => {
 
       return response;
     },
+  });
+
+  useEffect(() => {
+    if (!authDetails) {
+      navigate("/login");
+    }
   });
 
   if (!userLists) return;
