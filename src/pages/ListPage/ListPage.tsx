@@ -74,8 +74,8 @@ const ListPage = () => {
     queryKey: listResultsQueryKey,
     queryFn: async () => {
       if (!listDetails || !listId) return;
-      const paginatedResults: Media[][] = [listDetails.results];
-      for (let page = 2; page <= listDetails.total_pages; page++) {
+      const paginatedResults: Media[][] = [];
+      for (let page = 1; page <= listDetails.total_pages; page++) {
         const response = await getListDetails(
           listId,
           authDetails?.accessToken,
@@ -86,6 +86,7 @@ const ListPage = () => {
       }
       return paginatedResults;
     },
+    staleTime: 1000 * 60 * 5,
   });
 
   const deleteListItemMutation = useMutation({
@@ -99,20 +100,23 @@ const ListPage = () => {
 
     onMutate: async (mediaRefToDelete: MediaRef) => {
       await queryClient.cancelQueries({ queryKey: listDetailsQueryKey });
+      await queryClient.cancelQueries({ queryKey: listResultsQueryKey });
 
       const previousListDetails: ListDetails | undefined =
         queryClient.getQueryData(listDetailsQueryKey);
+      const previousListResults: Media[][] | undefined =
+        queryClient.getQueryData(listResultsQueryKey);
 
-      // Optimistic Update
-      queryClient.setQueryData(listDetailsQueryKey, (prev: ListDetails) => {
-        const newResults = prev.results.filter(
-          (media) => mediaRefToDelete.media_id !== media.id
+      // Optimistic Update on ListResults
+      queryClient.setQueryData(listResultsQueryKey, (prev: Media[][]) => {
+        const newResults = prev.map((page) =>
+          page.filter((media) => mediaRefToDelete.media_id !== media.id)
         );
 
-        return { ...prev, results: newResults };
+        return newResults;
       });
 
-      return { previousListDetails };
+      return { previousListDetails, previousListResults };
     },
 
     onError: (error, id, context) => {
@@ -123,11 +127,18 @@ const ListPage = () => {
           context.previousListDetails
         );
       }
-    },
 
-    onSettled: () => {
+      if (context?.previousListResults) {
+        queryClient.setQueryData(
+          listResultsQueryKey,
+          context.previousListResults
+        );
+      }
+    },
+    onSuccess: () => {
       // Invalidate cache to refetch and be synced with the server.
       queryClient.invalidateQueries({ queryKey: listDetailsQueryKey });
+      queryClient.invalidateQueries({ queryKey: listResultsQueryKey });
     },
   });
 

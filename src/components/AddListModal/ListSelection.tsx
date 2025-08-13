@@ -39,6 +39,7 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
     },
     onMutate: (listId: number) => {
       queryClient.invalidateQueries({ queryKey: ["listDetails", listId] });
+      queryClient.invalidateQueries({ queryKey: ["listResults", listId] });
     },
     onSuccess: (response) => {
       alert(response.status_message);
