@@ -257,6 +257,8 @@ const ListPage = () => {
       <div className="flex flex-col justify-center gap-4">
         <ListContainer>
           {currentPageListItems.map((media, index) => {
+            const commentKey = `${media.media_type}:${media.id}`;
+
             return (
               <ListItem
                 index={(currentPage - 1) * 20 + index + 1}
@@ -264,6 +266,7 @@ const ListPage = () => {
               >
                 <MediaListItem
                   media={media}
+                  comment={listDetails.comments[commentKey]}
                   onDelete={isUserOwner ? deleteListItemMutation.mutate : null}
                   isDeleting={deleteListItemMutation.isPending}
                   onComment={isUserOwner ? handleListItemEdit : null}

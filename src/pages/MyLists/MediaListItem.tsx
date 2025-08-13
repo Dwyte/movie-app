@@ -9,12 +9,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 interface Props {
   media: Media;
+  comment: string | null;
   isDeleting: boolean;
   onDelete: ((ref: MediaRef) => void) | null;
   onComment: ((listItem: Media) => void) | null;
 }
 
-const MediaListItem = ({ media, isDeleting, onDelete, onComment }: Props) => {
+const MediaListItem = ({
+  media,
+  comment,
+  isDeleting,
+  onDelete,
+  onComment,
+}: Props) => {
   const thumbnail = media.backdrop_path
     ? getTMDBImageURL(media.backdrop_path)
     : NO_IMAGE_LANDSCAPE_PATH;
@@ -31,10 +38,7 @@ const MediaListItem = ({ media, isDeleting, onDelete, onComment }: Props) => {
   const mediaRef = { media_id: media.id, media_type: media.media_type };
 
   return (
-    <div
-      onClick={handleOnClick}
-      className="flex items-center justify-between w-full"
-    >
+    <div onClick={handleOnClick} className="flex items-center w-full gap-16">
       <div className="flex w-100 items-center gap-2">
         <img src={thumbnail} alt="" className="w-36" />
         <div className="flex flex-col sm:flex-col">
@@ -45,15 +49,21 @@ const MediaListItem = ({ media, isDeleting, onDelete, onComment }: Props) => {
         </div>
       </div>
 
-      <div className="hidden sm:flex gap-4 items-center">
+      <div className="hidden flex-1 sm:flex gap-4 items-center">
         <div className="text-white">
           {new Date(media.first_air_date || media.release_date || 0)
             .getFullYear()
             .toString()}
         </div>
         <FiveStarRating rating={media.vote_average} />
+        {comment && (
+          <div className="flex-1 text-right italic tracking-wide cursor-text">"{comment}"</div>
+        )}
       </div>
-      <div className="flex gap-4" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="flex gap-4 items-center justify-end"
+        onClick={(e) => e.stopPropagation()}
+      >
         {onComment && (
           <button
             onClick={() => onComment(media)}
