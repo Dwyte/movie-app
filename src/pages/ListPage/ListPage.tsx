@@ -1,10 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  BsBoxArrowUpRight,
-  BsImages,
-  BsPencilSquare,
-  BsTrash,
-} from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 
@@ -13,24 +7,21 @@ import {
   deleteListItems,
   getListDetails,
 } from "../../misc/tmdbAPI";
-import { getDurationString, getTMDBImageURL } from "../../misc/utils";
 import { useAuth } from "../../contexts/AuthContext";
 
 import ListContainer from "../MyLists/ListContainer";
 import MediaListItem from "../MyLists/MediaListItem";
 import ListItem from "../MyLists/ListItem";
 
-import { NO_IMAGE_LANDSCAPE_PATH } from "../../misc/constants";
 import { ListDetails, Media, MediaRef } from "../../misc/types";
 
 import PageContainer from "../../components/PageContainer";
-import FiveStarRating from "../../components/FiveStarRating";
-import VisibilityIcon from "../../components/VisibilityIcon";
-import ListPagination from "../../components/ListPagination";
-import StyledKeyValue from "../../components/StyledKeyValue";
 import EditListModal from "./EditListModal";
 import ScrollToTop from "../../components/ScrollToTop";
 import EmptyListPlaceholder from "./EmptyListPlaceholder";
+import Skeleton from "../../components/Skeleton";
+import ListDetailsSection from "./ListDetailsSection";
+import ListSkeleton from "./ListSkeleton";
 
 export enum EditListState {
   BACKDROP = "BACKDROP",
@@ -52,7 +43,7 @@ const ListPage = () => {
     useState<Media | null>(null);
 
   const listDetailsQueryKey = ["listDetails", listId];
-  const { data: listDetails } = useQuery({
+  const { data: listDetails, isLoading: isListDetailsFetching } = useQuery({
     enabled: !!listId,
     queryKey: listDetailsQueryKey,
     queryFn: async ({ queryKey }) => {
@@ -165,21 +156,6 @@ const ListPage = () => {
     },
   });
 
-  if (!listDetails) return null;
-
-  const thumbnail = listDetails.backdrop_path
-    ? getTMDBImageURL(listDetails.backdrop_path, "1920")
-    : NO_IMAGE_LANDSCAPE_PATH;
-
-  const handleShare = async () => {
-    await navigator.clipboard.writeText(window.location.href);
-  };
-
-  const listResults = allListResults || listDetails.results;
-
-  const isUserOwner =
-    authDetails && authDetails.accountId === listDetails.created_by.id;
-
   const closeEditModal = () => {
     setCurrentEditState(null);
   };
@@ -189,11 +165,16 @@ const ListPage = () => {
     setCurrentEditState(EditListState.COMMENTS);
   };
 
+  const listResults = allListResults || listDetails?.results || [];
+
+  const isUserOwner =
+    !!authDetails && authDetails.accountId === listDetails?.created_by.id;
+
   return (
     <PageContainer>
       <ScrollToTop />
 
-      {authDetails && currentEditState && (
+      {authDetails && currentEditState && listDetails && (
         <EditListModal
           onClose={closeEditModal}
           listResults={listResults}
@@ -203,70 +184,19 @@ const ListPage = () => {
         />
       )}
 
-      <div className="relative mb-8 rounded-sm overflow-hidden">
-        <img className="h-80 sm:h-80 sm:w-full object-cover" src={thumbnail} />
-        <div className="bg-black/33 w-full h-full absolute top-0"></div>
+      {isListDetailsFetching && <Skeleton className="h-80 w-full mb-4" />}
+      {!isListDetailsFetching && listDetails && (
+        <ListDetailsSection
+          listDetails={listDetails}
+          isUserOwner={isUserOwner}
+          onEditDetails={() => setCurrentEditState(EditListState.DETAILS)}
+          onEditBackdrop={() => setCurrentEditState(EditListState.BACKDROP)}
+          onDeleteList={() => deleteListMutation.mutate()}
+        />
+      )}
 
-        {isUserOwner && (
-          <div className="absolute top-0 right-0 p-4 flex flex-col gap-2 z-5">
-            <button onClick={handleShare} className="secondary-icon-btn p-3">
-              <BsBoxArrowUpRight />
-            </button>
-            <button
-              onClick={() => setCurrentEditState(EditListState.BACKDROP)}
-              className="secondary-icon-btn p-3"
-            >
-              <BsImages />
-            </button>
-            <button
-              onClick={() => setCurrentEditState(EditListState.DETAILS)}
-              className="secondary-icon-btn p-3"
-            >
-              <BsPencilSquare />
-            </button>
-            <button
-              onClick={() => deleteListMutation.mutate()}
-              className="secondary-icon-btn p-3"
-            >
-              <BsTrash />
-            </button>
-          </div>
-        )}
-
-        <div className="flex flex-col absolute bottom-0 text-white w-full">
-          <div className="p-2 sm:p-4">
-            <h1 className="text-4xl font-bold flex gap-2 items-center">
-              {listDetails.name}
-            </h1>
-            <p className="text-base">
-              {listDetails.description || "No description."}
-            </p>
-          </div>
-
-          <div className="flex bg-gradient-to-t from-black via-60% via-black/50 to-black/0 text-sm lg:text-base flex-col md:flex-row md:gap-4 lg:gap-8 md:items-center md:bg-none md:bg-black/75 p-2 md:p-4">
-            <VisibilityIcon isPublic={listDetails.public} showLabel />
-            <StyledKeyValue
-              label={"Created by:"}
-              value={listDetails.created_by.username}
-            />
-            <StyledKeyValue
-              label={"Shows Count:"}
-              value={listDetails.item_count}
-            />
-            <StyledKeyValue
-              label={"Total Runtime:"}
-              value={getDurationString(listDetails.runtime)}
-            />
-            <StyledKeyValue
-              className="items-center"
-              label={"Average Rating:"}
-              value={<FiveStarRating rating={listDetails.average_rating} />}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col justify-center gap-4">
+      {isListDetailsFetching && <ListSkeleton />}
+      {!isListDetailsFetching && listDetails && (
         <ListContainer>
           {listResults.map((media, index) => {
             const commentKey = `${media.media_type}:${media.id}`;
@@ -286,7 +216,7 @@ const ListPage = () => {
 
           {listResults.length === 0 && <EmptyListPlaceholder />}
         </ListContainer>
-      </div>
+      )}
     </PageContainer>
   );
 };
