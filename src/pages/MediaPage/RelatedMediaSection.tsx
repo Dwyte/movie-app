@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { MediaDetails } from "../../misc/types";
 import { getDiscoverMediaItems } from "../../misc/tmdbAPI";
@@ -44,23 +44,36 @@ const RelatedMediaSection = ({ mediaItemDetails }: Props) => {
       : [];
   }, [relatedMediaItems]);
 
-  const isLoading = !mediaItemDetails || isFetching;
+  const [doneLoadingCount, setDoneLoadingCount] = useState(0);
+  const isLoadingData = !mediaItemDetails || isFetching;
+  const isLoadingImages =
+    isLoadingData || filteredRelatedMediaItems.length > doneLoadingCount;
 
   return (
     <div className="grid grid-cols-3 gap-3">
-      {isLoading &&
+      {isLoadingData &&
         Array.from({ length: 9 }, (_, k) => (
           <Skeleton key={k} className="aspect-[9/16] sm:aspect-[16/9] w-full" />
         ))}
-      {!isLoading &&
+      {!isLoadingData &&
         filteredRelatedMediaItems.map((mediaItem) => {
           return (
-            <div key={mediaItem.id}>
-              <MediaCard
-                media={mediaItem}
-                sourcePathName={backgroundLocation}
-                flexible={true}
-              />
+            <div className="relative" key={mediaItem.id}>
+              {isLoadingImages && (
+                <Skeleton className="absolute inset-0 w-full h-full aspect-[16/9] z-1" />
+              )}
+              <div
+                className={`w-full h-full transition-opacity ${
+                  isLoadingImages ? "opacity-0" : "opacity-100"
+                }`}
+              >
+                <MediaCard
+                  media={mediaItem}
+                  sourcePathName={backgroundLocation}
+                  onImageLoad={() => setDoneLoadingCount((p) => p + 1)}
+                  flexible={true}
+                />
+              </div>
             </div>
           );
         })}
