@@ -21,6 +21,7 @@ const hoverHeight = "group-hover/mcard:h-40";
 
 interface Props {
   media: Media;
+  onImageLoad?: () => void;
   sourcePathName?: string;
   flexible?: boolean;
 }
@@ -42,7 +43,12 @@ const findBackdropWithTitle = (mediaImages: MediaImagesResult) => {
   return null;
 };
 
-const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
+const MediaCard = ({
+  media,
+  sourcePathName,
+  onImageLoad,
+  flexible = false,
+}: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isSmUp = useIsSmUp();
@@ -82,6 +88,8 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
    */
   const decideImagePreviewSource = () => {
     if (isSmUp) {
+      if (!mediaImages) return null;
+
       const imagePath = backdropWithTitleFilePath ?? media.backdrop_path;
       return imagePath ? getTMDBImageURL(imagePath) : NO_IMAGE_LANDSCAPE_PATH;
     }
@@ -102,11 +110,13 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
     >
       {flexible && (
         <div className="relative rounded-sm overflow-hidden">
-          <img
-            className={`w-full h-full object-cover`}
-            src={previewImageSource}
-            alt={media.title}
-          />
+          {previewImageSource && (
+            <img
+              className={`w-full h-full object-cover`}
+              src={previewImageSource}
+              alt={media.title}
+            />
+          )}
 
           {!backdropWithTitleFilePath && isSmUp && (
             <h3 className="absolute text-sm text-white text-center font-bold left-0 bottom-0 right-0 bg-black/70">
@@ -122,13 +132,16 @@ const MediaCard = ({ media, sourcePathName, flexible = false }: Props) => {
         } absolute group rounded-sm overflow-hidden ${hoverWidth} group-hover/mcard:z-1000`}
       >
         <div className=" relative">
-          <img
-            className={`${`${
-              flexible ? "w-full h-full" : defaultDimensions
-            } ${hoverWidth} ${hoverHeight}`}  object-cover`}
-            src={previewImageSource}
-            alt={media.title}
-          />
+          {previewImageSource && (
+            <img
+              className={`${`${
+                flexible ? "w-full h-full" : defaultDimensions
+              } ${hoverWidth} ${hoverHeight}`}  object-cover`}
+              onLoad={onImageLoad}
+              src={previewImageSource}
+              alt={media.title}
+            />
+          )}
 
           {!backdropWithTitleFilePath && isSmUp && (
             <h3 className="absolute text-sm text-white text-center font-bold left-0 bottom-0 right-0 bg-black/70">
