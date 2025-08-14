@@ -17,6 +17,18 @@ interface Props {
   onClose: () => void;
 }
 
+const ButtonsSkeleton = () => {
+  return (
+    <div className="flex items-center gap-4 w-full h-9">
+      <Skeleton className="h-full min-w-30" />
+      <Skeleton className="h-full aspect-square" rounded="rounded-full" />
+      <Skeleton className="h-full aspect-square" rounded="rounded-full" />
+      <div className="flex-1"></div>
+      <Skeleton className="h-full aspect-square" rounded="rounded-full" />
+    </div>
+  );
+};
+
 const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
   const { data: mediaItemImages } = useQuery({
     enabled: !!mediaItemDetails,
@@ -87,33 +99,36 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
         ) : (
           <h1 className="text-2xl font-bold">{mediaItemDetails?.title}</h1>
         )}
-        <div className="flex items-center gap-4 w-full">
-          <button className="primary-btn justify-center min-w-30">
-            <BsPlayFill className="text-2xl mr-1" />
-            <span>Play</span>
-          </button>
+        {!isBackdropLoaded && <ButtonsSkeleton />}
+        {isBackdropLoaded && (
+          <div className="flex items-center gap-4 w-full">
+            <button className="primary-btn justify-center min-w-30">
+              <BsPlayFill className="text-2xl mr-1" />
+              <span>Play</span>
+            </button>
 
-          <button
-            onClick={() => {
-              if (!mediaItemDetails) return;
+            <button
+              onClick={() => {
+                if (!mediaItemDetails) return;
 
-              showAddListModal({
-                media_id: mediaItemDetails.id,
-                media_type: mediaItemDetails.media_type,
-              });
-            }}
-            className="secondary-icon-btn"
-          >
-            <BsPlusLg />
-          </button>
-          <button className="secondary-icon-btn">
-            <BsStar />
-          </button>
-          <div className="flex-1"></div>
-          <button className="secondary-icon-btn opacity-65">
-            <RiDownloadLine />
-          </button>
-        </div>
+                showAddListModal({
+                  media_id: mediaItemDetails.id,
+                  media_type: mediaItemDetails.media_type,
+                });
+              }}
+              className="secondary-icon-btn"
+            >
+              <BsPlusLg />
+            </button>
+            <button className="secondary-icon-btn">
+              <BsStar />
+            </button>
+            <div className="flex-1"></div>
+            <button className="secondary-icon-btn opacity-65">
+              <RiDownloadLine />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
