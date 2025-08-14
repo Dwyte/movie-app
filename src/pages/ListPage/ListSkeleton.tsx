@@ -1,10 +1,16 @@
+import React from "react";
 import Skeleton from "../../components/Skeleton";
 
-const ListSkeleton = () => {
+interface Props {
+  count?: number;
+  className?: string;
+}
+
+const ListSkeleton = ({ count = 12, className = "" }: Props) => {
   return (
     <div className="flex flex-col gap-2">
-      {Array.from({ length: 12 }).map((v, k) => (
-        <Skeleton key={k} className="h-20 w-full" />
+      {Array.from({ length: count }).map((v, k) => (
+        <Skeleton key={k} className={className || "h-20 w-full"} />
       ))}
     </div>
   );

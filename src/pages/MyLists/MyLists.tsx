@@ -19,9 +19,8 @@ const MyLists = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: userLists, isFetching } = useQuery({
+  const { data: userLists, isLoading } = useQuery({
     enabled: isLoggedIn,
-    initialData: null,
     queryKey: ["lists", authDetails?.accountId, currentPage],
     queryFn: async () => {
       if (!authDetails) return null;
@@ -47,7 +46,7 @@ const MyLists = () => {
       <ScrollToTop />
       <h1 className="text-3xl text-white mb-2 sm:mb-6">My Lists</h1>
       <div className="flex flex-col gap-4">
-        {isFetching ? (
+        {isLoading ? (
           <ListSkeleton />
         ) : (
           userLists && (
