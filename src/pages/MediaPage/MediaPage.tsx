@@ -74,14 +74,16 @@ const MediaPage = ({ mediaType }: Props) => {
   useEffect(() => {
     const resetScroll = () => {
       if (!modalRef) return;
-      modalRef.current?.scrollBy({
-        top: -modalRef.current.scrollHeight,
+
+      modalRef.current?.scrollTo({
+        top: 0,
+        left: 0,
         behavior: "smooth",
       });
     };
 
     resetScroll();
-  }, [location.pathname]);
+  }, [mediaItemDetails?.id]);
 
   const closeModal = () => {
     navigate(backgroundLocation);
