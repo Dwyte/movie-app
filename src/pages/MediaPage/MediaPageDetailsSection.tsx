@@ -122,7 +122,7 @@ const MediaPageDetailsSection = ({
     return rank === -1 ? -1 : rank + 1;
   }, [mediaItemDetails, trendingMediaToday]);
 
-  const isLoading = !mediaItemDetails && !mediaItemCredits;
+  const isLoading = !mediaItemDetails || !mediaItemCredits || !trendingMediaToday;
   if (isLoading) return isSmUp ? <DesktopSkeleton /> : <MobileSkeleton />;
 
   return (
