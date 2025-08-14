@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useAddListModal } from "../../contexts/AddListModalContext";
 
@@ -43,6 +43,11 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
   const [isBackdropLoaded, setIsBackdropLoaded] = useState<boolean>(false);
   const [isLogoLoaded, setIsLogoLoaded] = useState<boolean>(false);
 
+  useEffect(() => {
+    setIsBackdropLoaded(false);
+    setIsLogoLoaded(false);
+  }, [mediaItemDetails]);
+
   const logoImgSrc = useMemo(() => {
     if (!mediaItemImages) return null;
 
@@ -63,7 +68,7 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
       return (
         <img
           className={`w-auto max-h-30 transition-opacity ${
-            isLogoLoaded && isBackdropLoaded ? "opacity-100" : "opacity-0"
+            isLogoLoaded ? "opacity-100" : "opacity-0"
           }`}
           src={logoImgSrc}
           onLoad={() => setIsLogoLoaded(true)}
@@ -110,8 +115,8 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
       <div className="hidden sm:flex flex-col items-start px-10 gap-8 absolute left-0 right-0 bottom-0 z-2">
         {renderLogo()}
 
-        {!isBackdropLoaded && <ButtonsSkeleton />}
-        {isBackdropLoaded && (
+        {!mediaItemDetails && <ButtonsSkeleton />}
+        {mediaItemDetails && (
           <div className="flex items-center gap-4 w-full">
             <button className="primary-btn justify-center min-w-30">
               <BsPlayFill className="text-2xl mr-1" />
