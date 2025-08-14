@@ -1,6 +1,6 @@
 import React from "react";
 
-const Skeleton = ({ className }: { className: string }) => {
+const Skeleton = ({ className }: { className?: string }) => {
   return (
     <div
       role="status"

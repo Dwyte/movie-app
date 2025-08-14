@@ -6,6 +6,7 @@ import { getSearchMediaItems } from "../misc/tmdbAPI";
 import { useQuery } from "@tanstack/react-query";
 import { Media } from "../misc/types";
 import PageContainer from "../components/PageContainer";
+import Skeleton from "../components/Skeleton";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
@@ -14,7 +15,7 @@ const SearchResults = () => {
   const {
     data: results,
     error,
-    isLoading,
+    isFetching,
   } = useQuery<Media[]>({
     enabled: !!searchQuery,
     queryKey: ["search", searchQuery],
@@ -27,8 +28,19 @@ const SearchResults = () => {
     },
   });
 
-  if (isLoading) return <div className="mt-100 text-white">Searching...</div>;
-  if (!results) return;
+  const renderResults = () => {
+    if (isFetching) {
+      return Array.from({ length: 24 }, (_, i) => (
+        <Skeleton key={i} className="w-full aspect-[16/9]" />
+      ));
+    }
+
+    if (results) {
+      return results.map((media) => (
+        <MediaCard key={media.id} media={media} flexible />
+      ));
+    }
+  };
 
   return (
     <PageContainer>
@@ -37,9 +49,7 @@ const SearchResults = () => {
       </h1>
 
       <div className="grid grid-cols-3 gap-2 sm:grid-cols-6 sm:gap-y-8">
-        {results.map((media) => (
-          <MediaCard key={media.id} media={media} flexible />
-        ))}
+        {renderResults()}
       </div>
     </PageContainer>
   );
