@@ -55,7 +55,7 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
         <BsXLg />
       </button>
 
-      <div className="relative w-full aspect-[16/8]">
+      <div className="relative w-full aspect-[16/9]">
         <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-black to-black/0 via-black/75 via-25% to-100% z-1"></div>
         {!isBackdropLoaded && (
           <Skeleton
@@ -66,7 +66,7 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
 
         {backdropImgSrc && (
           <img
-            className={`w-full sm:h-110 sm:object-cover transition-opacity ${
+            className={`w-full object-cover transition-opacity ${
               isBackdropLoaded ? "opacity-100" : "opacity-0"
             }`}
             onLoad={() => setIsBackdropLoaded(true)}

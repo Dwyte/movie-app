@@ -77,6 +77,17 @@ const MediaPage = ({ mediaType }: Props) => {
     navigate(backgroundLocation);
   };
 
+  /** On desktop, h1 Title is at MediaPageHeroSection. */
+  const renderH1MediaTitle = () => {
+    if (isSmUp) return;
+
+    return mediaItemDetails ? (
+      <h1 className="font-bold text-2xl sm:hidden">{mediaItemDetails.title}</h1>
+    ) : (
+      <Skeleton className="h-8 w-[75%]" />
+    );
+  };
+
   return (
     <div
       onClick={closeModal}
@@ -93,12 +104,7 @@ const MediaPage = ({ mediaType }: Props) => {
           onClose={closeModal}
         />
         <div className="flex flex-col gap-2 p-4 bg-black sm:px-10 sm:py-8 sm:gap-8">
-          {/** On desktop, h1 Title is at MediaPageHeroSection. */}
-          {!isSmUp && (
-            <h1 className="font-bold text-2xl sm:hidden">
-              {mediaItemDetails && mediaItemDetails.title}
-            </h1>
-          )}
+          {renderH1MediaTitle()}
 
           <MediaPageDetailsSection
             mediaItemDetails={mediaItemDetails}

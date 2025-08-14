@@ -15,11 +15,69 @@ import { getDurationString, shortenParagraph } from "../../misc/utils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTrendingMediaItems } from "../../misc/tmdbAPI";
 import StyledKeyValue from "../../components/StyledKeyValue";
+import Skeleton from "../../components/Skeleton";
+import useIsSmUp from "../../hooks/useIsSmUp";
 
 interface Props {
   mediaItemDetails: MediaDetails | null;
   mediaItemCredits: MediaCreditsAPIResult | null;
 }
+
+const Container = (props: React.ComponentProps<"div">) => (
+  <div
+    {...props}
+    className="flex flex-col gap-2 sm:flex sm:flex-row sm:gap-12"
+  />
+);
+
+const SectionA = (props: React.ComponentProps<"div">) => (
+  <div {...props} className="flex flex-col gap-2 sm:flex-3" />
+);
+
+const SectionB = (props: React.ComponentProps<"div">) => (
+  <div {...props} className="flex flex-col gap-2 sm:flex-2 text-sm" />
+);
+
+const DesktopSkeleton = () => {
+  return (
+    <Container>
+      <SectionA>
+        <Skeleton className="h-6 w-[50%]" />
+        <Skeleton className="h-4 w-[95%]" />
+        <Skeleton className="h-4 w-[85%]" />
+        <Skeleton className="h-4 w-[90%]" />
+        <Skeleton className="h-4 w-[35%]" />
+      </SectionA>
+      <SectionB>
+        <Skeleton className="h-4 w-[95%]" />
+        <Skeleton className="h-4 w-[70%]" />
+        <Skeleton className="h-4 w-[100%]" />
+        <Skeleton className="h-4 w-[80%]" />
+      </SectionB>
+    </Container>
+  );
+};
+
+const MobileSkeleton = () => {
+  return (
+    <Container>
+      <SectionA>
+        <Skeleton className="h-6 w-[50%]" />
+        <Skeleton className="h-8 w-[65%]" />
+        <Skeleton className="h-10 w-[100%]" />
+        <Skeleton className="h-10 w-[100%]" />
+        <Skeleton className="h-4 w-[95%]" />
+        <Skeleton className="h-4 w-[75%]" />
+        <Skeleton className="h-4 w-[85%]" />
+      </SectionA>
+      <SectionB>
+        <Skeleton className="h-4 w-[90%] mt-1" />
+        <Skeleton className="h-4 w-[70%]" />
+        <Skeleton className="h-4 w-[80%]" />
+      </SectionB>
+    </Container>
+  );
+};
 
 const MediaPageDetailsSection = ({
   mediaItemDetails,
@@ -39,6 +97,8 @@ const MediaPageDetailsSection = ({
       return (await getTrendingMediaItems(mediaType, timeWindow)).results;
     },
   });
+
+  const isSmUp = useIsSmUp();
 
   const director = useMemo<Crew | null>(() => {
     if (!mediaItemCredits) return null;
@@ -62,9 +122,12 @@ const MediaPageDetailsSection = ({
     return rank === -1 ? -1 : rank + 1;
   }, [mediaItemDetails, trendingMediaToday]);
 
+  const isLoading = !mediaItemDetails && !mediaItemCredits;
+  if (isLoading) return isSmUp ? <DesktopSkeleton /> : <MobileSkeleton />;
+
   return (
-    <div className="flex flex-col gap-2 sm:flex sm:flex-row sm:gap-12">
-      <div className="flex flex-col gap-2 sm:flex-3">
+    <Container>
+      <SectionA>
         <div className="flex items-center gap-2 text-stone-400">
           <div>
             {mediaItemDetails?.release_date || mediaItemDetails?.first_air_date}
@@ -105,10 +168,10 @@ const MediaPageDetailsSection = ({
         <p className="text-stone-300 text-sm">
           {mediaItemDetails && shortenParagraph(mediaItemDetails.overview, 200)}
         </p>
-      </div>
+      </SectionA>
 
-      <div className="flex flex-col gap-2 sm:flex-2 text-sm">
-        {mediaItemCredits && mediaItemCredits?.cast.length > 0 && (
+      <SectionB>
+        {mediaItemCredits && mediaItemCredits.cast.length > 0 && (
           <StyledKeyValue
             label="Casts: "
             value={mediaItemCredits.cast
@@ -127,8 +190,8 @@ const MediaPageDetailsSection = ({
             mediaItemDetails.genres.map((g) => g.name).join(", ")
           }
         />
-      </div>
-    </div>
+      </SectionB>
+    </Container>
   );
 };
 
