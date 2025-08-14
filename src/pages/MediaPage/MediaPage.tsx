@@ -29,6 +29,23 @@ interface Props {
   mediaType: MediaType;
 }
 
+const MediaExtrasSkeleton = () => {
+  return (
+    <div>
+      <div className="flex gap-2 mb-4">
+        <Skeleton className="h-10 w-32" />
+        <Skeleton className="h-10 w-32" />
+      </div>
+
+      <div className="grid grid-cols-3 gap-2">
+        {Array.from({ length: 9 }, (_, k) => (
+          <Skeleton key={k} className="aspect-[9/16] sm:aspect-[16/9] w-full" />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const MediaPage = ({ mediaType }: Props) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
@@ -136,6 +153,7 @@ const MediaPage = ({ mediaType }: Props) => {
             </button>
           </div>
 
+          {!mediaItemDetails && <MediaExtrasSkeleton />}
           {mediaItemDetails && (
             <div>
               <nav className="flex gap-4 mb-4 scrollable">
