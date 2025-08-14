@@ -23,6 +23,7 @@ import MediaPageCastsSection from "./MediaPageCastsSection";
 import MediaPageEpisodesSection from "./MediaPageEpisodesSection";
 import { useAddListModal } from "../../contexts/AddListModalContext";
 import DisableBodyScroll from "../../components/DisableBodyScroll";
+import Skeleton from "../../components/Skeleton";
 
 interface Props {
   mediaType: MediaType;
@@ -85,7 +86,7 @@ const MediaPage = ({ mediaType }: Props) => {
       <div
         ref={modalRef}
         onClick={(e) => e.stopPropagation()}
-        className="sm:max-w-220 sm:mt-8 sm:rounded-sm scrollable"
+        className="w-full sm:w-220 sm:mt-8 sm:rounded-sm scrollable"
       >
         <MediaPageHeroSection
           mediaItemDetails={mediaItemDetails}

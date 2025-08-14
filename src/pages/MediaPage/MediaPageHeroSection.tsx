@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { useAddListModal } from "../../contexts/AddListModalContext";
 
@@ -10,6 +10,7 @@ import { getTMDBImageURL } from "../../misc/utils";
 
 import { BsPlayFill, BsPlusLg, BsStar, BsXLg } from "react-icons/bs";
 import { RiDownloadLine } from "react-icons/ri";
+import Skeleton from "../../components/Skeleton";
 
 interface Props {
   mediaItemDetails: MediaDetails | null;
@@ -27,41 +28,62 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
   });
 
   const { showAddListModal } = useAddListModal();
+  const [isBackdropLoaded, setIsBackdropLoaded] = useState<boolean>(false);
+  const [isLogoLoaded, setIsLogoLoaded] = useState<boolean>(false);
 
   const logoImgSrc = useMemo(() => {
     if (!mediaItemImages) return null;
+
     const logo = mediaItemImages.logos.find((logo) => logo.iso_639_1 === "en");
     return logo ? getTMDBImageURL(logo.file_path) : null;
   }, [mediaItemImages]);
 
   const backdropImgSrc = useMemo(() => {
-    if (mediaItemDetails) {
-      return mediaItemDetails.backdrop_path
-        ? getTMDBImageURL(mediaItemDetails.backdrop_path, "1920")
-        : NO_IMAGE_LANDSCAPE_PATH;
-    }
+    if (!mediaItemDetails) return null;
 
-    return NO_IMAGE_LANDSCAPE_PATH;
+    return mediaItemDetails.backdrop_path
+      ? getTMDBImageURL(mediaItemDetails.backdrop_path, "1920")
+      : NO_IMAGE_LANDSCAPE_PATH;
   }, [mediaItemDetails]);
 
   return (
-    <div className="relative">
+    <div className="relative bg-black w-full">
       <button
         onClick={onClose}
         className="secondary-icon-btn absolute right-3 top-3 border-0 z-100"
       >
         <BsXLg />
       </button>
-      <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-black to-black/0 via-black/75 via-25% to-100%"></div>
-      <img
-        className="w-full sm:h-110 sm:object-cover"
-        src={backdropImgSrc}
-        alt=""
-      />
 
-      <div className="hidden sm:flex flex-col items-start px-10 gap-8 absolute left-0 right-0 bottom-0">
+      <div className="relative w-full aspect-[16/8]">
+        <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-black to-black/0 via-black/75 via-25% to-100% z-1"></div>
+        {!isBackdropLoaded && (
+          <Skeleton
+            className="absolute inset-0"
+            rounded="rounded-none sm:rounded-t-sm"
+          />
+        )}
+
+        {backdropImgSrc && (
+          <img
+            className={`w-full sm:h-110 sm:object-cover transition-opacity ${
+              isBackdropLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => setIsBackdropLoaded(true)}
+            src={backdropImgSrc}
+          />
+        )}
+      </div>
+
+      <div className="hidden sm:flex flex-col items-start px-10 gap-8 absolute left-0 right-0 bottom-0 z-2">
         {logoImgSrc ? (
-          <img className="w-auto max-h-30" src={logoImgSrc} alt="" />
+          <img
+            className={`w-auto max-h-30 transition-opacity ${
+              isLogoLoaded && isBackdropLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            src={logoImgSrc}
+            onLoad={() => setIsLogoLoaded(true)}
+          />
         ) : (
           <h1 className="text-2xl font-bold">{mediaItemDetails?.title}</h1>
         )}
