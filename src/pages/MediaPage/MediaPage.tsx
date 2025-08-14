@@ -32,9 +32,18 @@ interface Props {
 const MediaExtrasNavSkeleton = () => {
   return (
     <div className="flex gap-2 mb-4">
-      <Skeleton className="h-10 w-32" />
-      <Skeleton className="h-10 w-32" />
-      <Skeleton className="h-10 w-32" />
+      <Skeleton className="h-10 w-34" />
+      <Skeleton className="h-10 w-34" />
+    </div>
+  );
+};
+
+const MobileButtonsSkeleton = () => {
+  return (
+    <div className="flex gap-2 h-14 sm:hidden">
+      <Skeleton className="aspect-[1.4/1] h-full" />
+      <Skeleton className="aspect-[1.4/1] h-full" />
+      <Skeleton className="aspect-[1.4/1] h-full" />
     </div>
   );
 };
@@ -124,29 +133,32 @@ const MediaPage = ({ mediaType }: Props) => {
           />
 
           {/* In Mobile */}
-          <div className="flex gap-2 sm:hidden">
-            <button
-              onClick={() => {
-                if (mediaItemDetails)
-                  showAddListModal({
-                    media_id: mediaItemDetails.id,
-                    media_type: mediaItemDetails.media_type,
-                  });
-              }}
-              className="flex flex-col justify-between items-center gap-1 px-3 py-2 min-w-16"
-            >
-              <BsPlusLg className="text-2xl p-[3px]" />
-              <span className="text-sm">My Lists</span>
-            </button>
-            <button className="flex flex-col justify-between items-center px-3 py-2 min-w-16">
-              <BsSend className="text-2xl p-[3px]" />
-              <span className="text-sm">Share</span>
-            </button>
-            <button className="flex flex-col justify-between items-center px-3 py-2 min-w-16">
-              <BsStar className="text-2xl p-[3px]" />
-              <span className="text-sm">Rate</span>
-            </button>
-          </div>
+          {!mediaItemDetails && !isSmUp && <MobileButtonsSkeleton />}
+          {mediaItemDetails && !isSmUp && (
+            <div className="flex gap-2 sm:hidden">
+              <button
+                onClick={() => {
+                  if (mediaItemDetails)
+                    showAddListModal({
+                      media_id: mediaItemDetails.id,
+                      media_type: mediaItemDetails.media_type,
+                    });
+                }}
+                className="flex flex-col justify-between items-center gap-1 px-3 py-2 min-w-16"
+              >
+                <BsPlusLg className="text-2xl p-[3px]" />
+                <span className="text-sm">My Lists</span>
+              </button>
+              <button className="flex flex-col justify-between items-center px-3 py-2 min-w-16">
+                <BsSend className="text-2xl p-[3px]" />
+                <span className="text-sm">Share</span>
+              </button>
+              <button className="flex flex-col justify-between items-center px-3 py-2 min-w-16">
+                <BsStar className="text-2xl p-[3px]" />
+                <span className="text-sm">Rate</span>
+              </button>
+            </div>
+          )}
           <div>
             {!mediaItemDetails && <MediaExtrasNavSkeleton />}
             {mediaItemDetails && (
