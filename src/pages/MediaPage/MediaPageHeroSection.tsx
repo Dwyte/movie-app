@@ -58,6 +58,26 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
       : NO_IMAGE_LANDSCAPE_PATH;
   }, [mediaItemDetails]);
 
+  const renderLogo = () => {
+    if (logoImgSrc) {
+      return (
+        <img
+          className={`w-auto max-h-30 transition-opacity ${
+            isLogoLoaded && isBackdropLoaded ? "opacity-100" : "opacity-0"
+          }`}
+          src={logoImgSrc}
+          onLoad={() => setIsLogoLoaded(true)}
+        />
+      );
+    }
+
+    if (isBackdropLoaded) {
+      return <h1 className="text-2xl font-bold">{mediaItemDetails?.title}</h1>;
+    }
+
+    return null;
+  };
+
   return (
     <div className="relative bg-black w-full">
       <button
@@ -88,17 +108,8 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
       </div>
 
       <div className="hidden sm:flex flex-col items-start px-10 gap-8 absolute left-0 right-0 bottom-0 z-2">
-        {logoImgSrc ? (
-          <img
-            className={`w-auto max-h-30 transition-opacity ${
-              isLogoLoaded && isBackdropLoaded ? "opacity-100" : "opacity-0"
-            }`}
-            src={logoImgSrc}
-            onLoad={() => setIsLogoLoaded(true)}
-          />
-        ) : (
-          <h1 className="text-2xl font-bold">{mediaItemDetails?.title}</h1>
-        )}
+        {renderLogo()}
+
         {!isBackdropLoaded && <ButtonsSkeleton />}
         {isBackdropLoaded && (
           <div className="flex items-center gap-4 w-full">
