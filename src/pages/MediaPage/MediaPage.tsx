@@ -29,19 +29,12 @@ interface Props {
   mediaType: MediaType;
 }
 
-const MediaExtrasSkeleton = () => {
+const MediaExtrasNavSkeleton = () => {
   return (
-    <div>
-      <div className="flex gap-2 mb-4">
-        <Skeleton className="h-10 w-32" />
-        <Skeleton className="h-10 w-32" />
-      </div>
-
-      <div className="grid grid-cols-3 gap-2">
-        {Array.from({ length: 9 }, (_, k) => (
-          <Skeleton key={k} className="aspect-[9/16] sm:aspect-[16/9] w-full" />
-        ))}
-      </div>
+    <div className="flex gap-2 mb-4">
+      <Skeleton className="h-10 w-32" />
+      <Skeleton className="h-10 w-32" />
+      <Skeleton className="h-10 w-32" />
     </div>
   );
 };
@@ -152,10 +145,9 @@ const MediaPage = ({ mediaType }: Props) => {
               <span className="text-sm">Rate</span>
             </button>
           </div>
-
-          {!mediaItemDetails && <MediaExtrasSkeleton />}
-          {mediaItemDetails && (
-            <div>
+          <div>
+            {!mediaItemDetails && <MediaExtrasNavSkeleton />}
+            {mediaItemDetails && (
               <nav className="flex gap-4 mb-4 scrollable">
                 {MEDIA_PAGE_NAV_LINKS.map((navLink, index) => {
                   if (navLink.path === "/episodes" && mediaType === "movie")
@@ -176,33 +168,31 @@ const MediaPage = ({ mediaType }: Props) => {
                   );
                 })}
               </nav>
-              <Routes>
-                <Route
-                  path=""
-                  element={
-                    <RelatedMediaSection mediaItemDetails={mediaItemDetails} />
-                  }
-                />
-                <Route
-                  path="/casts"
-                  element={
-                    <MediaPageCastsSection
-                      mediaItemCredits={mediaItemCredits}
-                    />
-                  }
-                />
-                <Route
-                  path="/episodes"
-                  element={
-                    <MediaPageEpisodesSection
-                      mediaId={mediaId}
-                      seasons={mediaItemDetails.seasons}
-                    />
-                  }
-                />
-              </Routes>
-            </div>
-          )}
+            )}
+            <Routes>
+              <Route
+                path=""
+                element={
+                  <RelatedMediaSection mediaItemDetails={mediaItemDetails} />
+                }
+              />
+              <Route
+                path="/casts"
+                element={
+                  <MediaPageCastsSection mediaItemCredits={mediaItemCredits} />
+                }
+              />
+              <Route
+                path="/episodes"
+                element={
+                  <MediaPageEpisodesSection
+                    mediaId={mediaId}
+                    seasons={mediaItemDetails?.seasons}
+                  />
+                }
+              />
+            </Routes>
+          </div>
         </div>
       </div>
     </div>
