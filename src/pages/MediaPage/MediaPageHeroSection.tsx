@@ -63,24 +63,30 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
       : NO_IMAGE_LANDSCAPE_PATH;
   }, [mediaItemDetails]);
 
+  /**
+   * Display Logo + hidden h1 if there's an available Logo title for Media
+   * If not Just a regular h1 Title
+   */
   const renderLogo = () => {
+    if (!mediaItemImages) return null;
+
     if (logoImgSrc) {
       return (
-        <img
-          className={`w-auto max-h-30 transition-opacity ${
-            isLogoLoaded ? "opacity-100" : "opacity-0"
-          }`}
-          src={logoImgSrc}
-          onLoad={() => setIsLogoLoaded(true)}
-        />
+        <>
+          <img
+            className={`w-auto max-h-30 transition-opacity ${
+              isLogoLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            src={logoImgSrc}
+            onLoad={() => setIsLogoLoaded(true)}
+            alt={`${mediaItemDetails?.title} Logo`}
+          />
+          <h1 className="sr-only">{mediaItemDetails?.title}</h1>
+        </>
       );
     }
 
-    if (isBackdropLoaded) {
-      return <h1 className="text-2xl font-bold">{mediaItemDetails?.title}</h1>;
-    }
-
-    return null;
+    return <h1 className="text-2xl font-bold">{mediaItemDetails?.title}</h1>;
   };
 
   return (
