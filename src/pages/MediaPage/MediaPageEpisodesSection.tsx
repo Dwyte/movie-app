@@ -25,6 +25,29 @@ const HeaderSkeleton = () => {
   );
 };
 
+const EpisodeSkeleton = () => {
+  return (
+    <div className="flex py-2 flex-col sm:py-4 sm:border-b-stone-800 sm:border-b-1">
+      <div className="flex sm:px-6 gap-2 items-center">
+        <Skeleton className="hidden sm:block h-4 w-4" rounded="rounded-full" />
+        <div className="flex gap-4 w-full">
+          <Skeleton className="h-full w-full max-w-[200px] aspect-[16/10]" />
+
+          <div className="flex flex-col gap-2 justify-center w-full">
+            <div className="flex justify-between mb-1">
+              <Skeleton className="w-[80%] h-6 sm:h-7 sm:w-50" />
+              <Skeleton className="hidden sm:block h-5 w-9" />
+            </div>
+            <Skeleton className="hidden sm:block h-4 w-[95%]" />
+            <Skeleton className="hidden sm:block h-4 w-[85%]" />
+            <Skeleton className="h-4 w-[65%]" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const MediaPageEpisodesSection = ({ mediaId, seasons }: Props) => {
   const [selectedSeason, setSelectedSeason] = useState<number>(0);
   const { data: seasonDetails, isFetching } = useQuery({
@@ -70,11 +93,12 @@ const MediaPageEpisodesSection = ({ mediaId, seasons }: Props) => {
           </div>
         </div>
       )}
-
-      {(isFetching || !seasons) && <ListSkeleton className="h-28" />}
-      {!isFetching && seasons?.length && (
-        <div className="flex flex-col max-h-100 sm:max-h-200 scrollable">
-          {seasonDetails?.episodes.map((episode) => (
+      <div className="flex flex-col max-h-100 sm:max-h-200 scrollable border-t border-t-stone-700">
+        {(isFetching || !seasons) &&
+          Array.from({ length: 10 }, (_, k) => <EpisodeSkeleton key={k} />)}
+        {!isFetching &&
+          seasons?.length &&
+          seasonDetails?.episodes.map((episode) => (
             <div
               key={episode.id}
               className="flex items-center gap-4 py-2 sm:border-b-1 sm:border-stone-700 sm:py-4 sm:pr-6 cursor-pointer hover:bg-stone-900"
@@ -110,8 +134,7 @@ const MediaPageEpisodesSection = ({ mediaId, seasons }: Props) => {
               </div>
             </div>
           ))}
-        </div>
-      )}
+      </div>
     </div>
   );
 };
