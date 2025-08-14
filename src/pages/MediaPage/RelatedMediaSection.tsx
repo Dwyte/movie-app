@@ -53,7 +53,7 @@ const RelatedMediaSection = ({ mediaItemDetails }: Props) => {
     <div className="grid grid-cols-3 gap-3">
       {isLoadingData &&
         Array.from({ length: 9 }, (_, k) => (
-          <Skeleton key={k} className="aspect-[9/16] sm:aspect-[16/9] w-full" />
+          <Skeleton key={k} className="aspect-[1/1.5] sm:aspect-[16/9] w-full" />
         ))}
       {!isLoadingData &&
         filteredRelatedMediaItems.map((mediaItem) => {

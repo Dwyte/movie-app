@@ -112,7 +112,7 @@ const MediaCard = ({
         <div className="relative rounded-sm overflow-hidden">
           {previewImageSource && (
             <img
-              className={`w-full h-full object-cover`}
+              className={`w-full h-full object-cover aspect-[1/1.5] sm:aspect-[16/9]`}
               src={previewImageSource}
               alt={media.title}
             />
@@ -135,7 +135,9 @@ const MediaCard = ({
           {previewImageSource && (
             <img
               className={`${`${
-                flexible ? "w-full h-full" : defaultDimensions
+                flexible
+                  ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
+                  : defaultDimensions
               } ${hoverWidth} ${hoverHeight}`}  object-cover`}
               onLoad={onImageLoad}
               src={previewImageSource}
