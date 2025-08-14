@@ -53,17 +53,17 @@ const MediaPageEpisodesSection = ({ mediaId, seasons }: Props) => {
       {seasons && (
         <div className="flex items-center">
           <h2 className="flex-1 m-0 text-2xl">
-            {seasons[selectedSeason].name}
+            Season {seasons[selectedSeason].season_number}
           </h2>
           <div className="w-32">
             <Select
-              selectedLabel={seasons[selectedSeason].name}
+              selectedLabel={`Season ${seasons[selectedSeason].season_number}`}
               value={selectedSeason}
               onChange={(value) => setSelectedSeason(value)}
             >
               {seasons.map((season, index) => (
                 <Option key={season.id} value={index}>
-                  {season.name}
+                  Season {season.season_number}
                 </Option>
               ))}
             </Select>
