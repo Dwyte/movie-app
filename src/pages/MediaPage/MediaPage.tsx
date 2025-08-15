@@ -162,7 +162,7 @@ const MediaPage = ({ mediaType }: Props) => {
           <div>
             {!mediaItemDetails && <MediaExtrasNavSkeleton />}
             {mediaItemDetails && (
-              <nav className="flex gap-4 mb-4 scrollable">
+              <nav className="flex gap-4 scrollable">
                 {MEDIA_PAGE_NAV_LINKS.map((navLink, index) => {
                   if (navLink.path === "/episodes" && mediaType === "movie")
                     return;

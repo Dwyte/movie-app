@@ -27,7 +27,7 @@ const MediaPageCastsSection = ({ mediaItemCredits }: Props) => {
 
   return (
     <div>
-      <div className="grid gap-4 grid-cols-2 sm:grid-cols-4">
+      <div className="grid gap-4 grid-cols-2 mt-4 sm:grid-cols-4">
         {/** Optimistic Skeletons even before mediaItemCredits are fetched  */}
         {!mediaItemCredits &&
           Array.from({ length: 9 }, (_, k) => <CastSkeleton key={k} />)}

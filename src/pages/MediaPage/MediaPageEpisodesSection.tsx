@@ -18,7 +18,7 @@ interface Props {
 
 const HeaderSkeleton = () => {
   return (
-    <div className="flex justify-between">
+    <div className="flex mt-4 justify-between">
       <Skeleton className="h-10 w-32" />
       <Skeleton className="h-10 w-32" />
     </div>
@@ -71,10 +71,10 @@ const MediaPageEpisodesSection = ({ mediaId, seasons }: Props) => {
   });
 
   return (
-    <div className="flex flex-col gap-2 sm:gap-4">
+    <div className="flex flex-col gap-2">
       {!seasons && <HeaderSkeleton />}
       {seasons && (
-        <div className="flex items-center">
+        <div className="flex py-4 sm:sticky sm:top-0 bg-black items-center border-b border-b-stone-700">
           <h2 className="flex-1 m-0 text-2xl">
             Season {seasons[selectedSeason].season_number}
           </h2>
@@ -93,7 +93,7 @@ const MediaPageEpisodesSection = ({ mediaId, seasons }: Props) => {
           </div>
         </div>
       )}
-      <div className="flex flex-col max-h-100 sm:max-h-200 scrollable border-t border-t-stone-700">
+      <div className="flex flex-col max-h-100 sm:max-h-none scrollable">
         {(isFetching || !seasons) &&
           Array.from({ length: 10 }, (_, k) => <EpisodeSkeleton key={k} />)}
         {!isFetching &&

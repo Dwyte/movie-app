@@ -50,7 +50,7 @@ const RelatedMediaSection = ({ mediaItemDetails }: Props) => {
     isLoadingData || filteredRelatedMediaItems.length > doneLoadingCount;
 
   return (
-    <div className="grid grid-cols-3 gap-3">
+    <div className="mt-4 grid grid-cols-3 gap-3">
       {isLoadingData &&
         Array.from({ length: 9 }, (_, k) => (
           <Skeleton key={k} className="aspect-[1/1.5] sm:aspect-[16/9] w-full" />
