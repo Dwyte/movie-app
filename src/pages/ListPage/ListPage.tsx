@@ -10,7 +10,7 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 
 import ListContainer from "../MyLists/ListContainer";
-import MediaListItem from "../MyLists/MediaListItem";
+import MediaListItem, { MediaListItemSkeleton } from "../MyLists/MediaListItem";
 import ListItem from "../MyLists/ListItem";
 
 import { ListDetails, Media, MediaRef } from "../../misc/types";
@@ -170,6 +170,10 @@ const ListPage = () => {
   const isUserOwner =
     !!authDetails && authDetails.accountId === listDetails?.created_by.id;
 
+  const [loadedMediaItemCount, setLoadedMediaItemCount] = useState(0);
+  const isDoneLoadingListItems =
+    listDetails && loadedMediaItemCount === listDetails.item_count;
+
   return (
     <PageContainer>
       <ScrollToTop />
@@ -195,28 +199,48 @@ const ListPage = () => {
         />
       )}
 
-      {isListDetailsFetching && <ListSkeleton />}
-      {!isListDetailsFetching && listDetails && (
-        <ListContainer>
-          {listResults.map((media, index) => {
+      <ListContainer>
+        {isListDetailsFetching &&
+          Array.from({ length: 10 }, (_, k) => <MediaListItemSkeleton />)}
+        {!isListDetailsFetching &&
+          listDetails &&
+          listResults.map((media, index) => {
             const commentKey = `${media.media_type}:${media.id}`;
 
             return (
-              <ListItem index={index + 1} key={media.id}>
-                <MediaListItem
-                  media={media}
-                  comment={listDetails.comments[commentKey]}
-                  onDelete={isUserOwner ? deleteListItemMutation.mutate : null}
-                  isDeleting={deleteListItemMutation.isPending}
-                  onComment={isUserOwner ? handleListItemEdit : null}
-                />
-              </ListItem>
+              <div className="relative">
+                {!isDoneLoadingListItems && (
+                  <div className="absolute inset-0">
+                    <MediaListItemSkeleton />
+                  </div>
+                )}
+
+                <div
+                  className={`transition-opacity ${
+                    isDoneLoadingListItems ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  <ListItem index={index + 1} key={media.id}>
+                    <MediaListItem
+                      media={media}
+                      comment={listDetails.comments[commentKey]}
+                      onDelete={
+                        isUserOwner ? deleteListItemMutation.mutate : null
+                      }
+                      isDeleting={deleteListItemMutation.isPending}
+                      onComment={isUserOwner ? handleListItemEdit : null}
+                      onLoad={() => setLoadedMediaItemCount((p) => p + 1)}
+                    />
+                  </ListItem>
+                </div>
+              </div>
             );
           })}
 
-          {listResults.length === 0 && <EmptyListPlaceholder />}
-        </ListContainer>
-      )}
+        {isDoneLoadingListItems && listResults.length === 0 && (
+          <EmptyListPlaceholder />
+        )}
+      </ListContainer>
     </PageContainer>
   );
 };
