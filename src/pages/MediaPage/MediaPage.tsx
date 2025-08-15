@@ -123,7 +123,7 @@ const MediaPage = ({ mediaType }: Props) => {
   return (
     <div
       onClick={closeModal}
-      className="flex flex-col items-center fixed inset-0 text-white z-10000 bg-black/60"
+      className="flex flex-col items-center fixed inset-0 text-white z-10000 bg-black/60 fade-in"
     >
       <DisableBodyScroll />
       <div

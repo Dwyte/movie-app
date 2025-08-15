@@ -50,4 +50,17 @@
   .scrollable::-webkit-scrollbar {
     display: none;
   }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .fade-in {
+    animation: fadeIn 200ms forwards ease-in;
+  }
 }
