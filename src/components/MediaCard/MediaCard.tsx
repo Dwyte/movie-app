@@ -104,47 +104,34 @@ const MediaCard = ({
   return (
     <div
       onClick={handleMediaCardClick}
-      className={`group/mcard relative flex items-center justify-center shrink-0 ${
-        flexible ? "w-full h-full" : defaultDimensions
-      } cursor-pointer`}
+      className={`group/mcard relative flex items-center justify-center shrink-0 cursor-pointer ${
+        flexible
+          ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
+          : defaultDimensions
+      }`}
     >
-      {flexible && (
-        <div className="relative rounded-sm overflow-hidden">
-          {previewImageSource && (
-            <img
-              className={`w-full h-full object-cover aspect-[1/1.5] sm:aspect-[16/9]`}
-              src={previewImageSource}
-              alt={media.title}
-            />
-          )}
-
-          {!backdropWithTitleFilePath && isSmUp && (
-            <h3 className="absolute text-sm text-white text-center font-bold left-0 bottom-0 right-0 bg-black/70">
-              {media.title}
-            </h3>
-          )}
-        </div>
-      )}
+      {/** If flexible we have a static div container that will take the full space available. This is for grids where dimensions depends on defined cols
+       * and not exactly from width and height from our constant defaultDimensions. While the actual content is Absolute, it like floats on top of the
+       * static div and scale up on hover etc. */}
 
       <div
-        className={`${
-          flexible && "hidden group-hover/mcard:block"
-        } absolute group rounded-sm overflow-hidden ${hoverWidth} group-hover/mcard:z-1000`}
+        className={`absolute group rounded-sm overflow-hidden group-hover/mcard:scale-115 transition-transform group-hover/mcard:z-1000`}
       >
-        <div className=" relative">
+        <div className="relative">
           {previewImageSource && (
             <img
-              className={`${`${
+              className={`${
                 flexible
                   ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
                   : defaultDimensions
-              } ${hoverWidth} ${hoverHeight}`}  object-cover`}
+              }  object-cover`}
               onLoad={onImageLoad}
               src={previewImageSource}
               alt={media.title}
             />
           )}
 
+          {/** We Display a Title Text if there's no available Image that contains the title for the Thumbnail */}
           {!backdropWithTitleFilePath && isSmUp && (
             <h3 className="absolute text-sm text-white text-center font-bold left-0 bottom-0 right-0 bg-black/70">
               {media.title}
@@ -156,7 +143,7 @@ const MediaCard = ({
           onClick={(e) => e.stopPropagation()}
           className="hidden p-2 group-hover/mcard:flex flex-col gap-2 bg-stone-900 text-white shadow-2xl"
         >
-          <div className="flex gap-1">
+          <div className="flex gap-1 text-sm">
             <button className="primary-icon-btn">
               <BsPlayFill />
             </button>
@@ -180,7 +167,7 @@ const MediaCard = ({
             </button>
           </div>
 
-          <div className="text-sm">
+          <div className="text-xs">
             <GenreList genreIds={media.genre_ids} />
           </div>
         </div>
