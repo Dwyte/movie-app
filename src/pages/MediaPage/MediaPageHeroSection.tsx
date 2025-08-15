@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { useAddListModal } from "../../contexts/AddListModalContext";
 
@@ -11,6 +11,7 @@ import { getTMDBImageURL } from "../../misc/utils";
 import { BsPlayFill, BsPlusLg, BsStar, BsXLg } from "react-icons/bs";
 import { RiDownloadLine } from "react-icons/ri";
 import Skeleton from "../../components/Skeleton";
+import Img from "../../components/Img";
 
 interface Props {
   mediaItemDetails: MediaDetails | null;
@@ -43,11 +44,6 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
   const [isBackdropLoaded, setIsBackdropLoaded] = useState<boolean>(false);
   const [isLogoLoaded, setIsLogoLoaded] = useState<boolean>(false);
 
-  useEffect(() => {
-    setIsBackdropLoaded(false);
-    setIsLogoLoaded(false);
-  }, [mediaItemDetails]);
-
   const logoImgSrc = useMemo(() => {
     if (!mediaItemImages) return null;
 
@@ -73,13 +69,14 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
     if (logoImgSrc) {
       return (
         <>
-          <img
+          <Img
             className={`w-auto max-h-30 transition-opacity ${
               isLogoLoaded ? "opacity-100" : "opacity-0"
             }`}
             src={logoImgSrc}
             onLoad={() => setIsLogoLoaded(true)}
-            alt={`${mediaItemDetails?.title} Logo`}
+            onUnmount={() => setIsLogoLoaded(false)}
+            alt={mediaItemDetails?.title}
           />
           <h1 className="sr-only">{mediaItemDetails?.title}</h1>
         </>
@@ -108,11 +105,13 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
         )}
 
         {backdropImgSrc && (
-          <img
+          <Img
+            key={backdropImgSrc}
             className={`w-full object-cover transition-opacity ${
               isBackdropLoaded ? "opacity-100" : "opacity-0"
             }`}
             onLoad={() => setIsBackdropLoaded(true)}
+            onUnmount={() => setIsBackdropLoaded(false)}
             src={backdropImgSrc}
           />
         )}
