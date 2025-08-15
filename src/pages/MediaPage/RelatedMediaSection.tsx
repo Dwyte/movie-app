@@ -50,33 +50,43 @@ const RelatedMediaSection = ({ mediaItemDetails }: Props) => {
     isLoadingData || filteredRelatedMediaItems.length > doneLoadingCount;
 
   return (
-    <div className="mt-4 grid grid-cols-3 gap-3">
-      {isLoadingData &&
-        Array.from({ length: 9 }, (_, k) => (
-          <Skeleton key={k} className="aspect-[1/1.5] sm:aspect-[16/9] w-full" />
-        ))}
-      {!isLoadingData &&
-        filteredRelatedMediaItems.map((mediaItem) => {
-          return (
-            <div className="relative" key={mediaItem.id}>
-              {isLoadingImages && (
-                <Skeleton className="absolute inset-0 w-full h-full aspect-[16/9] z-1" />
-              )}
-              <div
-                className={`w-full h-full transition-opacity ${
-                  isLoadingImages ? "opacity-0" : "opacity-100"
-                }`}
-              >
-                <MediaCard
-                  media={mediaItem}
-                  sourcePathName={backgroundLocation}
-                  onImageLoad={() => setDoneLoadingCount((p) => p + 1)}
-                  flexible={true}
-                />
+    <div>
+      <div className="mt-4 grid grid-cols-3 gap-3">
+        {isLoadingData &&
+          Array.from({ length: 9 }, (_, k) => (
+            <Skeleton
+              key={k}
+              className="aspect-[1/1.5] sm:aspect-[16/9] w-full"
+            />
+          ))}
+        {!isLoadingData &&
+          filteredRelatedMediaItems.map((mediaItem) => {
+            return (
+              <div className="relative" key={mediaItem.id}>
+                {isLoadingImages && (
+                  <Skeleton className="absolute inset-0 w-full h-full aspect-[16/9] z-1" />
+                )}
+                <div
+                  className={`w-full h-full transition-opacity ${
+                    isLoadingImages ? "opacity-0" : "opacity-100"
+                  }`}
+                >
+                  <MediaCard
+                    media={mediaItem}
+                    sourcePathName={backgroundLocation}
+                    onImageLoad={() => setDoneLoadingCount((p) => p + 1)}
+                    flexible={true}
+                  />
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+      </div>
+      {!isLoadingImages && filteredRelatedMediaItems.length === 0 && (
+        <div className="text-lg font-bold text-stone-400 text-center w-full py-8">
+          No Related Media was found.
+        </div>
+      )}
     </div>
   );
 };
