@@ -12,13 +12,13 @@ export const HeaderSkeleton = () => {
 export const EpisodeSkeleton = () => {
   return (
     <div className="flex py-2 flex-col sm:py-4 sm:border-b-stone-800 sm:border-b-1">
-      <div className="flex sm:px-6 gap-2 items-center">
-        <Skeleton className="hidden sm:block h-4 w-4" rounded="rounded-full" />
+      <div className="flex sm:px-4 gap-3 items-center">
+        <Skeleton className="hidden sm:block h-5 w-5" rounded="rounded-full" />
         <div className="flex gap-4 w-full">
-          <Skeleton className="h-full w-full max-w-[200px] aspect-[16/10]" />
+          <Skeleton className="h-full w-full max-w-[201px] aspect-[16/10]" />
 
-          <div className="flex flex-col gap-2 justify-center w-full">
-            <div className="flex justify-between mb-1">
+          <div className="flex flex-col gap-1 justify-center w-full">
+            <div className="flex justify-between items-center mb-1">
               <Skeleton className="w-[80%] h-6 sm:h-7 sm:w-50" />
               <Skeleton className="hidden sm:block h-5 w-9" />
             </div>

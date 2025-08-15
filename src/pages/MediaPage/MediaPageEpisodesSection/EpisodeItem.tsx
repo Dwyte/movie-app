@@ -7,9 +7,10 @@ import {
 
 interface Props {
   episode: Episode;
+  onLoad?: () => void;
 }
 
-const EpisodeItem = ({ episode }: Props) => {
+const EpisodeItem = ({ episode, onLoad }: Props) => {
   const thumbnailSrc = episode.still_path
     ? getTMDBImageURL(episode.still_path, "200")
     : "/no-image-landscape.png";
@@ -23,6 +24,7 @@ const EpisodeItem = ({ episode }: Props) => {
         src={thumbnailSrc}
         className="aspect-16/10 object-cover rounded-sm max-w-[200px]"
         alt=""
+        onLoad={onLoad}
       />
       <div className="flex flex-col flex-1 gap-1 justify-center">
         <div className="text-sm uppercase font-bold text-red-800 sm:hidden">
