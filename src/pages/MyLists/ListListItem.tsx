@@ -5,7 +5,6 @@ import FiveStarRating from "../../components/FiveStarRating";
 import { NO_IMAGE_LANDSCAPE_PATH } from "../../misc/constants";
 import { getTMDBImageURL } from "../../misc/utils";
 
-import { BsGlobeAmericas, BsLockFill } from "react-icons/bs";
 import VisibilityIcon from "../../components/VisibilityIcon";
 
 interface Props {
@@ -20,7 +19,7 @@ const ListListItem = ({ listItem }: Props) => {
   return (
     <div className="flex items-center justify-between w-full">
       <div className="flex w-100 items-center gap-2">
-        <img src={thumbnail} alt="" className="w-36" />
+        <img src={thumbnail} alt="" className="w-42" />
         <div className="flex flex-col sm:flex-col">
           <div>{listItem.name}</div>
           <div className="text-stone-500 text-sm">

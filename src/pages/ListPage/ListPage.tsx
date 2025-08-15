@@ -201,14 +201,16 @@ const ListPage = () => {
 
       <ListContainer>
         {isListDetailsFetching &&
-          Array.from({ length: 10 }, (_, k) => <MediaListItemSkeleton />)}
+          Array.from({ length: 10 }, (_, k) => (
+            <MediaListItemSkeleton key={k} />
+          ))}
         {!isListDetailsFetching &&
           listDetails &&
           listResults.map((media, index) => {
             const commentKey = `${media.media_type}:${media.id}`;
 
             return (
-              <div className="relative">
+              <div className="relative" key={media.id}>
                 {!isDoneLoadingListItems && (
                   <div className="absolute inset-0">
                     <MediaListItemSkeleton />
@@ -220,7 +222,7 @@ const ListPage = () => {
                     isDoneLoadingListItems ? "opacity-100" : "opacity-0"
                   }`}
                 >
-                  <ListItem index={index + 1} key={media.id}>
+                  <ListItem index={index + 1}>
                     <MediaListItem
                       media={media}
                       comment={listDetails.comments[commentKey]}
