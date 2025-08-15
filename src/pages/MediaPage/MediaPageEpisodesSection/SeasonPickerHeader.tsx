@@ -11,7 +11,7 @@ const SeasonPickerHeader = ({
   onChange: (seasonIndex: number) => void;
 }) => {
   return (
-    <div className="flex py-4 sm:sticky sm:top-0 bg-black items-center border-b border-b-stone-700">
+    <div className="flex py-4 sm:sticky sm:top-0 bg-black items-center border-b border-b-stone-700 z-5">
       <h2 className="flex-1 m-0 text-2xl">
         Season {seasons[selectedSeasonIndex].season_number}
       </h2>
