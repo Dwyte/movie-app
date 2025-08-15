@@ -4,14 +4,13 @@ import { useAuth } from "../../contexts/AuthContext";
 import { getAccountLists } from "../../misc/tmdbAPI";
 
 import ListItem from "./ListItem";
-import ListListItem from "./ListListItem";
+import ListListItem, { ListListItemSkeleton } from "./ListListItem";
 import ListContainer from "./ListContainer";
 import PageContainer from "../../components/PageContainer";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ListPagination from "../../components/ListPagination";
 import ScrollToTop from "../../components/ScrollToTop";
-import ListSkeleton from "../ListPage/ListSkeleton";
 import EmptyListPlaceholder from "../ListPage/EmptyListPlaceholder";
 
 const MyLists = () => {
@@ -46,22 +45,25 @@ const MyLists = () => {
       <ScrollToTop />
       <h1 className="text-3xl text-white mb-2 sm:mb-6">My Lists</h1>
       <div className="flex flex-col gap-4">
-        {isLoading ? (
-          <ListSkeleton />
-        ) : (
-          userLists && (
-            <ListContainer>
-              {userLists.results.map((listItem, index) => (
+        <div>
+          <ListContainer>
+            {(!userLists || isLoading) &&
+              Array.from({ length: 10 }, (_, k) => (
+                <ListListItemSkeleton key={k} />
+              ))}
+
+            {!isLoading &&
+              userLists &&
+              userLists.results.map((listItem, index) => (
                 <Link key={listItem.id} to={`/list/${listItem.id}`}>
                   <ListItem index={index + 1}>
                     <ListListItem listItem={listItem} />
                   </ListItem>
                 </Link>
               ))}
-              {userLists.results.length === 0 && <EmptyListPlaceholder />}
-            </ListContainer>
-          )
-        )}
+            {userLists?.results.length === 0 && <EmptyListPlaceholder />}
+          </ListContainer>
+        </div>
         {userLists && userLists.results.length > 0 && (
           <ListPagination
             currentPage={currentPage}
