@@ -7,7 +7,6 @@ import MediaCard from "../MediaCard";
 import useIsOnMobile from "../../hooks/useIsOnMobile";
 
 import { Media } from "../../misc/types";
-import useIsSmUp from "../../hooks/useIsSmUp";
 
 const MEDIA_CARD_DIV_WIDTH = 272; // Includes 8px right-gap
 const LEFT_END_SPACE_WIDTH = 48; // Includes 8px right-gap
@@ -110,18 +109,18 @@ const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
     }
   };
 
-  /**
-   * KeyValue Record of each mediaItem loadState/isLoaded. See onImageLoad, we set
-   * mediaItem.id -> true. Then check on isDoneLoadingAll if all mediaItem.id has isLoading true
-   * recorded here. Then onUnmount, we set records to false.
+  /** We Incrase loadedMediaCount whenever MediaCards finishes to load it's thumbnail. See onImageLoad.
+   * But we want the whole row to finish loading first then we show them all at once. Sometimes onImageLoad
+   * get's triggered more than once. So instead of checking direct equality between loadedMediaCount and mediaItems
+   * we check if loadedMediaCount is a multiple of mediaItems. This also works for switching from mobile to desktop
+   * vice versa. When we have to load different versions of the thumbnail from landscape to portrait v.v.
    */
   const [isMediaCardsLoaded, setIsMediaCardsLoaded] = useState<{
     [key: string]: boolean;
-  }>({});
-
-  const isDoneLoadingAll = mediaItems.every(
-    (mediaItem) => !!isMediaCardsLoaded[mediaItem.id]
-  );
+  } | null>({});
+  const isDoneLoadingAll =
+    isMediaCardsLoaded !== null &&
+    Object.values(isMediaCardsLoaded).every((v) => v);
 
   return (
     mediaItems.length > 0 && (
@@ -160,11 +159,7 @@ const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
                 <MediaCard
                   key={mediaItem.id}
                   media={mediaItem}
-                  onImageLoad={() =>
-                    setIsMediaCardsLoaded((p) => {
-                      return { ...p, [mediaItem.id]: true };
-                    })
-                  }
+                  onImageLoad={() => setLoadedMediaCount((p) => p + 1)}
                 />
               ))}
 

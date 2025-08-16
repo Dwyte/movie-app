@@ -14,6 +14,7 @@ import {
   NO_IMAGE_PORTRAIT_PATH,
 } from "../../misc/constants";
 import { useAddListModal } from "../../contexts/AddListModalContext";
+import Img from "../Img";
 
 export const MEDIA_CARD_DIMENSIONS = "w-30 h-45 sm:w-66 sm:h-36";
 const hoverWidth = "group-hover/mcard:w-72";
@@ -21,7 +22,7 @@ const hoverHeight = "group-hover/mcard:h-40";
 
 interface Props {
   media: Media;
-  onImageLoad?: () => void;
+  onImageLoad: () => void;
   sourcePathName?: string;
   flexible?: boolean;
 }
@@ -119,7 +120,7 @@ const MediaCard = ({
       >
         <div className="relative">
           {previewImageSource && (
-            <img
+            <Img
               className={`${
                 flexible
                   ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
