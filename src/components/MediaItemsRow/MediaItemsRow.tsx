@@ -7,8 +7,6 @@ import MediaCard from "../MediaCard";
 import useIsOnMobile from "../../hooks/useIsOnMobile";
 
 import { Media } from "../../misc/types";
-import Test from "../../pages/Test";
-import useIsSmUp from "../../hooks/useIsSmUp";
 
 const MEDIA_CARD_DIV_WIDTH = 272; // Includes 8px right-gap
 const LEFT_END_SPACE_WIDTH = 48; // Includes 8px right-gap
@@ -111,13 +109,15 @@ const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
     }
   };
 
+  /** We Incrase loadedMediaCount whenever MediaCards finishes to load it's thumbnail. See onImageLoad.
+   * But we want the whole row to finish loading first then we show them all at once. Sometimes onImageLoad
+   * get's triggered more than once. So instead of checking direct equality between loadedMediaCount and mediaItems
+   * we check if loadedMediaCount is a multiple of mediaItems. This also works for switching from mobile to desktop
+   * vice versa. When we have to load different versions of the thumbnail from landscape to portrait v.v.
+   */
   const [loadedMediaCount, setLoadedMediaCount] = useState(0);
-  const isDoneLoadingAll = mediaItems.length === loadedMediaCount;
-
-  const isSmUp = useIsSmUp();
-  useEffect(() => {
-    setLoadedMediaCount(0);
-  }, [isSmUp]);
+  const isDoneLoadingAll =
+    loadedMediaCount !== 0 && loadedMediaCount % mediaItems.length === 0;
 
   return (
     mediaItems.length > 0 && (
