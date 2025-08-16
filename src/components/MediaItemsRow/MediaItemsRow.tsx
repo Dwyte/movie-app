@@ -8,6 +8,7 @@ import useIsOnMobile from "../../hooks/useIsOnMobile";
 
 import { Media } from "../../misc/types";
 import Test from "../../pages/Test";
+import useIsSmUp from "../../hooks/useIsSmUp";
 
 const MEDIA_CARD_DIV_WIDTH = 272; // Includes 8px right-gap
 const LEFT_END_SPACE_WIDTH = 48; // Includes 8px right-gap
@@ -110,9 +111,21 @@ const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
     }
   };
 
+  const [loadedMediaCount, setLoadedMediaCount] = useState(0);
+  const isDoneLoadingAll = mediaItems.length === loadedMediaCount;
+
+  const isSmUp = useIsSmUp();
+  useEffect(() => {
+    setLoadedMediaCount(0);
+  }, [isSmUp]);
+
   return (
     mediaItems.length > 0 && (
-      <section className="group/root sm:relative">
+      <section
+        className={`group/root sm:relative transition-opacity duration-1000 ease-out ${
+          isDoneLoadingAll ? "opacity-100" : "opacity-0"
+        }`}
+      >
         <div className="sm:absolute sm:left-0 sm:right-0 flex justify-between items-end ml-4 sm:ml-12">
           <h2>{title}</h2>
           {!isOnMobile && (
@@ -140,7 +153,11 @@ const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
               <div className="shrink-0 w-2 sm:w-10 bg-white"></div>
 
               {mediaItems.map((mediaItem) => (
-                <MediaCard key={mediaItem.id} media={mediaItem} />
+                <MediaCard
+                  key={mediaItem.id}
+                  media={mediaItem}
+                  onImageLoad={() => setLoadedMediaCount((p) => p + 1)}
+                />
               ))}
 
               {/** Acts as right padding/space when the user reaches the last page. */}

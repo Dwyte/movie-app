@@ -15,7 +15,7 @@ import {
 } from "../../misc/constants";
 import { useAddListModal } from "../../contexts/AddListModalContext";
 
-const defaultDimensions = "w-30 h-45 sm:w-66 sm:h-36";
+export const MEDIA_CARD_DIMENSIONS = "w-30 h-45 sm:w-66 sm:h-36";
 const hoverWidth = "group-hover/mcard:w-72";
 const hoverHeight = "group-hover/mcard:h-40";
 
@@ -107,11 +107,11 @@ const MediaCard = ({
       className={`group/mcard relative flex items-center justify-center shrink-0 cursor-pointer ${
         flexible
           ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
-          : defaultDimensions
+          : MEDIA_CARD_DIMENSIONS
       }`}
     >
       {/** If flexible we have a static div container that will take the full space available. This is for grids where dimensions depends on defined cols
-       * and not exactly from width and height from our constant defaultDimensions. While the actual content is Absolute, it like floats on top of the
+       * and not exactly from width and height from our constant MEDIA_CARD_DIMENSIONS. While the actual content is Absolute, it like floats on top of the
        * static div and scale up on hover etc. */}
 
       <div
@@ -123,7 +123,7 @@ const MediaCard = ({
               className={`${
                 flexible
                   ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
-                  : defaultDimensions
+                  : MEDIA_CARD_DIMENSIONS
               }  object-cover`}
               onLoad={onImageLoad}
               src={previewImageSource}
