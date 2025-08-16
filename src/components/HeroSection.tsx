@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-use";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { BsPlusCircleFill } from "react-icons/bs";
 import { FaInfoCircle } from "react-icons/fa";
@@ -50,7 +50,7 @@ const HeroSection = () => {
   });
 
   const [backdropImgSrc, logoImgSrc] = useMemo(() => {
-    if (!mediaItemImages || !mediaItem) return ["/hero-image.jpg", null];
+    if (!mediaItemImages || !mediaItem) return [null, null];
 
     const backdrop = mediaItemImages.backdrops.filter(
       (backdrop) => backdrop.iso_639_1 === null
@@ -71,55 +71,68 @@ const HeroSection = () => {
     });
   };
 
+  const [isBackdropLoaded, setIsBackdropLoaded] = useState(false);
+  const [isLogoLoaded, setIsLogoLoaded] = useState(false);
+
   return (
     <div className="relative min-h-150">
-      <div className="hidden sm:block absolute inset-0 bg-linear-to-r from-black to-black/0 to-60%"></div>{" "}
-      <img
-        className="w-full h-150 sm:h-screen object-cover sm:inset-shadow-lg"
-        src={backdropImgSrc}
-        alt="Media Backdrop Image"
-      />
+      <div className="hidden sm:block absolute inset-0 bg-linear-to-r from-black to-black/0 to-60% z-1"></div>
+      {!backdropImgSrc && <div className="w-full h-150 sm:h-screen" />}
+      {backdropImgSrc && (
+        <img
+          className={`w-full h-150 sm:h-screen object-cover transition-opacity duration-500 ${
+            isBackdropLoaded ? "opacity-100" : "opacity-0"
+          }`}
+          src={backdropImgSrc}
+          onLoad={() => setIsBackdropLoaded(true)}
+        />
+      )}
       {mediaItem && (
-        <div className="flex items-end sm:items-center sm:mt-[-100px] justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t from-[#000] to-black/0 to-50% sm:to-25%">
-          <div className="flex flex-col gap-2 sm:gap-4 justify-center sm:ml-12">
-            {logoImgSrc && (
+        <div className="flex items-end sm:items-center sm:mt-[-100px] justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t from-[#000] to-black/0 to-50% sm:to-25% z-2">
+          {logoImgSrc && isBackdropLoaded && (
+            <div
+              className={`flex flex-col gap-2 sm:gap-4 justify-center sm:ml-12 transition-opacity duration-500 ${
+                isLogoLoaded ? "opactiy-100" : "opacity-0"
+              }`}
+            >
               <div className="flex mb-2 px-10 justify-center sm:px-0 sm:justify-start">
                 <img
                   className={`w-auto max-h-50 sm:w-auto sm:max-h-65`}
                   src={logoImgSrc}
                   alt=""
+                  onLoad={() => setTimeout(() => setIsLogoLoaded(true), 500)}
                 />
               </div>
-            )}
 
-            <div className="hidden text-white sm:block sm:w-150 sm:text-sm">
-              {shortenParagraph(mediaItem.overview, 100)}
+              <div className="hidden text-white sm:block sm:w-150 sm:text-sm">
+                {shortenParagraph(mediaItem.overview, 100)}
+              </div>
+
+              <GenreList
+                genreIds={mediaItem.genre_ids}
+                className="text-center sm:text-left"
+              />
+              <div className="flex gap-4 justify-center sm:justify-start">
+                <button
+                  onClick={() =>
+                    showAddListModal({
+                      media_id: mediaItem.id,
+                      media_type: mediaItem.media_type,
+                    })
+                  }
+                  className="primary-btn"
+                >
+                  <BsPlusCircleFill className="text-md mr-2" />
+                  Add to my List
+                </button>
+
+                <button onClick={handleMoreInfoClick} className="secondary-btn">
+                  <FaInfoCircle className="text-md mr-2" />
+                  More Info
+                </button>
+              </div>
             </div>
-
-            <GenreList
-              genreIds={mediaItem.genre_ids}
-              className="text-center sm:text-left"
-            />
-            <div className="flex gap-4 justify-center sm:justify-start">
-              <button
-                onClick={() =>
-                  showAddListModal({
-                    media_id: mediaItem.id,
-                    media_type: mediaItem.media_type,
-                  })
-                }
-                className="primary-btn"
-              >
-                <BsPlusCircleFill className="text-md mr-2" />
-                Add to my List
-              </button>
-
-              <button onClick={handleMoreInfoClick} className="secondary-btn">
-                <FaInfoCircle className="text-md mr-2" />
-                More Info
-              </button>
-            </div>
-          </div>
+          )}
         </div>
       )}
     </div>

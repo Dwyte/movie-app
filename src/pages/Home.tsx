@@ -24,7 +24,7 @@ const Home = () => {
       <ScrollToTop />
       <HeroSection />
       <div className="relative">
-        <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-200px] sm:pt-6 sm:pb-6">
+        <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-200px] sm:pt-6 sm:pb-6 z-2">
           {mediaSectionsQueries.map((query) => {
             const { mediaSection, useQueryResult } = query;
             const { data: mediaItems } = useQueryResult;
