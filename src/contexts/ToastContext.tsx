@@ -18,21 +18,26 @@ const ToastContext = createContext<ToastContextValue | undefined>(undefined);
 
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const [activeToast, setAcitveToast] = useState<ReactNode | null>(null);
+  const [currTimeoutId, setCurrTimeoutId] = useState<number>(0);
 
   const showToast = (
     message: ReactNode,
     status: ToastAccentColor = "success",
     position: ToastPosition = "top"
   ) => {
+    clearTimeout(currTimeoutId);
+
     setAcitveToast(
       <Toast accentColor={status} position={position}>
         {message}
       </Toast>
     );
 
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setAcitveToast(null);
     }, 3000);
+
+    setCurrTimeoutId(timeoutId);
   };
 
   const showConfirmation = (
@@ -40,6 +45,13 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     onConfirm: () => void,
     onCancel: () => void
   ) => {
+    clearTimeout(currTimeoutId);
+
+    const handleConfirm = () => {
+      onConfirm();
+      setAcitveToast(null);
+    };
+
     const handleCancel = () => {
       onCancel();
       setAcitveToast(null);
@@ -48,30 +60,31 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     setAcitveToast(
       <div
         className="fixed inset-0 bg-black/80 z-9999"
-        onClick={(e) => {
+        onClick={() => {
           handleCancel();
-          e.stopPropagation();
         }}
       >
-        <Toast accentColor="error" position="center">
-          <div className="flex flex-col gap-4 min-w-75">
-            <div className="text-xl">{message}</div>
-            <div className="flex gap-2">
-              <button
-                className="secondary-btn flex-1 justify-center"
-                onClick={handleCancel}
-              >
-                Cancel
-              </button>
-              <button
-                className="primary-btn flex-1 justify-center"
-                onClick={onConfirm}
-              >
-                Yes
-              </button>
+        <div onClick={(e) => e.stopPropagation()}>
+          <Toast accentColor="error" position="center">
+            <div className="flex flex-col gap-4 min-w-75">
+              <div className="text-xl">{message}</div>
+              <div className="flex gap-2">
+                <button
+                  className="secondary-btn flex-1 justify-center"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="primary-btn flex-1 justify-center"
+                  onClick={handleConfirm}
+                >
+                  Yes
+                </button>
+              </div>
             </div>
-          </div>
-        </Toast>
+          </Toast>
+        </div>
       </div>
     );
   };

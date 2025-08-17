@@ -6,9 +6,9 @@ const positionStyles = {
 };
 
 const accentColorStyles = {
-  success: "from-green-700 via-stone-950",
-  warning: "from-amber-700 via-stone-950",
-  error: "from-red-700 via-stone-950",
+  success: "from-green-900 via-stone-900",
+  warning: "from-amber-900 via-stone-900",
+  error: "from-red-900 via-stone-900",
 };
 
 export type ToastAccentColor = keyof typeof accentColorStyles;
@@ -24,7 +24,7 @@ interface Props {
 const Toast = ({ children, position, accentColor }: Props) => {
   return (
     <div
-      className={`fade-in fixed bg-linear-to-t via-25% to-100% to-stone-950 ${accentColorStyles[accentColor]} ${positionStyles[position]} w-max shadow-xl shadow-black/75 font-bold rounded-sm overflow-hidden transform translate-[-50%] p-6 text-white z-9999999`}
+      className={`fade-in fixed bg-linear-to-t via-40% to-100% to-stone-900 ${accentColorStyles[accentColor]} ${positionStyles[position]} w-max shadow-xl shadow-black/75 font-bold rounded-sm overflow-hidden transform translate-[-50%] p-6 text-white z-9999999`}
     >
       <div>{children}</div>
     </div>

@@ -23,6 +23,7 @@ import Skeleton from "../../components/Skeleton";
 import ListDetailsSection from "./ListDetailsSection";
 import ListSkeleton from "./ListSkeleton";
 import { useToast } from "../../contexts/ToastContext";
+import { MEDIA_TYPE_NAME } from "../../misc/constants";
 
 export enum EditListState {
   BACKDROP = "BACKDROP",
@@ -193,6 +194,14 @@ const ListPage = () => {
     );
   };
 
+  const handleDeleteListItem = (mediaRefToDelete: MediaRef) => {
+    showConfirmation(
+      `Remove ${MEDIA_TYPE_NAME[mediaRefToDelete.media_type]} from the list?`,
+      () => deleteListItemMutation.mutate(mediaRefToDelete),
+      () => console.log("Delete operation cancelled.")
+    );
+  };
+
   return (
     <PageContainer>
       <ScrollToTop />
@@ -245,9 +254,7 @@ const ListPage = () => {
                     <MediaListItem
                       media={media}
                       comment={listDetails.comments[commentKey]}
-                      onDelete={
-                        isUserOwner ? deleteListItemMutation.mutate : null
-                      }
+                      onDelete={isUserOwner ? handleDeleteListItem : null}
                       isDeleting={deleteListItemMutation.isPending}
                       onComment={isUserOwner ? handleListItemEdit : null}
                       onLoad={() => setLoadedMediaItemCount((p) => p + 1)}
