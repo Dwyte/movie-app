@@ -12,6 +12,7 @@ import StyledKeyValue from "../../components/StyledKeyValue";
 import VisibilityIcon from "../../components/VisibilityIcon";
 import { NO_IMAGE_LANDSCAPE_PATH } from "../../misc/constants";
 import { getTMDBImageURL, getDurationString } from "../../misc/utils";
+import { useToast } from "../../contexts/ToastContext";
 
 interface Props {
   listDetails: ListDetails;
@@ -32,8 +33,11 @@ const ListDetailsSection = ({
     ? getTMDBImageURL(listDetails.backdrop_path, "1920")
     : NO_IMAGE_LANDSCAPE_PATH;
 
+  const { showToast } = useToast();
+
   const handleShare = async () => {
     await navigator.clipboard.writeText(window.location.href);
+    showToast("Link has been copied to clipboard.");
   };
 
   return (
