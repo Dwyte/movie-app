@@ -6,7 +6,7 @@ import App from "./App.jsx";
 import "./index.css";
 import { AuthProvider } from "./contexts/AuthContext.js";
 import AddListModalProvider from "./contexts/AddListModalContext.js";
-import ScrollToTop from "./components/ScrollToTop.js";
+import { ToastProvider } from "./contexts/ToastContext.js";
 
 const queryClient = new QueryClient();
 
@@ -15,9 +15,11 @@ createRoot(document.getElementById("root") as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <AddListModalProvider>
-            <App />
-          </AddListModalProvider>
+          <ToastProvider>
+            <AddListModalProvider>
+              <App />
+            </AddListModalProvider>
+          </ToastProvider>
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>

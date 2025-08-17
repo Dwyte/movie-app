@@ -7,6 +7,7 @@ import { MEDIA_TYPE_NAME } from "../../misc/constants";
 import VisibilityIcon from "../VisibilityIcon";
 import ListSkeleton from "../../pages/ListPage/ListSkeleton";
 import EmptyListPlaceholder from "../../pages/ListPage/EmptyListPlaceholder";
+import { useToast } from "../../contexts/ToastContext";
 
 interface Props {
   mediaRef: MediaRef;
@@ -17,6 +18,8 @@ interface Props {
 const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
   const { authDetails, isLoggedIn } = useAuth();
   const queryClient = useQueryClient();
+
+  const { showToast } = useToast();
 
   const { data: userLists, isLoading } = useQuery<List[]>({
     enabled: isLoggedIn,
@@ -55,7 +58,15 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
       queryClient.invalidateQueries({ queryKey: ["listResults", listId] });
     },
     onSuccess: (response) => {
-      alert(response.status_message);
+      const mediaTypeTitle =
+        mediaRef.media_type.charAt(0).toUpperCase() +
+        mediaRef.media_type.slice(1).toLowerCase();
+
+      if (response.results[0].success) {
+        showToast(`${mediaTypeTitle} has been added to the list.`, "success");
+      } else {
+        showToast(`${mediaTypeTitle} is already on the list.`, "warning");
+      }
       onClose();
     },
   });
