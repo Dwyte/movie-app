@@ -77,9 +77,9 @@ const LoginPage = () => {
 
   return (
     <div className="text-white h-full flex flex-col items-center justify-center">
-      <img className="h-full opacity-75" src="/hero-image.jpg" alt="" />
-      <div className="absolute p-8 bg-black/90 rounded-sm min-w-125">
-        <h2>Sign-in</h2>
+      <img className="h-[100vh] opacity-75 object-cover" src="/hero-image.jpg" alt="" />
+      <div className="absolute p-8 bg-black/90 rounded-sm sm:min-w-125">
+        <h2 className="text-2xl mt-0 mb-4">Sign-in</h2>
         <button
           className="w-full font-bold bg-red-700 px-8 py-4 rounded-sm cursor-pointer hover:opacity-70"
           onClick={startLogin}
