@@ -77,7 +77,11 @@ const HeroSection = () => {
 
   return (
     <div className="relative min-h-150">
-      <div className="hidden sm:block absolute inset-0 bg-linear-to-r from-black to-black/0 to-60% z-1"></div>
+      <div
+        className={`hidden sm:block absolute inset-0 bg-linear-to-r ${
+          isBackdropLoaded ? "from-black" : "from-black/0"
+        } to-black/0 to-60% z-1`}
+      ></div>
       <div className="w-full h-150 sm:h-screen relative">
         {(!backdropImgSrc || !isLogoLoaded) && (
           <Skeleton className="absolute inset-0" />
@@ -92,7 +96,11 @@ const HeroSection = () => {
           />
         )}
       </div>
-      <div className="flex items-end sm:items-center sm:mt-[-100px] justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t from-[#000] to-black/0 to-50% sm:to-25% z-2">
+      <div
+        className={`flex items-end sm:items-center sm:mt-[-100px] justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t ${
+          isBackdropLoaded ? "from-black/100" : "from-black sm:from-black/0"
+        } to-black/0 to-50% sm:to-25% z-2`}
+      >
         {mediaItem && logoImgSrc && isBackdropLoaded && (
           <div
             className={`flex flex-col gap-2 sm:gap-4 justify-center sm:ml-12 transition-opacity duration-500 ${

@@ -3,7 +3,7 @@
 
 @layer base {
   html {
-    scrollbar-width: thin; /* auto | thin | none */
+    scrollbar-width: none; /* auto | thin | none */
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
   }
 
