@@ -22,6 +22,7 @@ import EmptyListPlaceholder from "./EmptyListPlaceholder";
 import Skeleton from "../../components/Skeleton";
 import ListDetailsSection from "./ListDetailsSection";
 import ListSkeleton from "./ListSkeleton";
+import { useToast } from "../../contexts/ToastContext";
 
 export enum EditListState {
   BACKDROP = "BACKDROP",
@@ -37,6 +38,7 @@ const ListPage = () => {
 
   const listId = params?.listId ? parseInt(params?.listId) : null;
 
+  const { showToast, showConfirmation } = useToast();
   const [currentEditState, setCurrentEditState] =
     useState<EditListState | null>(null);
   const [currentListItemToEdit, setCurrentListItemToEdit] =
@@ -146,11 +148,20 @@ const ListPage = () => {
       const response = await deleteList(authDetails.accessToken, listId);
       return response;
     },
-    onSettled: () => {
+    onSettled: (response) => {
       // Invalidated User's List cache to refetch and be synced with the server.
       queryClient.invalidateQueries({
         queryKey: ["lists", authDetails?.accountId],
       });
+
+      if (response?.success) {
+        showToast(`List "${listDetails?.name}" was successfuly deleted.`);
+      } else {
+        showToast(
+          `${response?.status_message} (${response?.status_code})`,
+          "error"
+        );
+      }
 
       navigate("/mylists");
     },
@@ -174,6 +185,14 @@ const ListPage = () => {
   const isDoneLoadingListItems =
     listDetails && loadedMediaItemCount === listDetails.item_count;
 
+  const handleDeleteList = () => {
+    showConfirmation(
+      `Delete "${listDetails?.name}" list?`,
+      () => deleteListMutation.mutate(),
+      () => console.log("Delete operation cancelled.")
+    );
+  };
+
   return (
     <PageContainer>
       <ScrollToTop />
@@ -195,7 +214,7 @@ const ListPage = () => {
           isUserOwner={isUserOwner}
           onEditDetails={() => setCurrentEditState(EditListState.DETAILS)}
           onEditBackdrop={() => setCurrentEditState(EditListState.BACKDROP)}
-          onDeleteList={() => deleteListMutation.mutate()}
+          onDeleteList={handleDeleteList}
         />
       )}
 
