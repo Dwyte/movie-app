@@ -9,6 +9,9 @@ import DisableBodyScroll from "../../components/DisableBodyScroll";
 import EditListBackdrop from "./EditListBackdrop";
 import EditListDetails from "./EditListDetails";
 import EditListItemComment from "./EditListItemComment";
+import { useToast } from "../../contexts/ToastContext";
+import { MEDIA_TYPE_NAME } from "../../misc/constants";
+import ListItem from "../MyLists/ListItem";
 
 interface Props {
   listDetails: ListDetails;
@@ -31,6 +34,8 @@ const EditListModal = ({
   const [listOptions, setListOptions] = useState<Partial<ListOptions>>({});
   const [comment, setComment] = useState<string>("");
 
+  const { showToast } = useToast();
+
   useEffect(() => {
     // Set default comment
     const defaultCommentKey = `${listItem?.media_type}:${listItem?.id}`;
@@ -44,16 +49,25 @@ const EditListModal = ({
     mutationFn: async () => {
       if (!authDetails) return;
 
-      await putUpdateList(
+      return await putUpdateList(
         authDetails?.accessToken,
         listDetails.id,
         listOptions
       );
     },
-    onSettled: () => {
+    onSettled: (response) => {
       queryClient.invalidateQueries({
         queryKey: ["listDetails", listDetails.id],
       });
+
+      if (response?.success) {
+        showToast("List has been successfully updated.", "success");
+      } else {
+        showToast(
+          `${response?.status_message} (${response?.status_code})`,
+          "error"
+        );
+      }
 
       onClose();
     },
@@ -69,17 +83,31 @@ const EditListModal = ({
         media_type: listItem.media_type,
       };
 
-      await putUpdateListItem(
+      return await putUpdateListItem(
         authDetails?.accessToken,
         listDetails.id,
         mediaRef,
         comment
       );
     },
-    onSettled: () => {
+    onSettled: (response) => {
       queryClient.invalidateQueries({
         queryKey: ["listDetails", listDetails.id],
       });
+
+      if (response && response.success && listItem) {
+        const mediaTypeName = MEDIA_TYPE_NAME[listItem.media_type];
+        const mediaTypeTitle =
+          mediaTypeName.charAt(0).toUpperCase() +
+          mediaTypeName.slice(1).toLowerCase();
+
+        showToast(`${mediaTypeTitle} comment has been updated.`, "success");
+      } else {
+        showToast(
+          `${response?.status_message} (${response?.status_code})`,
+          "error"
+        );
+      }
 
       onClose();
     },
