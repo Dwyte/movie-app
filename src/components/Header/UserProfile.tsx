@@ -2,14 +2,63 @@ import { BsChevronDown } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { TMDBProfileBaseURL } from "../../misc/constants";
 import { useAuth } from "../../contexts/AuthContext";
+import { useEffect, useState } from "react";
+import useIsSmUp from "../../hooks/useIsSmUp";
 
-const UserDropdownContent = () => {};
-
-const UserProfile = () => {
+const UserDropdownContent = () => {
   const auth = useAuth();
 
   return (
-    <div className="group relative text-white">
+    <div className="inline-block sm:hidden sm:group-hover:inline-block absolute min-w-42 right-0 text-white pt-2 w-max">
+      <div className="fixed inset-0 bg-black/75 backdrop-blur-lg flex flex-col justify-center items-center text-4xl sm:items-stretch sm:text-base sm:rounded-sm sm:overflow-hidden sm:static sm:bg-black">
+        {auth.isLoggedIn ? (
+          <>
+            <Link
+              to={`${TMDBProfileBaseURL}/${auth.account?.username}`}
+              className="p-4 flex flex-col gap-1 items-center sm:items-start"
+            >
+              <strong className="font-bold">xanderdwightm</strong>
+              <small className="text-sm text-stone-400">
+                View TMDB Profile
+              </small>
+            </Link>
+            <button
+              onClick={auth.logout}
+              className="text-left text-stone-300 hover:bg-stone-900 cursor-pointer p-4"
+            >
+              Log-out
+            </button>
+          </>
+        ) : (
+          <Link
+            to="/login"
+            className="shrink-0 hover:bg-stone-900 cursor-pointer p-4"
+          >
+            Log-in
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const UserProfile = () => {
+  const [isActive, setIsActive] = useState(false);
+  const isSmUp = useIsSmUp();
+
+  useEffect(() => {
+    setIsActive(isSmUp);
+  }, [isSmUp]);
+
+  const handleClose = () => {
+    setIsActive((p) => !p);
+  };
+
+  return (
+    <div
+      className="group relative text-white"
+      onClick={!isSmUp ? handleClose : undefined}
+    >
       <div className="flex gap-2 items-center cursor-pointer">
         <img
           className="rounded-sm w-10 h-10 sm:block"
@@ -19,36 +68,7 @@ const UserProfile = () => {
         <BsChevronDown />
       </div>
 
-      <div className="hidden group-hover:inline-block absolute min-w-42 right-0 text-white pt-2 w-max">
-        <div className="flex flex-col rounded-sm overflow-hidden bg-stone-950">
-          {auth.isLoggedIn ? (
-            <>
-              <Link
-                to={`${TMDBProfileBaseURL}/${auth.account?.username}`}
-                className="p-4 flex flex-col gap-1"
-              >
-                <strong className="font-bold">xanderdwightm</strong>
-                <small className="text-sm text-stone-400">
-                  View TMDB Profile
-                </small>
-              </Link>
-              <button
-                onClick={auth.logout}
-                className="text-left hover:bg-stone-900 cursor-pointer p-4"
-              >
-                Log-out
-              </button>
-            </>
-          ) : (
-            <Link
-              to="/login"
-              className="shrink-0 hover:bg-stone-900 cursor-pointer p-4"
-            >
-              Log-in
-            </Link>
-          )}
-        </div>
-      </div>
+      {isActive && <UserDropdownContent />}
     </div>
   );
 };
