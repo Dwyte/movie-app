@@ -182,9 +182,12 @@ const ListPage = () => {
   const isUserOwner =
     !!authDetails && authDetails.accountId === listDetails?.created_by.id;
 
-  const [loadedMediaItemCount, setLoadedMediaItemCount] = useState(0);
+  const [loadedMediaRecord, setLoadedMediaRecord] = useState<{
+    [key: number]: boolean;
+  }>({});
   const isDoneLoadingListItems =
-    listDetails && loadedMediaItemCount === listDetails.item_count;
+    listDetails &&
+    listDetails.results.every((media) => loadedMediaRecord[media.id]);
 
   const handleDeleteList = () => {
     showConfirmation(
@@ -257,7 +260,11 @@ const ListPage = () => {
                       onDelete={isUserOwner ? handleDeleteListItem : null}
                       isDeleting={deleteListItemMutation.isPending}
                       onComment={isUserOwner ? handleListItemEdit : null}
-                      onLoad={() => setLoadedMediaItemCount((p) => p + 1)}
+                      onLoad={() =>
+                        setLoadedMediaRecord((p) => {
+                          return { ...p, [media.id]: true };
+                        })
+                      }
                     />
                   </ListItem>
                 </div>
