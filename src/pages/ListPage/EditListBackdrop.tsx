@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { getTMDBImageURL } from "../../misc/utils";
 import { ListDetails, ListOptions, Media } from "../../misc/types";
+import EmptyListPlaceholder from "./EmptyListPlaceholder";
 
 interface Props {
   currentListBackdrop: string;
@@ -24,6 +25,7 @@ const EditListBackdrop = ({
         } ${listResults.length > 3 && "grid-cols-2 sm:grid-cols-3"}
         `}
       >
+        {listResults.length === 0 && <EmptyListPlaceholder />}
         {listResults.map((media) => {
           if (!media.backdrop_path) return;
 
