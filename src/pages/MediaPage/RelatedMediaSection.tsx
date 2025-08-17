@@ -44,10 +44,13 @@ const RelatedMediaSection = ({ mediaItemDetails }: Props) => {
       : [];
   }, [relatedMediaItems]);
 
-  const [doneLoadingCount, setDoneLoadingCount] = useState(0);
+  const [loadedMedia, setLoadedMedia] = useState<{
+    [k: number]: boolean;
+  }>({});
   const isLoadingData = !mediaItemDetails || isFetching;
   const isLoadingImages =
-    isLoadingData || filteredRelatedMediaItems.length > doneLoadingCount;
+    !filteredRelatedMediaItems ||
+    !filteredRelatedMediaItems.every((m) => loadedMedia[m.id]);
 
   return (
     <div>
@@ -74,7 +77,11 @@ const RelatedMediaSection = ({ mediaItemDetails }: Props) => {
                   <MediaCard
                     media={mediaItem}
                     sourcePathName={backgroundLocation}
-                    onImageLoad={() => setDoneLoadingCount((p) => p + 1)}
+                    onImageLoad={() =>
+                      setLoadedMedia((p) => {
+                        return { ...p, [mediaItem.id]: true };
+                      })
+                    }
                     flexible={true}
                   />
                 </div>
@@ -82,11 +89,13 @@ const RelatedMediaSection = ({ mediaItemDetails }: Props) => {
             );
           })}
       </div>
-      {!isLoadingImages && filteredRelatedMediaItems.length === 0 && (
-        <div className="text-lg font-bold text-stone-400 text-center w-full py-8">
-          No Related Media was found.
-        </div>
-      )}
+      {!isLoadingData &&
+        !isLoadingImages &&
+        filteredRelatedMediaItems.length === 0 && (
+          <div className="text-lg font-bold text-stone-400 text-center w-full py-8">
+            No Related Media was found.
+          </div>
+        )}
     </div>
   );
 };
