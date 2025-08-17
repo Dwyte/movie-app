@@ -4,6 +4,7 @@ import { postCreateList, postListAddItems } from "../../misc/tmdbAPI";
 import { MediaRef } from "../../misc/types";
 import { BsCheckLg } from "react-icons/bs";
 import ListVisibilityRadio from "./ListVisibilityRadio";
+import { useToast } from "../../contexts/ToastContext";
 
 interface Props {
   mediaRef: MediaRef;
@@ -15,6 +16,7 @@ const ListCreation = ({ mediaRef, onClose }: Props) => {
   const [isListPublic, setIsListPublic] = useState(true);
 
   const { authDetails } = useAuth();
+  const { showToast } = useToast();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -45,10 +47,22 @@ const ListCreation = ({ mediaRef, onClose }: Props) => {
       [mediaRef]
     );
 
+    addedItem.success = false;
+
     if (addedItem.success) {
-      alert("Added to the list.");
-      onClose();
+      showToast(
+        `List "${listName}" has been created, and ${mediaRef.media_type} has been added.`
+      );
     }
+
+    if (!addedItem.success) {
+      showToast(
+        addedItem.status_message + ` (${addedItem.status_code})`,
+        "error"
+      );
+    }
+
+    onClose();
   };
 
   return (
