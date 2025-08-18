@@ -8,6 +8,7 @@ import { Media } from "../misc/types";
 import PageContainer from "../components/PageContainer";
 import Skeleton from "../components/Skeleton";
 import { useState } from "react";
+import ScrollToTop from "../components/ScrollToTop";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
@@ -65,6 +66,7 @@ const SearchResults = () => {
 
   return (
     <PageContainer>
+      <ScrollToTop />
       <h1 className="hidden sm:block text-2xl text-stone-500 sm:mb-8">
         Search Results for: <span className="text-white">"{searchQuery}"</span>
       </h1>
