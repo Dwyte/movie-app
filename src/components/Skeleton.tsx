@@ -11,7 +11,7 @@ const Skeleton = ({
     <div
       role="status"
       aria-label="Loading..."
-      className={`bg-stone-800 animate-pulse ${className} ${rounded}`}
+      className={`bg-[var(--skeleton-color)] animate-pulse ${className} ${rounded}`}
     ></div>
   );
 };
