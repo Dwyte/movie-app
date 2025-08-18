@@ -1,18 +1,25 @@
-import { Genre } from "../misc/types";
-import { MOVIE_GENRES } from "../misc/constants";
+import { Genre, MediaType } from "../misc/types";
+import { MOVIE_GENRES, TV_SHOWS_GENRES } from "../misc/constants";
 
-const genreIdsToName = (genreIds: number[]): string[] => {
-  return MOVIE_GENRES.filter((genre) => genreIds.includes(genre.id)).map(
-    (genre) => genre.name
-  );
+const GENRES = {
+  tv: TV_SHOWS_GENRES,
+  movie: MOVIE_GENRES,
+};
+
+const genreIdsToName = (genreIds: number[], mediaType: MediaType): string[] => {
+  return GENRES[mediaType]
+    .filter((genre) => genreIds.includes(genre.id))
+    .map((genre) => genre.name);
 };
 
 const GenreList = ({
-  genreList,
   genreIds,
+  genreList,
+  mediaType,
   className,
 }: {
   genreIds?: number[];
+  mediaType?: MediaType;
   genreList?: Genre[];
   className?: string;
 }) => {
@@ -23,7 +30,9 @@ const GenreList = ({
           .map((movieGenre) => movieGenre.name)
           .join(" • ")
           .toString()}
-      {genreIds && genreIdsToName(genreIds).join(" • ").toString()}
+      {genreIds &&
+        mediaType &&
+        genreIdsToName(genreIds, mediaType).join(" • ").toString()}
     </div>
   );
 };

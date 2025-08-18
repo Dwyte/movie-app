@@ -169,7 +169,10 @@ const MediaCard = ({
           </div>
 
           <div className="text-xs">
-            <GenreList genreIds={media.genre_ids} />
+            <GenreList
+              genreIds={media.genre_ids}
+              mediaType={media.media_type}
+            />
           </div>
         </div>
       </div>
