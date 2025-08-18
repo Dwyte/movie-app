@@ -3,6 +3,7 @@ import { UseQueryOptions } from "@tanstack/react-query";
 import { getTrendingMediaItems, getDiscoverMediaItems } from "./tmdbAPI";
 import { MOVIE_GENRES, TV_SHOWS_GENRES } from "./constants";
 import { Media, MediaType } from "./types";
+import { formatDateString } from "./utils";
 
 export interface MediaSectionConfig {
   id: string;
@@ -126,10 +127,14 @@ export const mediaSectionConfigs: MediaSectionConfig[] = [
     useQuery: {
       queryKey: ["discovery", "tv", "this-year-documentaries"],
       queryFn: async () => {
+        const today = new Date();
+        const thisYear = new Date();
+        thisYear.setFullYear(today.getFullYear(), 0, 1);
+
         const { results: mediaItems } = await getDiscoverMediaItems("tv", {
           with_genres: TV_SHOWS_GENRES[4].id.toString(),
-          "first_air_date.gte": "2025-01-01",
-          "first_air_date.lte": "2025-08-01",
+          "first_air_date.gte": formatDateString(thisYear),
+          "first_air_date.lte": formatDateString(today),
           sort_by: "popularity.desc",
         });
         return mediaItems;

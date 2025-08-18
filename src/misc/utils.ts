@@ -105,3 +105,14 @@ export const getGenreNameFromId = (genreId: number, mediaType: MediaType) => {
   if (!genreFound) return null;
   return genreFound.name;
 };
+
+/**
+ * Returns a date string in the following format: YYYY-MM-DD (zero padded)
+ */
+export const formatDateString = (date: Date) => {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDay().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
