@@ -301,4 +301,132 @@ export const discoveryTVConfigs: MediaSectionConfig[] = [
       staleTime: Infinity,
     },
   },
+  {
+    id: "2000s-comedy-tv",
+    title: "Retro Comedy Hits",
+    mediaType: "tv",
+    useQuery: {
+      queryKey: ["discovery", "tv", "2000s-laughs-love"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("tv", {
+          with_original_language: "en",
+          with_genres: [TV_SHOWS_GENRES[2].id].join(","),
+          sort_by: "vote_count.desc",
+          "first_air_date.lte": "2010-01-01",
+          "first_air_date.gte": "2001-01-01",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "top-reality-tv",
+    title: "Top Reality TV",
+    mediaType: "tv",
+    useQuery: {
+      queryKey: ["discovery", "tv", "reality"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("tv", {
+          with_original_language: "en",
+          with_genres: [TV_SHOWS_GENRES[10].id].join(","),
+          sort_by: "vote_count.desc",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "animation-kids-tv",
+    title: "Kids' Favorites",
+    mediaType: "tv",
+    useQuery: {
+      queryKey: ["discovery", "tv", "animation-kids"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("tv", {
+          with_original_language: "en",
+          with_genres: [TV_SHOWS_GENRES[1].id, TV_SHOWS_GENRES[7].id].join(","),
+          sort_by: "vote_count.desc",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "top-tv-crime",
+    title: "Crime on Screen",
+    mediaType: "tv",
+    useQuery: {
+      queryKey: ["discovery", "tv", "crime"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("tv", {
+          with_original_language: "en",
+          with_genres: [TV_SHOWS_GENRES[3].id].join(","),
+          sort_by: "vote_count.desc",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "top-tv-action",
+    title: "Epic Adventures Await",
+    mediaType: "tv",
+    useQuery: {
+      queryKey: ["discovery", "tv", "action"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("tv", {
+          with_original_language: "en",
+          with_genres: [TV_SHOWS_GENRES[0].id].join(","),
+          sort_by: "vote_count.desc",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "tv-top-talk-shows",
+    title: "Top Talk Shows",
+    mediaType: "tv",
+    useQuery: {
+      queryKey: ["discovery", "tv", "talk"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("tv", {
+          with_original_language: "en",
+          with_genres: [TV_SHOWS_GENRES[13].id].join(","),
+          sort_by: "vote_count.desc",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "tv-western",
+    title: "Epic Western Stories",
+    mediaType: "tv",
+    useQuery: {
+      queryKey: ["discovery", "tv", "western"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("tv", {
+          with_original_language: "en",
+          with_genres: [TV_SHOWS_GENRES[15].id].join(","),
+          sort_by: "vote_count.desc",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
 ];
