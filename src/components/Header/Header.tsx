@@ -20,7 +20,7 @@ function Header() {
   };
 
   return (
-    <header className="fixed left-0 right-0 top-0 p-4 sm:px-12 sm:py-6 z-1000 bg-gradient-to-b from-black via-50% via-black/70 to-black/0">
+    <header className="fixed left-0 right-0 top-0 p-4 sm:px-12 sm:py-6 z-1000 bg-linear-to-b from-[var(--header-bg)] via-50% via-[var(--header-bg)]/60 to-[var(--header-bg)]/0">
       <nav className="flex justify-between items-center gap-4 mb-4 sm:gap-8">
         {/** Full name Logo in Desktop and Just the Letter N logo in Mobile */}
         <Link to="/">
