@@ -1,19 +1,54 @@
 import { UseQueryOptions } from "@tanstack/react-query";
 
 import { getTrendingMediaItems, getDiscoverMediaItems } from "./tmdbAPI";
-import { MOVIE_GENRES } from "./constants";
+import { MOVIE_GENRES, TV_SHOWS_GENRES } from "./constants";
 import { Media, MediaType } from "./types";
 
-interface MediaSectionConfig {
+export interface MediaSectionConfig {
   id: string;
   mediaType: MediaType;
   title: string;
   useQuery: UseQueryOptions<Media[]>;
 }
 
-export const mediaSectionConfigs: MediaSectionConfig[] = [
+export const trendingTVConfigs: MediaSectionConfig[] = [
   {
-    id: "trending-movies-today",
+    id: "trending-tv-day",
+    title: "Today's Must Watch Series",
+    mediaType: "tv",
+    useQuery: {
+      queryKey: ["trending", "tv", "day"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getTrendingMediaItems(
+          "tv",
+          "day"
+        );
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "trending-tv-week",
+    title: "Can't Miss Series Of The Week",
+    mediaType: "tv",
+    useQuery: {
+      queryKey: ["trending", "tv", "week"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getTrendingMediaItems(
+          "tv",
+          "week"
+        );
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+];
+
+export const trendingMovieConfigs: MediaSectionConfig[] = [
+  {
+    id: "trending-movies-day",
     title: "Popular Movies Today",
     mediaType: "movie",
     useQuery: {
@@ -29,14 +64,14 @@ export const mediaSectionConfigs: MediaSectionConfig[] = [
     },
   },
   {
-    id: "trending-tv-weekly",
-    title: "Top Series of the Week",
-    mediaType: "tv",
+    id: "trending-tv-movie",
+    title: "Weekly Box Office Hits",
+    mediaType: "movie",
     useQuery: {
-      queryKey: ["trending", "tv", "week"],
+      queryKey: ["trending", "tv", "movie"],
       queryFn: async () => {
         const { results: mediaItems } = await getTrendingMediaItems(
-          "tv",
+          "movie",
           "week"
         );
         return mediaItems;
@@ -44,6 +79,9 @@ export const mediaSectionConfigs: MediaSectionConfig[] = [
       staleTime: Infinity,
     },
   },
+];
+
+export const mediaSectionConfigs: MediaSectionConfig[] = [
   {
     id: "wholesome-comedy-tv",
     title: "Wholesome Comedy Series",
@@ -89,7 +127,7 @@ export const mediaSectionConfigs: MediaSectionConfig[] = [
       queryKey: ["discovery", "tv", "this-year-documentaries"],
       queryFn: async () => {
         const { results: mediaItems } = await getDiscoverMediaItems("tv", {
-          with_genres: MOVIE_GENRES[5].id.toString(),
+          with_genres: TV_SHOWS_GENRES[4].id.toString(),
           "first_air_date.gte": "2025-01-01",
           "first_air_date.lte": "2025-08-01",
           sort_by: "popularity.desc",
