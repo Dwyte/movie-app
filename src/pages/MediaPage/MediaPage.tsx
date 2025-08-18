@@ -122,13 +122,13 @@ const MediaPage = ({ mediaType }: Props) => {
 
   return (
     <div
-      onClick={closeModal}
+      onMouseDown={closeModal}
       className="flex flex-col items-center fixed inset-0 text-white z-10000 bg-black/60 fade-in"
     >
       <DisableBodyScroll />
       <div
         ref={modalRef}
-        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
         className="flex-1 w-full sm:w-220 sm:mt-8 sm:rounded-sm scrollable bg-[var(--media-page-bg)]"
       >
         <MediaPageHeroSection

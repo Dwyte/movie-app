@@ -60,11 +60,11 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     setAcitveToast(
       <div
         className="fixed inset-0 bg-black/80 z-9999"
-        onClick={() => {
+        onMouseDown={() => {
           handleCancel();
         }}
       >
-        <div onClick={(e) => e.stopPropagation()}>
+        <div onMouseDown={(e) => e.stopPropagation()}>
           <Toast accentColor="error" position="center">
             <div className="flex flex-col gap-4 min-w-75">
               <div className="text-xl">{message}</div>
