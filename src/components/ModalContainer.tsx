@@ -6,7 +6,7 @@ const ModalContainer = ({ children, onClose, ...rest }: Props) => {
   return (
     <div
       onMouseDown={onClose}
-      className="fixed flex items-center justify-center inset-0 bg-black/50 z-90009"
+      className="flex items-center justify-center z-90009 modal-backdrop fade-in"
       {...rest}
     >
       <div

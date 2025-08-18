@@ -87,4 +87,8 @@
   .fade-in {
     animation: fadeIn 200ms forwards ease-in;
   }
+
+  .modal-backdrop {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-xs;
+  }
 }
