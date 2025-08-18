@@ -87,7 +87,7 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
   };
 
   return (
-    <div className="relative bg-black w-full">
+    <div className="relative bg-[var(--media-page-bg)] w-full">
       <button
         onClick={onClose}
         className="secondary-icon-btn absolute right-3 top-3 border-0 z-100"
@@ -96,7 +96,7 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
       </button>
 
       <div className="relative w-full aspect-[16/9]">
-        <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-black to-black/0 via-black/75 via-25% to-100% z-1"></div>
+        <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-[var(--media-page-bg)] to-[var(--media-card-bg)]/0 via-[var(--main-bg)]/75 via-30% to-100% z-1"></div>
         {!isBackdropLoaded && (
           <Skeleton
             className="absolute inset-0"

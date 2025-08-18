@@ -129,13 +129,13 @@ const MediaPage = ({ mediaType }: Props) => {
       <div
         ref={modalRef}
         onClick={(e) => e.stopPropagation()}
-        className="flex-1 w-full sm:w-220 sm:mt-8 sm:rounded-sm scrollable bg-black"
+        className="flex-1 w-full sm:w-220 sm:mt-8 sm:rounded-sm scrollable bg-[var(--media-page-bg)]"
       >
         <MediaPageHeroSection
           mediaItemDetails={mediaItemDetails}
           onClose={closeModal}
         />
-        <div className="flex flex-col gap-2 p-4 bg-black sm:px-10 sm:py-8 sm:gap-8">
+        <div className="flex flex-col gap-2 p-4 sm:px-10 sm:py-8 sm:gap-8">
           {renderH1MediaTitle()}
 
           <MediaPageDetailsSection
