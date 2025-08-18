@@ -2,10 +2,11 @@ import { UseQueryOptions } from "@tanstack/react-query";
 
 import { getTrendingMediaItems, getDiscoverMediaItems } from "./tmdbAPI";
 import { MOVIE_GENRES } from "./constants";
-import { Media } from "./types";
+import { Media, MediaType } from "./types";
 
 interface MediaSectionConfig {
   id: string;
+  mediaType: MediaType;
   title: string;
   useQuery: UseQueryOptions<Media[]>;
 }
@@ -14,6 +15,7 @@ export const mediaSectionConfigs: MediaSectionConfig[] = [
   {
     id: "trending-movies-today",
     title: "Popular Movies Today",
+    mediaType: "movie",
     useQuery: {
       queryKey: ["trending", "movie", "day"],
       queryFn: async () => {
@@ -23,11 +25,13 @@ export const mediaSectionConfigs: MediaSectionConfig[] = [
         );
         return mediaItems;
       },
+      staleTime: Infinity,
     },
   },
   {
     id: "trending-tv-weekly",
     title: "Top Series of the Week",
+    mediaType: "tv",
     useQuery: {
       queryKey: ["trending", "tv", "week"],
       queryFn: async () => {
@@ -37,11 +41,13 @@ export const mediaSectionConfigs: MediaSectionConfig[] = [
         );
         return mediaItems;
       },
+      staleTime: Infinity,
     },
   },
   {
     id: "wholesome-comedy-tv",
     title: "Wholesome Comedy Series",
+    mediaType: "tv",
     useQuery: {
       queryKey: ["discovery", "tv", "wholesome-comedy"],
       queryFn: async () => {
@@ -54,11 +60,13 @@ export const mediaSectionConfigs: MediaSectionConfig[] = [
         });
         return mediaItems;
       },
+      staleTime: Infinity,
     },
   },
   {
     id: "90s-horror-movies",
     title: "Classic '90s Horror Movies",
+    mediaType: "movie",
     useQuery: {
       queryKey: ["discovery", "movie", "classic-horror"],
       queryFn: async () => {
@@ -70,11 +78,13 @@ export const mediaSectionConfigs: MediaSectionConfig[] = [
         });
         return mediaItems;
       },
+      staleTime: Infinity,
     },
   },
   {
     id: "this_year-tv-documentaries",
     title: "Newly Released Documentaries",
+    mediaType: "tv",
     useQuery: {
       queryKey: ["discovery", "tv", "this-year-documentaries"],
       queryFn: async () => {
@@ -86,6 +96,7 @@ export const mediaSectionConfigs: MediaSectionConfig[] = [
         });
         return mediaItems;
       },
+      staleTime: Infinity,
     },
   },
 ];
