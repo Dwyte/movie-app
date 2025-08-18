@@ -151,7 +151,7 @@ const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
               />
             </Fragment>
           )}
-          <div ref={scrollableDiv} className="scrollable sm:pt-14 sm:pb-14">
+          <div ref={scrollableDiv} className="scrollable sm:pt-15 sm:pb-15">
             <div className="flex items-center gap-2">
               {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
               <div className="shrink-0 w-2 sm:w-10 bg-white"></div>

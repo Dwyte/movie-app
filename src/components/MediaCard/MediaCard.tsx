@@ -116,7 +116,7 @@ const MediaCard = ({
        * static div and scale up on hover etc. */}
 
       <div
-        className={`absolute group rounded-sm overflow-hidden group-hover/mcard:scale-115 transition-transform group-hover/mcard:z-1000`}
+        className={`absolute group rounded-sm overflow-hidden group-hover/mcard:scale-115 transition-transform group-hover/mcard:z-1000 group-hover/mcard:drop-shadow-md/100 group-hover/mcard:drop-shadow-black`}
       >
         <div className="relative">
           {previewImageSource && (
@@ -142,7 +142,7 @@ const MediaCard = ({
 
         <div
           onClick={(e) => e.stopPropagation()}
-          className="hidden p-2 group-hover/mcard:flex flex-col gap-2 bg-stone-900 text-white shadow-2xl"
+          className="hidden p-2 group-hover/mcard:flex flex-col gap-2 bg-[var(--media-card-bg)] text-white shadow-2xl"
         >
           <div className="flex gap-1 text-sm">
             <button className="primary-icon-btn">
