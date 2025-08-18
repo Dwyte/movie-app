@@ -34,8 +34,6 @@ const SearchResults = () => {
   const isLoadingMediaImages =
     results && !results.every((m) => loadedMedia[m.id]);
 
-  console.log(Object.keys(loadedMedia).length);
-  console.log(results?.length);
 
   const renderResults = () => {
     if (isFetching) {
@@ -53,7 +51,7 @@ const SearchResults = () => {
             media={media}
             onImageLoad={() =>
               setLoadedMedia((p) => {
-                console.log(p);
+
                 return { ...p, [media.id]: true };
               })
             }

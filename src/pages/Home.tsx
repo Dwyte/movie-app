@@ -5,7 +5,8 @@ import MediaItemsRow from "../components/MediaItemsRow";
 
 import {
   MediaSectionConfig,
-  mediaSectionConfigs,
+  discoveryMovieConfigs,
+  discoveryTVConfigs,
   trendingTVConfigs,
   trendingMovieConfigs,
 } from "../misc/mediaSectionConfigs";
@@ -36,7 +37,12 @@ const Home = () => {
     const trendingTVShows =
       trendingTVConfigs[randomIndex(trendingTVConfigs.length)];
 
-    setConfigs([trendingMovies, trendingTVShows, ...mediaSectionConfigs]);
+    setConfigs([
+      trendingMovies,
+      trendingTVShows,
+      ...discoveryMovieConfigs,
+      ...discoveryTVConfigs,
+    ]);
   }, []);
 
   useEffect(() => {
@@ -64,7 +70,6 @@ const Home = () => {
 
             if (!mediaItems) return;
             if (mediaItems.length === 0) return;
-            console.log(mediaSection.title, mediaItems);
             return (
               <div key={mediaSection.id} className="sm:mt-[-42px]">
                 <MediaItemsRow

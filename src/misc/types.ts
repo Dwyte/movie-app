@@ -318,7 +318,8 @@ export interface DiscoverQueryParams {
   watch_region?: string;
   with_genres?: string;
   with_keywords?: string;
-  with_origin_country?: string;
+  with_original_country?: CountryCode;
+  with_original_language?: LanguageCode;
 
   // Numeric filters flattened
   "with_runtime.gte"?: number;
@@ -340,6 +341,7 @@ export interface DiscoverQueryParams {
   "release_date.gte"?: string;
   "release_date.lte"?: string;
   with_release_type?: ReleaseType | number; // bitmask supported
+  region?: string;
 
   // TV-specific date filters
   "first_air_date.gte"?: string; // YYYY-MM-DD

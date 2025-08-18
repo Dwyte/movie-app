@@ -82,19 +82,19 @@ export const trendingMovieConfigs: MediaSectionConfig[] = [
   },
 ];
 
-export const mediaSectionConfigs: MediaSectionConfig[] = [
+export const discoveryMovieConfigs: MediaSectionConfig[] = [
   {
-    id: "wholesome-comedy-tv",
-    title: "Wholesome Comedy Series",
-    mediaType: "tv",
+    id: "90s-horror-movies",
+    title: "Classic '90s Horror Movies",
+    mediaType: "movie",
     useQuery: {
-      queryKey: ["discovery", "tv", "wholesome-comedy"],
+      queryKey: ["discovery", "movie", "90s-horror"],
       queryFn: async () => {
-        const { results: mediaItems } = await getDiscoverMediaItems("tv", {
-          with_genres: [MOVIE_GENRES[3], MOVIE_GENRES[2], MOVIE_GENRES[7]]
-            .map((g) => g.id.toString())
-            .join(","),
-          include_null_first_air_dates: false,
+        const { results: mediaItems } = await getDiscoverMediaItems("movie", {
+          with_genres: MOVIE_GENRES[10].id.toString(),
+          "primary_release_date.lte": "2001-01-01",
+          with_original_language: "en",
+          "primary_release_date.gte": "1990-01-01",
           sort_by: "popularity.desc",
         });
         return mediaItems;
@@ -103,16 +103,175 @@ export const mediaSectionConfigs: MediaSectionConfig[] = [
     },
   },
   {
-    id: "90s-horror-movies",
-    title: "Classic '90s Horror Movies",
+    id: "y2k-action-movies",
+    title: "Y2K Action Adventure Movies",
     mediaType: "movie",
     useQuery: {
-      queryKey: ["discovery", "movie", "classic-horror"],
+      queryKey: ["discovery", "movie", "y2k-action-adventure"],
       queryFn: async () => {
         const { results: mediaItems } = await getDiscoverMediaItems("movie", {
-          with_genres: MOVIE_GENRES[10].id.toString(),
-          "release_date.lte": "2001-01-01",
-          "release_date.gte": "1990-01-01",
+          with_genres: [MOVIE_GENRES[0].id, MOVIE_GENRES[1].id].join(","),
+          with_original_language: "en",
+          "primary_release_date.lte": "2005-12-31",
+          "primary_release_date.gte": "1995-01-01",
+          sort_by: "popularity.desc",
+        });
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "2020s-top-scifi-movies",
+    title: "Top Sci-fi Movies of the 2020s",
+    mediaType: "movie",
+    useQuery: {
+      queryKey: ["discovery", "movie", "2020s-top-scifi"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("movie", {
+          with_original_language: "en",
+          with_genres: [MOVIE_GENRES[14].id].join(","),
+          sort_by: "vote_count.desc",
+          "primary_release_date.lte": "2030-01-01",
+          "primary_release_date.gte": "2020-01-01",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "fan-fav-crime-flicks",
+    title: "Fan-Favorite Crime Flicks",
+    mediaType: "movie",
+    useQuery: {
+      queryKey: ["discovery", "movie", "fan-fav-crime-flicks"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("movie", {
+          with_original_language: "en",
+          with_genres: [MOVIE_GENRES[4].id].join(","),
+          sort_by: "vote_count.desc",
+          "primary_release_date.lte": "2030-01-01",
+          "primary_release_date.gte": "2010-01-01",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "family-fav-movies",
+    title: "Family Movie Favorites",
+    mediaType: "movie",
+    useQuery: {
+      queryKey: ["discovery", "movie", "family-fav-moves"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("movie", {
+          with_original_language: "en",
+          with_genres: [MOVIE_GENRES[3].id, MOVIE_GENRES[7].id].join(","),
+          sort_by: "vote_count.desc",
+          "primary_release_date.lte": "2030-01-01",
+          "primary_release_date.gte": "2015-01-01",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "2000s-laughs-love-movies",
+    title: "Laughs & Love of 2000s",
+    mediaType: "movie",
+    useQuery: {
+      queryKey: ["discovery", "movie", "2000s-laughs-love"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("movie", {
+          with_original_language: "en",
+          with_genres: [MOVIE_GENRES[3].id, MOVIE_GENRES[13].id].join(","),
+          sort_by: "vote_count.desc",
+          "primary_release_date.lte": "2010-01-01",
+          "primary_release_date.gte": "2001-01-01",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "pinoy-rom-coms",
+    title: "Top Pinoy RomComs",
+    mediaType: "movie",
+    useQuery: {
+      queryKey: ["discovery", "movie", "pinoy-rom-coms"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("movie", {
+          with_original_language: "tl",
+          with_genres: [MOVIE_GENRES[3].id, MOVIE_GENRES[13].id].join(","),
+          sort_by: "vote_count.desc",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "mystery-thriller-movie",
+    title: "Suspense & Mystery",
+    mediaType: "movie",
+    useQuery: {
+      queryKey: ["discovery", "movie", "mystery-thriller"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("movie", {
+          with_original_language: "en",
+          with_genres: [MOVIE_GENRES[12].id, MOVIE_GENRES[16].id].join(","),
+          sort_by: "vote_count.desc",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+  {
+    id: "musical-movie",
+    title: "Screen Musicals",
+    mediaType: "movie",
+    useQuery: {
+      queryKey: ["discovery", "movie", "music"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("movie", {
+          with_original_language: "en",
+          with_genres: [MOVIE_GENRES[11].id].join(","),
+          sort_by: "vote_count.desc",
+        });
+
+        return mediaItems;
+      },
+      staleTime: Infinity,
+    },
+  },
+];
+
+export const discoveryTVConfigs: MediaSectionConfig[] = [
+  {
+    id: "wholesome-comedy-tv",
+    title: "Wholesome Comedy Series",
+    mediaType: "tv",
+    useQuery: {
+      queryKey: ["discovery", "tv", "wholesome-comedy"],
+      queryFn: async () => {
+        const { results: mediaItems } = await getDiscoverMediaItems("tv", {
+          with_genres: [
+            MOVIE_GENRES[3].id,
+            MOVIE_GENRES[2].id,
+            MOVIE_GENRES[7].id,
+          ].join(","),
+          include_null_first_air_dates: false,
           sort_by: "popularity.desc",
         });
         return mediaItems;
