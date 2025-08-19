@@ -12,11 +12,22 @@ import {
 } from "../misc/mediaSectionConfigs";
 import ScrollToTop from "../components/ScrollToTop";
 import { useEffect, useState } from "react";
+import { MediaType } from "../misc/types";
 
 const discoveryMediaConfigs = [...discoveryMovieConfigs, ...discoveryTVConfigs];
 const randomIndex = (length: number) => Math.ceil(Math.random() * length) - 1;
 
-const Home = () => {
+const discoveryConfigs = {
+  tv: discoveryTVConfigs,
+  movie: discoveryMovieConfigs,
+};
+
+const trendingConfigs = {
+  tv: trendingTVConfigs,
+  movie: trendingMovieConfigs,
+};
+
+const Home = ({ mediaType }: { mediaType?: MediaType }) => {
   const [configs, setConfigs] = useState<MediaSectionConfig[]>([]);
 
   const mediaSectionsQueries = useQueries({
@@ -33,7 +44,13 @@ const Home = () => {
 
   const pickNewMediaSection = () => {
     setConfigs((p) => {
-      const unpickedConfigs = discoveryMediaConfigs.filter(
+      const configsPool = !!mediaType
+        ? discoveryConfigs[mediaType]
+        : discoveryMediaConfigs;
+
+      console.log(configsPool);
+
+      const unpickedConfigs = configsPool.filter(
         (mediaConfig) => !p.find((config) => config.id === mediaConfig.id)
       );
 
@@ -50,17 +67,38 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const trendingMovies =
-      trendingMovieConfigs[randomIndex(trendingMovieConfigs.length)];
-    const trendingTVShows =
-      trendingTVConfigs[randomIndex(trendingTVConfigs.length)];
+    let initialMediaSections: MediaSectionConfig[] = [];
 
-    setConfigs([
-      trendingMovies,
-      trendingTVShows,
-      discoveryMovieConfigs[randomIndex(discoveryMovieConfigs.length)],
-      discoveryTVConfigs[randomIndex(discoveryTVConfigs.length)],
-    ]);
+    if (mediaType) {
+      const discoveryConfigsPool = discoveryConfigs[mediaType];
+      const trendingConfigsPool = trendingConfigs[mediaType];
+
+      const firstIndex = randomIndex(discoveryConfigsPool.length);
+      let secondIndex = randomIndex(discoveryConfigsPool.length);
+      while (firstIndex === secondIndex) {
+        secondIndex = randomIndex(discoveryConfigsPool.length);
+      }
+
+      initialMediaSections = [
+        trendingConfigsPool[randomIndex(trendingConfigsPool.length)],
+        discoveryConfigsPool[firstIndex],
+        discoveryConfigsPool[secondIndex],
+      ];
+    } else {
+      const trendingMovies =
+        trendingMovieConfigs[randomIndex(trendingMovieConfigs.length)];
+      const trendingTVShows =
+        trendingTVConfigs[randomIndex(trendingTVConfigs.length)];
+
+      initialMediaSections = [
+        trendingMovies,
+        trendingTVShows,
+        discoveryMovieConfigs[randomIndex(discoveryMovieConfigs.length)],
+        discoveryTVConfigs[randomIndex(discoveryTVConfigs.length)],
+      ];
+    }
+
+    setConfigs(initialMediaSections);
   }, []);
 
   useEffect(() => {

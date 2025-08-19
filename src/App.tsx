@@ -29,6 +29,11 @@ const App = () => {
         <Routes location={isSmUp ? backgroundLocation || location : location}>
           <Route path="/search" element={<SearchResults />} />
           <Route path="/" element={<Home />} />
+          <Route
+            path="/movies"
+            element={<Home key="movie" mediaType="movie" />}
+          />
+          <Route path="/series" element={<Home key="tv" mediaType="tv" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/test" element={<Test />} />
           <Route path="/mylists" element={<MyLists />} />
