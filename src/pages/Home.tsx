@@ -13,6 +13,9 @@ import {
 import ScrollToTop from "../components/ScrollToTop";
 import { useEffect, useState } from "react";
 
+const discoveryMediaConfigs = [...discoveryMovieConfigs, ...discoveryTVConfigs];
+const randomIndex = (length: number) => Math.ceil(Math.random() * length) - 1;
+
 const Home = () => {
   const [configs, setConfigs] = useState<MediaSectionConfig[]>([]);
 
@@ -28,10 +31,25 @@ const Home = () => {
     },
   });
 
-  useEffect(() => {
-    const randomIndex = (length: number) =>
-      Math.ceil(Math.random() * length) - 1;
+  const pickNewMediaSection = () => {
+    setConfigs((p) => {
+      const unpickedConfigs = discoveryMediaConfigs.filter(
+        (mediaConfig) => !p.find((config) => config.id === mediaConfig.id)
+      );
 
+      if (unpickedConfigs.length) {
+        const newConfig = unpickedConfigs[randomIndex(unpickedConfigs.length)];
+        return [...p, newConfig];
+      } else {
+        console.log(
+          "You've reached the end of the page. No More Media Section Configs Available."
+        );
+      }
+      return p;
+    });
+  };
+
+  useEffect(() => {
     const trendingMovies =
       trendingMovieConfigs[randomIndex(trendingMovieConfigs.length)];
     const trendingTVShows =
@@ -40,8 +58,8 @@ const Home = () => {
     setConfigs([
       trendingMovies,
       trendingTVShows,
-      ...discoveryMovieConfigs,
-      ...discoveryTVConfigs,
+      discoveryMovieConfigs[randomIndex(discoveryMovieConfigs.length)],
+      discoveryTVConfigs[randomIndex(discoveryTVConfigs.length)],
     ]);
   }, []);
 
@@ -52,7 +70,10 @@ const Home = () => {
 
       const tolerance = 2; // Pixels
       if (scrollTop + clientHeight >= scrollHeight - tolerance) {
-        console.log("React the bottom of the page.");
+        console.log(
+          "React the bottom of the page, looking for more media lists to display."
+        );
+        pickNewMediaSection();
       }
     });
   }, []);
