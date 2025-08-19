@@ -7,6 +7,7 @@ import MediaCard from "../MediaCard";
 import useIsOnMobile from "../../hooks/useIsOnMobile";
 
 import { Media } from "../../misc/types";
+import Skeleton from "../Skeleton";
 
 const MEDIA_CARD_DIV_WIDTH = 272; // Includes 8px right-gap
 const LEFT_END_SPACE_WIDTH = 48; // Includes 8px right-gap
@@ -15,8 +16,23 @@ const TOTAL_SPACE_WIDTH = LEFT_END_SPACE_WIDTH + RIGHT_END_SPACE_WIDTH;
 
 export interface MediaItemsRowProps {
   title: string;
-  mediaItems: Media[];
+  mediaItems?: Media[];
 }
+
+const MediaItemsRowSkeleton = ({ className }: { className: string }) => {
+  return (
+    <div
+      className={`flex flex-col gap-4 pl-4 pb-2 sm:gap-4 sm:pl-12 ${className}`}
+    >
+      <Skeleton className="h-8 w-70" />
+      <div className="flex gap-2">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <Skeleton key={i} className="shrink-0 w-30 h-45 sm:w-66 sm:h-36" />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -49,7 +65,7 @@ const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
 
   useEffect(() => {
     // Initial compute once the items are loaded.
-    if (mediaItems.length > 0) {
+    if (mediaItems && mediaItems.length > 0) {
       computePaginationStates();
     }
   }, [mediaItems]);
@@ -118,62 +134,76 @@ const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
     [key: string]: boolean;
   }>({});
 
-  const isDoneLoadingAll = mediaItems.every(
+  const isDoneLoadingAll = mediaItems?.every(
     (mediaItem) => !!isMediaCardsLoaded[mediaItem.id]
   );
 
+  const isShowSkeleton = !mediaItems || !isDoneLoadingAll;
+
   return (
-    mediaItems.length > 0 && (
-      <section
-        className={`group/root sm:relative transition-opacity duration-1000 ease-out ${
-          isDoneLoadingAll ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <div className="sm:absolute sm:left-0 sm:right-0 flex justify-between items-end ml-4 sm:ml-12">
-          <h2>{title}</h2>
-          {!isOnMobile && (
-            <PageIndicator totalPages={totalPages} currentPage={currentPage} />
-          )}
-        </div>
-        <div className="relative flex items-center">
-          {!isOnMobile && (
-            <Fragment>
-              <ScrollButton
-                direction="left"
-                onClick={() => shiftPage(-1)}
-                isVisible={canScrollLeft}
+    <div className="relative">
+      {isShowSkeleton && (
+        <MediaItemsRowSkeleton
+          className={
+            !!mediaItems ? "absolute inset-0 pt-3 z-100" : "sm:pt-3 sm:pb-15"
+          }
+        />
+      )}
+      {mediaItems && (
+        <section
+          className={`group/root sm:relative transition-opacity duration-1000 ease-out ${
+            isDoneLoadingAll ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <div className="sm:absolute sm:left-0 sm:right-0 flex justify-between items-end ml-4 sm:ml-12">
+            <h2>{title}</h2>
+            {!isOnMobile && (
+              <PageIndicator
+                totalPages={totalPages}
+                currentPage={currentPage}
               />
-              <ScrollButton
-                direction="right"
-                onClick={() => shiftPage(1)}
-                isVisible={canScrollRight}
-              />
-            </Fragment>
-          )}
-          <div ref={scrollableDiv} className="scrollable sm:pt-15 sm:pb-15">
-            <div className="flex items-center gap-2">
-              {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
-              <div className="shrink-0 w-2 sm:w-10 bg-white"></div>
-
-              {mediaItems.map((mediaItem) => (
-                <MediaCard
-                  key={mediaItem.id}
-                  media={mediaItem}
-                  onImageLoad={() =>
-                    setIsMediaCardsLoaded((p) => {
-                      return { ...p, [mediaItem.id]: true };
-                    })
-                  }
+            )}
+          </div>
+          <div className="relative flex items-center">
+            {!isOnMobile && (
+              <Fragment>
+                <ScrollButton
+                  direction="left"
+                  onClick={() => shiftPage(-1)}
+                  isVisible={canScrollLeft}
                 />
-              ))}
+                <ScrollButton
+                  direction="right"
+                  onClick={() => shiftPage(1)}
+                  isVisible={canScrollRight}
+                />
+              </Fragment>
+            )}
+            <div ref={scrollableDiv} className="scrollable sm:pt-15 sm:pb-15">
+              <div className="flex items-center gap-2">
+                {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
+                <div className="shrink-0 w-2 sm:w-10 bg-white"></div>
 
-              {/** Acts as right padding/space when the user reaches the last page. */}
-              <div className="shrink-0 w-2 sm:w-4  h-1"></div>
+                {mediaItems.map((mediaItem) => (
+                  <MediaCard
+                    key={mediaItem.id}
+                    media={mediaItem}
+                    onImageLoad={() =>
+                      setIsMediaCardsLoaded((p) => {
+                        return { ...p, [mediaItem.id]: true };
+                      })
+                    }
+                  />
+                ))}
+
+                {/** Acts as right padding/space when the user reaches the last page. */}
+                <div className="shrink-0 w-2 sm:w-4  h-1"></div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    )
+        </section>
+      )}
+    </div>
   );
 };
 

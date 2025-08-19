@@ -12,20 +12,6 @@ import {
 } from "../misc/mediaSectionConfigs";
 import ScrollToTop from "../components/ScrollToTop";
 import { useEffect, useState } from "react";
-import Skeleton from "../components/Skeleton";
-
-const MediaItemsRowSkeleton = () => {
-  return (
-    <div className="flex flex-col gap-4 pl-4 pb-2 sm:gap-4 sm:pl-12 sm:pb-16 pt-[6px] sm:mt-[-42px]">
-      <Skeleton className="h-8 sm:h-9 w-70" />
-      <div className="flex gap-2">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <Skeleton key={i} className="shrink-0 w-30 h-45 sm:w-66 sm:h-36" />
-        ))}
-      </div>
-    </div>
-  );
-};
 
 const Home = () => {
   const [configs, setConfigs] = useState<MediaSectionConfig[]>([]);
@@ -82,9 +68,7 @@ const Home = () => {
             const { mediaSection, useQueryResult } = query;
             const { data: mediaItems, isFetching } = useQueryResult;
 
-            if (!mediaItems)
-              return <MediaItemsRowSkeleton key={mediaSection.id} />;
-            if (mediaItems.length === 0) return;
+            if (mediaItems?.length === 0 && !isFetching) return;
             return (
               <div key={mediaSection.id} className="sm:mt-[-42px]">
                 <MediaItemsRow
