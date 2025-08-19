@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { TMDBProfileBaseURL } from "../../misc/constants";
 import { useAuth } from "../../contexts/AuthContext";
 import { useEffect, useState } from "react";
-import useIsSmUp from "../../hooks/useIsSmUp";
+import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 
 const UserDropdownContent = () => {
   const auth = useAuth();
@@ -44,7 +44,7 @@ const UserDropdownContent = () => {
 
 const UserProfile = () => {
   const [isActive, setIsActive] = useState(false);
-  const isSmUp = useIsSmUp();
+  const { isSmUp } = useMediaQueries();
 
   useEffect(() => {
     setIsActive(isSmUp);

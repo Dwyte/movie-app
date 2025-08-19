@@ -7,7 +7,6 @@ import MediaCard from "../MediaCard";
 import useIsOnMobile from "../../hooks/useIsOnMobile";
 
 import { Media } from "../../misc/types";
-import useIsSmUp from "../../hooks/useIsSmUp";
 
 const MEDIA_CARD_DIV_WIDTH = 272; // Includes 8px right-gap
 const LEFT_END_SPACE_WIDTH = 48; // Includes 8px right-gap

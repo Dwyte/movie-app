@@ -1,9 +1,8 @@
-import React from "react";
 import { BsGrid3X2GapFill } from "react-icons/bs";
-import useIsSmUp from "../../hooks/useIsSmUp";
+import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 
 const ListItemHoverIndicator = () => {
-  const isSmUp = useIsSmUp();
+  const { isSmUp } = useMediaQueries();
 
   if (!isSmUp) return;
   return (

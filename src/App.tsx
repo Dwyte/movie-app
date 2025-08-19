@@ -5,11 +5,11 @@ import MediaPage from "./pages/MediaPage";
 import Home from "./pages/Home";
 
 import Header from "./components/Header";
-import useIsSmUp from "./hooks/useIsSmUp";
 import Test from "./pages/Test";
 import LoginPage from "./pages/LoginPage";
 import MyLists from "./pages/MyLists";
 import ListPage from "./pages/ListPage";
+import { useMediaQueries } from "./contexts/MediaQueriesContext";
 
 const App = () => {
   const location = useLocation();
@@ -18,7 +18,7 @@ const App = () => {
   const backgroundLocation = location.state?.backgroundLocation;
 
   // Similar behavior to tailwind's sm:
-  const isSmUp = useIsSmUp();
+  const { isSmUp } = useMediaQueries();
 
   return (
     <main>

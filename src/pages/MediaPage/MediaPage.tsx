@@ -10,8 +10,6 @@ import {
 } from "react-router-dom";
 import { BsPlusLg, BsSend, BsStar } from "react-icons/bs";
 
-import useIsSmUp from "../../hooks/useIsSmUp";
-
 import { getMediaItemCredits, getMediaItemDetails } from "../../misc/tmdbAPI";
 import { MEDIA_PAGE_NAV_LINKS } from "../../misc/constants";
 import { MediaType } from "../../misc/types";
@@ -24,6 +22,7 @@ import MediaPageEpisodesSection from "./MediaPageEpisodesSection";
 import { useAddListModal } from "../../contexts/AddListModalContext";
 import DisableBodyScroll from "../../components/DisableBodyScroll";
 import Skeleton from "../../components/Skeleton";
+import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 
 interface Props {
   mediaType: MediaType;
@@ -52,7 +51,7 @@ const MediaPage = ({ mediaType }: Props) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const isSmUp = useIsSmUp();
+  const { isSmUp } = useMediaQueries();
   const params = useParams();
   const mediaId = params.mediaId ? parseInt(params.mediaId) : null;
   const backgroundLocation = location.state

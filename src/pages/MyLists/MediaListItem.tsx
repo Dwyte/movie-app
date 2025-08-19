@@ -10,8 +10,8 @@ import {
 import { getTMDBImageURL } from "../../misc/utils";
 import { BsChatSquareDots, BsChevronRight, BsXLg } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
-import useIsSmUp from "../../hooks/useIsSmUp";
 import Skeleton from "../../components/Skeleton";
+import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 
 interface Props {
   media: Media;
@@ -73,7 +73,7 @@ const MediaListItem = ({
   onComment,
   onLoad,
 }: Props) => {
-  const isSmUp = useIsSmUp();
+  const { isSmUp } = useMediaQueries();
 
   const thumbnailPath = isSmUp ? media.backdrop_path : media.poster_path;
   const noImagePath = isSmUp ? NO_IMAGE_LANDSCAPE_PATH : NO_IMAGE_PORTRAIT_PATH;

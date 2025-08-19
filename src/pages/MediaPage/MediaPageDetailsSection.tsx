@@ -16,7 +16,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTrendingMediaItems } from "../../misc/tmdbAPI";
 import StyledKeyValue from "../../components/StyledKeyValue";
 import Skeleton from "../../components/Skeleton";
-import useIsSmUp from "../../hooks/useIsSmUp";
+import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 
 interface Props {
   mediaItemDetails: MediaDetails | null;
@@ -98,7 +98,7 @@ const MediaPageDetailsSection = ({
     },
   });
 
-  const isSmUp = useIsSmUp();
+  const { isSmUp } = useMediaQueries();
 
   const director = useMemo<Crew | null>(() => {
     if (!mediaItemCredits) return null;
@@ -122,7 +122,8 @@ const MediaPageDetailsSection = ({
     return rank === -1 ? -1 : rank + 1;
   }, [mediaItemDetails, trendingMediaToday]);
 
-  const isLoading = !mediaItemDetails || !mediaItemCredits || !trendingMediaToday;
+  const isLoading =
+    !mediaItemDetails || !mediaItemCredits || !trendingMediaToday;
   if (isLoading) return isSmUp ? <DesktopSkeleton /> : <MobileSkeleton />;
 
   return (

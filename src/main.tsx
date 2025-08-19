@@ -7,6 +7,7 @@ import "./index.css";
 import { AuthProvider } from "./contexts/AuthContext.js";
 import AddListModalProvider from "./contexts/AddListModalContext.js";
 import { ToastProvider } from "./contexts/ToastContext.js";
+import { MediaQueriesContextProvider } from "./contexts/MediaQueriesContext.js";
 
 const queryClient = new QueryClient();
 
@@ -15,11 +16,13 @@ createRoot(document.getElementById("root") as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <ToastProvider>
-            <AddListModalProvider>
-              <App />
-            </AddListModalProvider>
-          </ToastProvider>
+          <MediaQueriesContextProvider>
+            <ToastProvider>
+              <AddListModalProvider>
+                <App />
+              </AddListModalProvider>
+            </ToastProvider>
+          </MediaQueriesContextProvider>
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>

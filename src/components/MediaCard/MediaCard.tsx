@@ -5,7 +5,6 @@ import { getMediaItemImages } from "../../misc/tmdbAPI";
 import { getTMDBImageURL } from "../../misc/utils";
 import { Media, MediaImagesResult } from "../../misc/types";
 
-import useIsSmUp from "../../hooks/useIsSmUp";
 import GenreList from "../GenreList";
 
 import { BsChevronDown, BsPlayFill, BsPlusLg, BsStar } from "react-icons/bs";
@@ -15,6 +14,7 @@ import {
 } from "../../misc/constants";
 import { useAddListModal } from "../../contexts/AddListModalContext";
 import Img from "../Img";
+import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 
 export const MEDIA_CARD_DIMENSIONS = "w-30 h-45 sm:w-66 sm:h-36";
 const hoverWidth = "group-hover/mcard:w-72";
@@ -52,7 +52,7 @@ const MediaCard = ({
 }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isSmUp = useIsSmUp();
+  const { isSmUp } = useMediaQueries();
 
   const { showAddListModal } = useAddListModal();
 
