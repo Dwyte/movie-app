@@ -48,8 +48,6 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
         ? discoveryConfigs[mediaType]
         : discoveryMediaConfigs;
 
-      console.log(configsPool);
-
       const unpickedConfigs = configsPool.filter(
         (mediaConfig) => !p.find((config) => config.id === mediaConfig.id)
       );
@@ -119,7 +117,11 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
   return (
     <div>
       <ScrollToTop />
-      <HeroSection />
+      {mediaType ? (
+        <HeroSection mediaType={mediaType} />
+      ) : (
+        <HeroSection mediaType={Math.random() >= 0.5 ? "movie" : "tv"} />
+      )}
 
       <div className="relative">
         <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-175px] sm:pt-6 sm:pb-6 z-2">

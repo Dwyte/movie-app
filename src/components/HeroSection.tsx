@@ -14,30 +14,32 @@ import { MediaType, TimeWindow } from "../misc/types";
 import GenreList from "./GenreList";
 import Skeleton from "./Skeleton";
 
-const HeroSection = () => {
+const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { showAddListModal } = useAddListModal();
 
   const { data: trendingMediaItems } = useQuery({
-    queryKey: ["trending", "movie", "week"],
-    queryFn: ({ queryKey }) => {
+    queryKey: ["trending", mediaType, "week"],
+    queryFn: async ({ queryKey }) => {
       const [_, mediaType, timeWindow] = queryKey as [
         string,
         MediaType,
         TimeWindow
       ];
 
-      return getTrendingMediaItems(mediaType, timeWindow);
+      const { results } = await getTrendingMediaItems(mediaType, timeWindow);
+
+      return results;
     },
   });
 
   // Selects a random trending movie to show.
   const mediaItem = useMemo(() => {
-    if (!trendingMediaItems) return null;
+    if (!trendingMediaItems || trendingMediaItems.length === 0) return null;
 
-    return trendingMediaItems.results[
-      Math.floor(Math.random() * trendingMediaItems.results.length)
+    return trendingMediaItems[
+      Math.floor(Math.random() * trendingMediaItems.length)
     ];
   }, [trendingMediaItems]);
 
