@@ -1,0 +1,31 @@
+import React from "react";
+import { BsChevronBarLeft } from "react-icons/bs";
+
+interface Props {
+  title: string;
+  videoKey: string;
+  onExit: () => void;
+}
+
+const YoutubeEmbed = ({ title, videoKey, onExit }: Props) => {
+  return (
+    <div className="absolute inset-0 z-50">
+      <button
+        onClick={onExit}
+        className="secondary-icon-btn absolute left-4 bottom-10 translate-y-[-50%] gap-1"
+      >
+        <BsChevronBarLeft /> <span className="text-sm mr-1">Exit Trailer</span>
+      </button>
+      <iframe
+        className="aspect-[16/9]"
+        src={`https://www.youtube-nocookie.com/embed/${videoKey}?autoPlay=1`}
+        title={title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      ></iframe>
+    </div>
+  );
+};
+
+export default YoutubeEmbed;
