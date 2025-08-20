@@ -159,7 +159,7 @@ const MediaPageDetailsSection = ({
 
         <button className="primary-btn justify-center sm:hidden">
           <BsPlayFill className="text-2xl mr-1" />
-          Play
+          Play Trailer
         </button>
         <button className="secondary-btn justify-center sm:hidden">
           <RiDownloadLine className="text-2xl mr-1" />

@@ -125,7 +125,7 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
           <div className="flex items-center gap-4 w-full">
             <button className="primary-btn justify-center min-w-30">
               <BsPlayFill className="text-2xl mr-1" />
-              <span>Play</span>
+              <span>Play Trailer</span>
             </button>
 
             <button
