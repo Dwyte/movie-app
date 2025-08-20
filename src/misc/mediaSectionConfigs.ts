@@ -34,7 +34,7 @@ export const trendingTVConfigs: MediaSectionConfig[] = [
     title: "Can't Miss Series Of The Week",
     mediaType: "tv",
     useQuery: {
-      queryKey: ["trendingg", "tv", "week"],
+      queryKey: ["trending", "tv", "week"],
       queryFn: async () => {
         const { results: mediaItems } = await getTrendingMediaItems(
           "tv",

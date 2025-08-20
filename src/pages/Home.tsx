@@ -117,11 +117,12 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
   return (
     <div>
       <ScrollToTop />
-      {mediaType ? (
-        <HeroSection mediaType={mediaType} />
-      ) : (
-        <HeroSection mediaType={Math.random() >= 0.5 ? "movie" : "tv"} />
-      )}
+      {/* If there's no mediaType we randomly choose between movie or tv type to show in Hero */}
+      <HeroSection
+        mediaType={
+          mediaType ? mediaType : Math.random() >= 0.5 ? "movie" : "tv"
+        }
+      />
 
       <div className="relative z-20">
         <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-175px] sm:pt-6 sm:pb-6">

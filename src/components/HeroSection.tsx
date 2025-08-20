@@ -19,7 +19,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
   const location = useLocation();
   const { showAddListModal } = useAddListModal();
 
-  const { data: trendingMediaItems } = useQuery({
+  const { data: trendingMediaItems, isSuccess } = useQuery({
     queryKey: ["trending", mediaType, "week"],
     queryFn: async ({ queryKey }) => {
       const [_, mediaType, timeWindow] = queryKey as [
@@ -32,6 +32,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
 
       return results;
     },
+    staleTime: Infinity,
   });
 
   // Selects a random trending movie to show.
@@ -41,7 +42,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
     return trendingMediaItems[
       Math.floor(Math.random() * trendingMediaItems.length)
     ];
-  }, [trendingMediaItems]);
+  }, [isSuccess]);
 
   const { data: mediaItemImages } = useQuery({
     enabled: !!mediaItem,
