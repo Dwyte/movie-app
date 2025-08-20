@@ -25,6 +25,7 @@ import {
   TMDBListItemStatusResponse,
   TMDBStatusResponse,
   TMDBListClearItemsResponse,
+  MediaVideos,
 } from "./types";
 import { normalizeMedia, normalizeMediaDetails } from "./utils";
 
@@ -201,6 +202,14 @@ export const getTVSeasonDetails = async (
   seasonNumber: number
 ): Promise<TVSeasonDetailsAPIResult> => {
   const url = new URL(`${API_BASE_URL_V3}/tv/${tvId}/season/${seasonNumber}`);
+  return await get(url);
+};
+
+export const getMediaVideos = async (
+  mediaType: MediaType,
+  mediaId: number
+): Promise<MediaVideos> => {
+  const url = new URL(`${API_BASE_URL_V3}/${mediaType}/${mediaId}/videos`);
   return await get(url);
 };
 

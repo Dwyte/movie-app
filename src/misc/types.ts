@@ -523,3 +523,21 @@ export type TMDBListClearItemsResponse = TMDBStatusResponse & {
 
 export type TMDBUpdateListItemResponse = TMDBStatusResponse &
   MediaRef & { comment: string };
+
+export interface Video {
+  iso_639_1: LanguageCode;
+  iso_3166_1: CountryCode;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: "Trailer" | "Behind the Scenes";
+  official: boolean;
+  published_at: string;
+  id: string;
+}
+
+export interface MediaVideos {
+  id: number;
+  results: Video[];
+}
