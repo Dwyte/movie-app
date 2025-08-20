@@ -170,7 +170,7 @@ const MediaCard = ({
 
           <div className="text-xs">
             <GenreList
-              genreIds={media.genre_ids}
+              genreIds={media.genre_ids.slice(0, 3)}
               mediaType={media.media_type}
             />
           </div>
