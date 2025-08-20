@@ -46,7 +46,7 @@ const ListDetailsSection = ({
       <div className="bg-black/33 w-full h-full absolute top-0"></div>
 
       {isUserOwner && (
-        <div className="absolute top-0 right-0 p-4 flex flex-col gap-2 z-5">
+        <div className="absolute top-0 right-0 p-4 flex flex-col gap-2 z-20">
           <button onClick={handleShare} className="secondary-icon-btn p-3">
             <BsBoxArrowUpRight />
           </button>
@@ -62,7 +62,7 @@ const ListDetailsSection = ({
         </div>
       )}
 
-      <div className="flex flex-col absolute bottom-0 text-white w-full">
+      <div className="flex flex-col absolute bottom-0 text-white w-full z-10">
         <div className="p-2 sm:p-4">
           <h1 className="text-4xl font-bold flex gap-2 items-center">
             {listDetails.name}

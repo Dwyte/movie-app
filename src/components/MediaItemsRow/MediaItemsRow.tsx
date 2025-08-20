@@ -34,7 +34,11 @@ const MediaItemsRowSkeleton = ({ className }: { className: string }) => {
   );
 };
 
-const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
+const MediaItemsRow = ({
+  title,
+  mediaItems,
+  ...rest
+}: MediaItemsRowProps & React.ComponentProps<"div">) => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const scrollableDiv = useRef<HTMLDivElement | null>(null);
@@ -141,21 +145,21 @@ const MediaItemsRow = ({ title, mediaItems }: MediaItemsRowProps) => {
   const isShowSkeleton = !mediaItems || !isDoneLoadingAll;
 
   return (
-    <div className="relative">
+    <div {...rest}>
       {isShowSkeleton && (
         <MediaItemsRowSkeleton
           className={
-            !!mediaItems ? "absolute inset-0 pt-3 z-100" : "sm:pt-3 sm:pb-15"
+            !!mediaItems ? "absolute inset-0 pt-3 z-0" : "sm:pt-3 sm:pb-15"
           }
         />
       )}
       {mediaItems && (
         <section
-          className={`group/root sm:relative transition-opacity duration-1000 ease-out ${
+          className={`group/root transition-opacity duration-200 ease-in sm:relative sm:z-0 ${
             isDoneLoadingAll ? "opacity-100" : "opacity-0"
           }`}
         >
-          <div className="sm:absolute sm:left-0 sm:right-0 flex justify-between items-end ml-4 sm:ml-12">
+          <div className="flex justify-between items-end ml-4 sm:absolute sm:z-0 sm:left-0 sm:right-0 sm:ml-12">
             <h2>{title}</h2>
             {!isOnMobile && (
               <PageIndicator

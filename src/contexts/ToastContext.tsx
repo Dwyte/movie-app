@@ -59,7 +59,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
 
     setAcitveToast(
       <div
-        className="modal-backdrop z-9999 fade-in"
+        className="modal-backdrop z-50 fade-in"
         onMouseDown={() => {
           handleCancel();
         }}

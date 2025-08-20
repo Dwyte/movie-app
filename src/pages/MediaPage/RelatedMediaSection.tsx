@@ -67,7 +67,7 @@ const RelatedMediaSection = ({ mediaItemDetails }: Props) => {
             return (
               <div className="relative" key={mediaItem.id}>
                 {isLoadingImages && (
-                  <Skeleton className="absolute inset-0 w-full h-full aspect-[16/9] z-1" />
+                  <Skeleton className="absolute inset-0 w-full h-full aspect-[16/9]" />
                 )}
                 <div
                   className={`w-full h-full transition-opacity ${

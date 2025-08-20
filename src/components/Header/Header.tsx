@@ -20,7 +20,7 @@ function Header() {
   };
 
   return (
-    <header className="fixed left-0 right-0 top-0 p-4 sm:px-12 sm:py-6 z-1000 bg-linear-to-b from-[var(--header-bg)] via-50% via-[var(--header-bg)]/60 to-[var(--header-bg)]/0">
+    <header className="fixed left-0 right-0 top-0 p-4 sm:px-12 sm:py-6 z-40 bg-linear-to-b from-[var(--header-bg)] via-50% via-[var(--header-bg)]/60 to-[var(--header-bg)]/0">
       <nav className="flex justify-between items-center gap-4 mb-4 sm:gap-8">
         {/** Full name Logo in Desktop and Just the Letter N logo in Mobile */}
         <Link to="/">
@@ -29,13 +29,13 @@ function Header() {
         </Link>
 
         {/**
-         * NavLinks except Notflix Logo is full screen and collapsable in Mobile.
+         * NavLinks are full screen and collapsable in Mobile.
          */}
         <div
           onClick={handleNavModalClick}
           className={`${
             !isMobileNavVisible && "hidden"
-          } z-1001 fixed flex flex-col items-center justify-center gap-10 bg-black/75 backdrop-blur-lg inset-0 text-4xl sm:static sm:justify-start sm:flex-row sm:text-base sm:bg-transparent sm:bg-none sm:backdrop-blur-none sm:flex-1 sm:gap-8 sm:flex`}
+          } z-50 fixed flex flex-col items-center justify-center gap-10 bg-black/75 backdrop-blur-lg inset-0 text-4xl sm:static sm:justify-start sm:flex-row sm:text-base sm:bg-transparent sm:bg-none sm:backdrop-blur-none sm:flex-1 sm:gap-8 sm:flex`}
         >
           {NAV_LINKS.map((link) => (
             <NavLink

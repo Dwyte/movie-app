@@ -90,13 +90,13 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
     <div className="relative bg-[var(--media-page-bg)] w-full">
       <button
         onClick={onClose}
-        className="secondary-icon-btn absolute right-3 top-3 border-0 z-100"
+        className="secondary-icon-btn absolute right-3 top-3 border-0 z-50"
       >
         <BsXLg />
       </button>
 
       <div className="relative w-full aspect-[16/9]">
-        <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-[var(--media-page-bg)] to-[var(--media-card-bg)]/0 via-[var(--main-bg)]/50 via-25% to-50% z-1"></div>
+        <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-[var(--media-page-bg)] to-[var(--media-card-bg)]/0 via-[var(--main-bg)]/50 via-25% to-50% z-10"></div>
         {!isBackdropLoaded && (
           <Skeleton
             className="absolute inset-0"
@@ -117,7 +117,7 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
         )}
       </div>
 
-      <div className="hidden sm:flex flex-col items-start px-10 gap-8 absolute left-0 right-0 bottom-0 z-2">
+      <div className="hidden sm:flex flex-col items-start px-10 gap-8 absolute left-0 right-0 bottom-0 z-20">
         {renderLogo()}
 
         {!mediaItemDetails && <ButtonsSkeleton />}

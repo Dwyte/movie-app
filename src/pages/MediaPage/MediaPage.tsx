@@ -122,7 +122,7 @@ const MediaPage = ({ mediaType }: Props) => {
   return (
     <div
       onMouseDown={closeModal}
-      className="flex flex-col items-center text-white z-10000 modal-backdrop fade-in"
+      className="flex flex-col items-center text-white z-50 modal-backdrop fade-in"
     >
       <DisableBodyScroll />
       <div

@@ -82,11 +82,11 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
       <div
         className={`hidden sm:block absolute inset-0 bg-linear-to-r ${
           isBackdropLoaded ? "from-[var(--main-bg)]" : "from-[var(--main-bg)]/0"
-        } to-black/0 to-60% z-1`}
+        } to-black/0 to-60% z-10`}
       ></div>
-      <div className="w-full h-150 sm:h-screen relative">
+      <div className="w-full h-150 sm:h-screen relative z-0">
         {(!backdropImgSrc || !isBackdropLoaded) && (
-          <Skeleton className="absolute inset-0 z-2" />
+          <Skeleton className="absolute inset-0" />
         )}
         {backdropImgSrc && (
           <img
@@ -99,7 +99,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
         )}
       </div>
       <div
-        className={`flex items-end sm:items-center sm:mt-[-100px] justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t from-[var(--main-bg)] to-[var(--main-bg)]/0 to-50% sm:to-25% z-2`}
+        className={`flex items-end sm:items-center sm:mt-[-100px] justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t from-[var(--main-bg)] to-[var(--main-bg)]/0 to-50% sm:to-25% z-10`}
       >
         {mediaItem && logoImgSrc && isBackdropLoaded && (
           <div

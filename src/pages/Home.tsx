@@ -123,20 +123,21 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
         <HeroSection mediaType={Math.random() >= 0.5 ? "movie" : "tv"} />
       )}
 
-      <div className="relative">
-        <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-175px] sm:pt-6 sm:pb-6 z-2">
-          {mediaSectionsQueries.map((query) => {
+      <div className="relative z-20">
+        <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-175px] sm:pt-6 sm:pb-6">
+          {mediaSectionsQueries.map((query, index) => {
             const { mediaSection, useQueryResult } = query;
             const { data: mediaItems, isFetching } = useQueryResult;
 
             if (mediaItems?.length === 0 && !isFetching) return;
             return (
-              <div key={mediaSection.id} className="sm:mt-[-42px]">
-                <MediaItemsRow
-                  title={mediaSection.title}
-                  mediaItems={mediaItems}
-                />
-              </div>
+              <MediaItemsRow
+                style={{ position: "relative", zIndex: 1000 - index }}
+                title={mediaSection.title}
+                key={mediaSection.id}
+                className="sm:mt-[-42px]"
+                mediaItems={mediaItems}
+              />
             );
           })}
         </div>

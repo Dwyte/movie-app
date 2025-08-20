@@ -116,7 +116,7 @@ const MediaCard = ({
        * static div and scale up on hover etc. */}
 
       <div
-        className={`absolute group rounded-sm overflow-hidden group-hover/mcard:scale-115 transition-transform group-hover/mcard:z-1000 group-hover/mcard:drop-shadow-md/100 group-hover/mcard:drop-shadow-black`}
+        className={`absolute group rounded-sm overflow-hidden group-hover/mcard:scale-115 transition-transform group-hover/mcard:z-50 group-hover/mcard:drop-shadow-md/100 group-hover/mcard:drop-shadow-black`}
       >
         <div className="relative">
           {previewImageSource && (
