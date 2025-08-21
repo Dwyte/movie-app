@@ -4,6 +4,8 @@ import ListSelection from "./ListSelection";
 import ListCreation from "./ListCreation";
 import ModalContainer from "../ModalContainer";
 import DisableBodyScroll from "../DisableBodyScroll";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 enum AddListModalStates {
   LIST_SELECTION,
@@ -28,6 +30,15 @@ const AddListModal = ({ mediaRef, onClose }: Props) => {
     setCurrentState(AddListModalStates.LIST_SELECTION);
     onClose();
   };
+
+  const { isAuthInitialized, isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isAuthInitialized && !isLoggedIn) {
+      navigate("/login");
+      onClose();
+    }
+  }, [isAuthInitialized]);
 
   return (
     <ModalContainer onClose={handleClose}>
