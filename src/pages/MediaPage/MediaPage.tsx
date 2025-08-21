@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   NavLink,
   Route,
@@ -10,9 +10,13 @@ import {
 } from "react-router-dom";
 import { BsPlusLg, BsSend, BsStar } from "react-icons/bs";
 
-import { getMediaItemCredits, getMediaItemDetails } from "../../misc/tmdbAPI";
+import {
+  getMediaItemCredits,
+  getMediaItemDetails,
+  getMediaVideos,
+} from "../../misc/tmdbAPI";
 import { MEDIA_PAGE_NAV_LINKS } from "../../misc/constants";
-import { MediaType } from "../../misc/types";
+import { MediaType, TrailerState } from "../../misc/types";
 
 import RelatedMediaSection from "./RelatedMediaSection";
 import MediaPageHeroSection from "./MediaPageHeroSection";
@@ -59,6 +63,7 @@ const MediaPage = ({ mediaType }: Props) => {
     : "/";
 
   const { showAddListModal } = useAddListModal();
+  const [trailerState, setTrailerState] = useState<TrailerState>("FETCHING");
 
   const { data: mediaItemDetails } = useQuery({
     queryKey: [mediaType, mediaId, "details"],
@@ -77,6 +82,34 @@ const MediaPage = ({ mediaType }: Props) => {
       return getMediaItemCredits(mediaType, mediaId);
     },
   });
+
+  const { data: mediaItemTrailer } = useQuery({
+    queryKey: [mediaType, mediaId, "trailer"],
+    queryFn: async ({ queryKey }) => {
+      const [mediaType, mediaId, _] = queryKey as [MediaType, number, string];
+      const response = await getMediaVideos(mediaType, mediaId);
+
+      const trailer = response.results.find((v) => {
+        const isYoutube = v.site === "YouTube";
+        const isTrailer = v.type === "Trailer";
+
+        return isYoutube && isTrailer && v.official;
+      });
+
+      return trailer ? trailer : null;
+    },
+    staleTime: Infinity,
+  });
+
+  useEffect(() => {
+    if (mediaItemTrailer === undefined) {
+      setTrailerState("FETCHING");
+    } else if (mediaItemTrailer === null) {
+      setTrailerState("UNAVAILABLE");
+    } else {
+      setTrailerState("AVAILABLE");
+    }
+  }, [mediaItemTrailer]);
 
   // Scroll to the Top when selecting a new Media to view from related media section.
   useEffect(() => {
@@ -132,6 +165,10 @@ const MediaPage = ({ mediaType }: Props) => {
       >
         <MediaPageHeroSection
           mediaItemDetails={mediaItemDetails}
+          mediaItemTrailer={mediaItemTrailer}
+          trailerState={trailerState}
+          onPlayTrailer={() => setTrailerState("PLAYING")}
+          onExitTrailer={() => setTrailerState("AVAILABLE")}
           onClose={closeModal}
         />
         <div className="flex flex-col gap-2 p-4 sm:px-10 sm:py-8 sm:gap-8">

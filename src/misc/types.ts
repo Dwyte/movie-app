@@ -541,3 +541,5 @@ export interface MediaVideos {
   id: number;
   results: Video[];
 }
+
+export type TrailerState = "FETCHING" | "UNAVAILABLE" | "AVAILABLE" | "PLAYING";

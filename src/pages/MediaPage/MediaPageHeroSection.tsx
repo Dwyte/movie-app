@@ -4,24 +4,29 @@ import { useMemo, useState } from "react";
 import { useAddListModal } from "../../contexts/AddListModalContext";
 
 import { NO_IMAGE_LANDSCAPE_PATH } from "../../misc/constants";
-import { MediaDetails, MediaType } from "../../misc/types";
+import { MediaDetails, MediaType, TrailerState, Video } from "../../misc/types";
 import { getMediaItemImages } from "../../misc/tmdbAPI";
 import { getTMDBImageURL } from "../../misc/utils";
 
-import { BsPlayFill, BsPlusLg, BsStar, BsXLg } from "react-icons/bs";
+import { BsBan, BsPlayFill, BsPlusLg, BsStar, BsXLg } from "react-icons/bs";
 import { RiDownloadLine } from "react-icons/ri";
 import Skeleton from "../../components/Skeleton";
 import Img from "../../components/Img";
+import YoutubeEmbed from "../../components/YoutubeEmbed";
 
 interface Props {
   mediaItemDetails: MediaDetails | null;
+  mediaItemTrailer: Video | null | undefined;
+  trailerState: TrailerState;
   onClose: () => void;
+  onPlayTrailer: () => void;
+  onExitTrailer: () => void;
 }
 
 const ButtonsSkeleton = () => {
   return (
     <div className="flex items-center gap-4 w-full h-9">
-      <Skeleton className="h-full min-w-30" />
+      <Skeleton className="h-full min-w-33" />
       <Skeleton className="h-full aspect-square" rounded="rounded-full" />
       <Skeleton className="h-full aspect-square" rounded="rounded-full" />
       <div className="flex-1"></div>
@@ -30,7 +35,14 @@ const ButtonsSkeleton = () => {
   );
 };
 
-const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
+const MediaPageHeroSection = ({
+  mediaItemDetails,
+  mediaItemTrailer,
+  trailerState,
+  onExitTrailer,
+  onPlayTrailer,
+  onClose,
+}: Props) => {
   const { data: mediaItemImages } = useQuery({
     enabled: !!mediaItemDetails,
     queryKey: [mediaItemDetails?.media_type, mediaItemDetails?.id, "images"],
@@ -115,41 +127,66 @@ const MediaPageHeroSection = ({ mediaItemDetails, onClose }: Props) => {
             src={backdropImgSrc}
           />
         )}
+
+        {trailerState === "PLAYING" && mediaItemDetails && mediaItemTrailer && (
+          <YoutubeEmbed
+            videoKey={mediaItemTrailer.key}
+            title={mediaItemDetails.title}
+            onExit={onExitTrailer}
+          />
+        )}
       </div>
 
       <div className="hidden sm:flex flex-col items-start px-10 gap-8 absolute left-0 right-0 bottom-0 z-20">
         {renderLogo()}
 
-        {!mediaItemDetails && <ButtonsSkeleton />}
-        {mediaItemDetails && (
-          <div className="flex items-center gap-4 w-full">
-            <button className="primary-btn justify-center min-w-30">
-              <BsPlayFill className="text-2xl mr-1" />
-              <span>Play Trailer</span>
-            </button>
+        {(!mediaItemDetails ||
+          trailerState === "FETCHING" ||
+          trailerState === "PLAYING") && <ButtonsSkeleton />}
+        {mediaItemDetails &&
+          trailerState !== "FETCHING" &&
+          trailerState !== "PLAYING" && (
+            <div className="flex items-center gap-4 w-full">
+              {trailerState !== "UNAVAILABLE" ? (
+                <button
+                  onClick={onPlayTrailer}
+                  className="primary-btn justify-center min-w-30"
+                >
+                  <BsPlayFill className="text-2xl mr-1" />
+                  <span>Play Trailer</span>
+                </button>
+              ) : (
+                <button
+                  disabled
+                  className="primary-btn justify-center min-w-30"
+                >
+                  <BsBan className="text-xl mr-1" />
+                  <span>No Trailer Available</span>
+                </button>
+              )}
 
-            <button
-              onClick={() => {
-                if (!mediaItemDetails) return;
+              <button
+                onClick={() => {
+                  if (!mediaItemDetails) return;
 
-                showAddListModal({
-                  media_id: mediaItemDetails.id,
-                  media_type: mediaItemDetails.media_type,
-                });
-              }}
-              className="secondary-icon-btn"
-            >
-              <BsPlusLg />
-            </button>
-            <button className="secondary-icon-btn">
-              <BsStar />
-            </button>
-            <div className="flex-1"></div>
-            <button className="secondary-icon-btn opacity-65">
-              <RiDownloadLine />
-            </button>
-          </div>
-        )}
+                  showAddListModal({
+                    media_id: mediaItemDetails.id,
+                    media_type: mediaItemDetails.media_type,
+                  });
+                }}
+                className="secondary-icon-btn"
+              >
+                <BsPlusLg />
+              </button>
+              <button className="secondary-icon-btn">
+                <BsStar />
+              </button>
+              <div className="flex-1"></div>
+              <button className="secondary-icon-btn opacity-65">
+                <RiDownloadLine />
+              </button>
+            </div>
+          )}
       </div>
     </div>
   );
