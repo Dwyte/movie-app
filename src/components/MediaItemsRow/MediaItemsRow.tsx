@@ -22,7 +22,7 @@ export interface MediaItemsRowProps {
 const MediaItemsRowSkeleton = ({ className }: { className: string }) => {
   return (
     <div
-      className={`flex flex-col gap-4 pl-4 pb-2 sm:gap-4 sm:pl-12 ${className}`}
+      className={`flex flex-col gap-4 pl-4 pb-2 sm:gap-4 sm:pl-12 ${className} overflow-hidden`}
     >
       <Skeleton className="h-8 w-70" />
       <div className="flex gap-2">
