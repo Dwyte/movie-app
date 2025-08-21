@@ -1,15 +1,21 @@
 import { useMemo } from "react";
 import { RiDownloadLine } from "react-icons/ri";
 
-import { BsBadgeCcFill, BsBadgeHdFill, BsPlayFill } from "react-icons/bs";
+import {
+  BsBadgeCcFill,
+  BsBadgeHdFill,
+  BsBan,
+  BsBoxArrowLeft,
+  BsPlayFill,
+} from "react-icons/bs";
 
 import {
   Crew,
-  Media,
   MediaCreditsAPIResult,
   MediaDetails,
   MediaType,
   TimeWindow,
+  TrailerState,
 } from "../../misc/types";
 import { getDurationString, shortenParagraph } from "../../misc/utils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -21,6 +27,9 @@ import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 interface Props {
   mediaItemDetails: MediaDetails | null;
   mediaItemCredits: MediaCreditsAPIResult | null;
+  trailerState: TrailerState;
+  onPlayTrailer: () => void;
+  onExitTrailer: () => void;
 }
 
 const Container = (props: React.ComponentProps<"div">) => (
@@ -82,8 +91,10 @@ const MobileSkeleton = () => {
 const MediaPageDetailsSection = ({
   mediaItemDetails,
   mediaItemCredits,
+  trailerState,
+  onExitTrailer,
+  onPlayTrailer,
 }: Props) => {
-  const queryClient = useQueryClient();
   const { data: trendingMediaToday } = useQuery({
     enabled: !!mediaItemDetails,
     queryKey: ["trending", mediaItemDetails?.media_type, "day"],
@@ -123,7 +134,10 @@ const MediaPageDetailsSection = ({
   }, [mediaItemDetails, trendingMediaToday]);
 
   const isLoading =
-    !mediaItemDetails || !mediaItemCredits || !trendingMediaToday;
+    !mediaItemDetails ||
+    !mediaItemCredits ||
+    !trendingMediaToday ||
+    trailerState === "FETCHING";
   if (isLoading) return isSmUp ? <DesktopSkeleton /> : <MobileSkeleton />;
 
   return (
@@ -157,10 +171,33 @@ const MediaPageDetailsSection = ({
           </div>
         )}
 
-        <button className="primary-btn justify-center sm:hidden">
-          <BsPlayFill className="text-2xl mr-1" />
-          Play Trailer
-        </button>
+        {trailerState === "AVAILABLE" && (
+          <button
+            onClick={onPlayTrailer}
+            className="primary-btn justify-center sm:hidden"
+          >
+            <BsPlayFill className="text-2xl mr-1" />
+            Play Trailer
+          </button>
+        )}
+        {trailerState === "UNAVAILABLE" && (
+          <button
+            onClick={onPlayTrailer}
+            className="primary-btn justify-center sm:hidden"
+          >
+            <BsBan className="text-2xl mr-1" />
+            No Trailer Available
+          </button>
+        )}
+        {trailerState === "PLAYING" && (
+          <button
+            onClick={onExitTrailer}
+            className="primary-btn justify-center sm:hidden"
+          >
+            <BsBoxArrowLeft className="text-2xl mr-1" />
+            Exit Trailer
+          </button>
+        )}
         <button className="secondary-btn justify-center sm:hidden">
           <RiDownloadLine className="text-2xl mr-1" />
           Download

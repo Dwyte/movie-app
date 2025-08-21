@@ -1,5 +1,5 @@
-import React from "react";
 import { BsChevronBarLeft } from "react-icons/bs";
+import { useMediaQueries } from "../contexts/MediaQueriesContext";
 
 interface Props {
   title: string;
@@ -8,14 +8,20 @@ interface Props {
 }
 
 const YoutubeEmbed = ({ title, videoKey, onExit }: Props) => {
+  const { isSmUp } = useMediaQueries();
+
   return (
     <div className="absolute inset-0 z-50">
-      <button
-        onClick={onExit}
-        className="secondary-icon-btn absolute left-4 bottom-10 translate-y-[-50%] gap-1"
-      >
-        <BsChevronBarLeft /> <span className="text-sm mr-1">Exit Trailer</span>
-      </button>
+      {isSmUp && (
+        <button
+          onClick={onExit}
+          className="secondary-icon-btn absolute left-4 bottom-10 translate-y-[-50%] gap-1"
+        >
+          <BsChevronBarLeft />{" "}
+          <span className="text-sm mr-1">Exit Trailer</span>
+        </button>
+      )}
+
       <iframe
         className="aspect-[16/9]"
         src={`https://www.youtube-nocookie.com/embed/${videoKey}?autoPlay=1`}

@@ -143,6 +143,7 @@ const MediaPageHeroSection = ({
         {(!mediaItemDetails ||
           trailerState === "FETCHING" ||
           trailerState === "PLAYING") && <ButtonsSkeleton />}
+
         {mediaItemDetails &&
           trailerState !== "FETCHING" &&
           trailerState !== "PLAYING" && (

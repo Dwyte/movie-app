@@ -177,6 +177,9 @@ const MediaPage = ({ mediaType }: Props) => {
           <MediaPageDetailsSection
             mediaItemDetails={mediaItemDetails}
             mediaItemCredits={mediaItemCredits}
+            trailerState={trailerState}
+            onPlayTrailer={() => setTrailerState("PLAYING")}
+            onExitTrailer={() => setTrailerState("AVAILABLE")}
           />
 
           {/* In Mobile */}
