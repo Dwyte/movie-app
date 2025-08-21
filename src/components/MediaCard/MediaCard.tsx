@@ -163,7 +163,10 @@ const MediaCard = ({
               <BsStar />
             </button>
             <div className="flex-1"></div>
-            <button className="secondary-icon-btn">
+            <button
+              onClick={handleMediaCardClick}
+              className="secondary-icon-btn"
+            >
               <BsChevronDown />
             </button>
           </div>
