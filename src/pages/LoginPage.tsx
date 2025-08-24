@@ -77,7 +77,11 @@ const LoginPage = () => {
 
   return (
     <div className="text-white h-full flex flex-col items-center justify-center">
-      <img className="h-[100vh] opacity-75 object-cover" src="/hero-image.webp" alt="" />
+      <img
+        className="h-[100vh] opacity-75 object-cover"
+        src="/hero-image.jpg"
+        alt=""
+      />
       <div className="absolute p-8 bg-black/90 rounded-sm sm:min-w-125">
         <h2 className="text-2xl mt-0 mb-4">Sign-in</h2>
         <button
