@@ -62,8 +62,12 @@ const MediaPage = ({ mediaType }: Props) => {
     ? location.state.backgroundLocation
     : "/";
 
+  const showTrailerOnLoad = location.state
+    ? location.state.showTrailerOnLoad
+    : false;
+
   const { showAddListModal } = useAddListModal();
-  const [trailerState, setTrailerState] = useState<TrailerState>("FETCHING");
+  const [trailerState, setTrailerState] = useState<TrailerState>("AVAILABLE");
 
   const { data: mediaItemDetails } = useQuery({
     queryKey: [mediaType, mediaId, "details"],
@@ -107,7 +111,7 @@ const MediaPage = ({ mediaType }: Props) => {
     } else if (mediaItemTrailer === null) {
       setTrailerState("UNAVAILABLE");
     } else {
-      setTrailerState("AVAILABLE");
+      setTrailerState(showTrailerOnLoad ? "PLAYING" : "AVAILABLE");
     }
   }, [mediaItemTrailer]);
 

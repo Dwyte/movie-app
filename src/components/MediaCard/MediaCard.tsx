@@ -66,7 +66,7 @@ const MediaCard = ({
     },
   });
 
-  const handleMediaCardClick = () => {
+  const handleMediaCardClick = (showTrailerOnLoad: boolean = false) => {
     // Goto MediaPage and set backgroundLocation to tell what page to render
     // at the background when rendering the Modal MediaPage in desktop.
     navigate(`/${media.media_type}/${media.id}`, {
@@ -74,7 +74,10 @@ const MediaCard = ({
       // sourcePathName for recursive MediaPage viewing e.g. Viewing another
       // Media inside recommendations in MediaPage, the original backgroundLocation
       // is passed as sourcePathName from the first MediaPage's MediaCards.
-      state: { backgroundLocation: sourcePathName || location },
+      state: {
+        backgroundLocation: sourcePathName || location,
+        showTrailerOnLoad,
+      },
     });
   };
 
@@ -104,7 +107,7 @@ const MediaCard = ({
 
   return (
     <div
-      onClick={handleMediaCardClick}
+      onClick={() => handleMediaCardClick()}
       className={`group/mcard relative flex items-center justify-center shrink-0 cursor-pointer ${
         flexible
           ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
@@ -145,7 +148,10 @@ const MediaCard = ({
           className="hidden p-2 group-hover/mcard:flex flex-col gap-2 bg-[var(--media-card-bg)] text-white shadow-2xl"
         >
           <div className="flex gap-1 text-sm">
-            <button className="primary-icon-btn">
+            <button
+              onClick={() => handleMediaCardClick(true)}
+              className="primary-icon-btn"
+            >
               <BsPlayFill />
             </button>
             <button
@@ -164,7 +170,7 @@ const MediaCard = ({
             </button>
             <div className="flex-1"></div>
             <button
-              onClick={handleMediaCardClick}
+              onClick={() => handleMediaCardClick()}
               className="secondary-icon-btn"
             >
               <BsChevronDown />
