@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { MediaCreditsAPIResult } from "../../misc/types";
 import { getTMDBImageURL } from "../../misc/utils";
 import Skeleton from "../../components/Skeleton";
+import { NO_IMAGE_USER_PATH } from "../../misc/constants";
 
 interface Props {
   mediaItemCredits: MediaCreditsAPIResult | null;
@@ -50,7 +51,7 @@ const MediaPageCastsSection = ({ mediaItemCredits }: Props) => {
                     src={
                       cast.profile_path
                         ? getTMDBImageURL(cast.profile_path, "200")
-                        : "/profile-picture.jpg"
+                        : NO_IMAGE_USER_PATH
                     }
                     onLoad={() => setDoneLoadingCount((p) => p + 1)}
                     alt={cast.name}

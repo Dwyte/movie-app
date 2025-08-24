@@ -24,7 +24,7 @@ function Header() {
       <nav className="flex justify-between items-center gap-4 mb-4 sm:gap-8">
         {/** Full name Logo in Desktop and Just the Letter N logo in Mobile */}
         <Link to="/">
-          <img className="hidden w-30 sm:block" src="/logo.png" alt="logo" />
+          <img className="hidden w-30 sm:block" src="/logo.webp" alt="logo" />
           <img className="w-5 sm:hidden" src="/n-logo.svg" alt="logo" />
         </Link>
 

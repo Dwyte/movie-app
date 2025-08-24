@@ -62,7 +62,7 @@ const UserProfile = () => {
       <div className="flex gap-2 items-center cursor-pointer">
         <img
           className="rounded-sm w-10 h-10 sm:block"
-          src="/profile-picture.jpg"
+          src="/profile-picture.webp"
           alt="Smiley Icon"
         />
         <BsChevronDown />

@@ -1,3 +1,4 @@
+import { NO_IMAGE_LANDSCAPE_PATH } from "../../../misc/constants";
 import { Episode } from "../../../misc/types";
 import {
   shortenParagraph,
@@ -13,7 +14,7 @@ interface Props {
 const EpisodeItem = ({ episode, onLoad }: Props) => {
   const thumbnailSrc = episode.still_path
     ? getTMDBImageURL(episode.still_path, "200")
-    : "/no-image-landscape.png";
+    : NO_IMAGE_LANDSCAPE_PATH;
 
   return (
     <div className="flex items-center gap-4 py-2 sm:border-b-1 sm:border-stone-700 sm:py-4 sm:pr-6 cursor-pointer hover:bg-stone-900">
