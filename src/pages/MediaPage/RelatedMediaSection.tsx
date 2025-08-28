@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 
 import { MediaDetails } from "../../misc/types";
-import { getDiscoverMediaItems } from "../../misc/tmdbAPI";
+import { getMediaRecommendations } from "../../misc/tmdbAPI";
 
 import MediaCard from "../../components/MediaCard";
 import Skeleton from "../../components/Skeleton";
@@ -21,11 +21,10 @@ const RelatedMediaSection = ({ mediaItemDetails }: Props) => {
       if (!mediaItemDetails) throw Error();
 
       return (
-        await getDiscoverMediaItems(mediaItemDetails.media_type, {
-          with_genres: mediaItemDetails.genres
-            .map((g) => g.id.toString())
-            .join(","),
-        })
+        await getMediaRecommendations(
+          mediaItemDetails.media_type,
+          mediaItemDetails.id
+        )
       ).results;
     },
   });
