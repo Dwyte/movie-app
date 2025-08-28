@@ -197,6 +197,23 @@ export const getMediaItemCredits = async (
   return await get(url);
 };
 
+/**
+ * Get Related and Recommended Media based on an existing media.
+ * @param mediaType
+ * @param mediaId
+ * @returns
+ */
+export const getMediaRecommendations = async (
+  mediaType: MediaType,
+  mediaId: number
+): Promise<TMDBGetMediaAPIResponse<Media>> => {
+  const url = new URL(
+    `${API_BASE_URL_V3}/${mediaType}/${mediaId}/recommendations`
+  );
+
+  return await get(url);
+};
+
 export const getTVSeasonDetails = async (
   tvId: number,
   seasonNumber: number
