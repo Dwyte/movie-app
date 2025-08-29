@@ -2,10 +2,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { getMediaItemImages } from "../../misc/tmdbAPI";
-import { getTMDBImageURL } from "../../misc/utils";
+import { getGenreNamesFromIds, getTMDBImageURL } from "../../misc/utils";
 import { Media, MediaImagesResult } from "../../misc/types";
-
-import GenreList from "../GenreList";
 
 import { BsChevronDown, BsPlayFill, BsPlusLg, BsStar } from "react-icons/bs";
 import {
@@ -177,11 +175,8 @@ const MediaCard = ({
             </button>
           </div>
 
-          <div className="text-xs">
-            <GenreList
-              genreIds={media.genre_ids.slice(0, 3)}
-              mediaType={media.media_type}
-            />
+          <div className="text-xs text-stone-300">
+            {getGenreNamesFromIds(media.genre_ids, 3)}
           </div>
         </div>
       </div>

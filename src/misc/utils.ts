@@ -10,6 +10,13 @@ import {
 } from "./types";
 
 /**
+ * Array of unique genres from all media types.
+ */
+const GENRES = [...MOVIE_GENRES, ...TV_SHOWS_GENRES].filter(
+  (item, index, self) => index === self.findIndex((t) => t.id === item.id)
+);
+
+/**
  * Shortens a string by trimming it to whole sentences until it fits within the given maxLength.
  * For example, if the original string has 5 sentences totaling 200 characters, and maxLength is
  * 100, the method will include as many full sentences as possible without exceeding the limit.
@@ -92,20 +99,6 @@ export const normalizeMediaDetails = (
   return normalizedMedia;
 };
 
-export const getGenreNameFromId = (genreId: number, mediaType: MediaType) => {
-  const MEDIA_GENRES_LIST = {
-    movie: MOVIE_GENRES,
-    tv: TV_SHOWS_GENRES,
-  };
-
-  const genreFound = MEDIA_GENRES_LIST[mediaType].find(
-    (genre) => genre.id === genreId
-  );
-
-  if (!genreFound) return null;
-  return genreFound.name;
-};
-
 /**
  * Returns a date string in the following format: YYYY-MM-DD (zero padded)
  */
@@ -115,4 +108,40 @@ export const formatDateString = (date: Date) => {
   const day = date.getDay().toString().padStart(2, "0");
 
   return `${year}-${month}-${day}`;
+};
+
+export const getGenreNameFromId = (genreId: number): string | undefined => {
+  return GENRES.find((genre) => genreId === genre.id)?.name;
+};
+
+/**
+ * Returns a string of genreNames from the given ids.
+ * This splits Genres with multiple words like Action & Adventure
+ * into to Action, Adventure before joining them back with the separator.
+ *
+ * In the following format:
+ * <genreName1> <separator> <genreName2>
+ * @param genreIds
+ * @param limit - maximum genreNames words to return.
+ * @param separator - optional, defaults to " • "
+ * @returns
+ */
+export const getGenreNamesFromIds = (
+  genreIds: number[],
+  limit?: number,
+  separator: string = " • "
+): string => {
+  let genreNames = [];
+
+  for (let id of genreIds) {
+    const currentGenreName = getGenreNameFromId(id);
+
+    if (!currentGenreName) continue;
+
+    genreNames.push(currentGenreName.split("&").map((n) => n.trim()));
+  }
+
+  genreNames = genreNames.flat();
+
+  return genreNames.splice(0, limit || genreNames.length).join(separator);
 };

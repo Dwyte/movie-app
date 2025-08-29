@@ -8,10 +8,13 @@ import { FaInfoCircle } from "react-icons/fa";
 
 import { getMediaItemImages, getTrendingMediaItems } from "../misc/tmdbAPI";
 import { useAddListModal } from "../contexts/AddListModalContext";
-import { shortenParagraph, getTMDBImageURL } from "../misc/utils";
+import {
+  shortenParagraph,
+  getTMDBImageURL,
+  getGenreNamesFromIds,
+} from "../misc/utils";
 import { MediaType, TimeWindow } from "../misc/types";
 
-import GenreList from "./GenreList";
 import Skeleton from "./Skeleton";
 
 const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
@@ -121,10 +124,10 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
               {shortenParagraph(mediaItem.overview, 100)}
             </div>
 
-            <GenreList
-              genreIds={mediaItem.genre_ids}
-              className="text-center sm:text-left"
-            />
+            <div className="text-stone-300 text-center sm:text-left">
+              {getGenreNamesFromIds(mediaItem.genre_ids)}
+            </div>
+
             <div className="flex gap-4 justify-center sm:justify-start">
               <button
                 onClick={() =>
