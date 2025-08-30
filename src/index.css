@@ -65,16 +65,6 @@
     display: none;
   }
 
-  .list-item:hover {
-    background: linear-gradient(
-      to bottom,
-      #1f1f1f 0%,
-      #202020 10%,
-      #202020 90%,
-      #1f1f1f 100%
-    );
-  }
-
   @keyframes fadeIn {
     from {
       opacity: 0;
