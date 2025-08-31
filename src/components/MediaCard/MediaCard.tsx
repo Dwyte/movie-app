@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { getMediaItemImages } from "../../misc/tmdbAPI";
@@ -7,6 +7,7 @@ import { Media, MediaImagesResult } from "../../misc/types";
 
 import { BsChevronDown, BsPlayFill, BsPlusLg, BsStar } from "react-icons/bs";
 import {
+  MEDIA_TYPE_NAME,
   NO_IMAGE_LANDSCAPE_PATH,
   NO_IMAGE_PORTRAIT_PATH,
 } from "../../misc/constants";
@@ -64,31 +65,27 @@ const MediaCard = ({
     },
   });
 
-  const handleMediaCardClick = (showTrailerOnLoad: boolean = false) => {
-    // Goto MediaPage and set backgroundLocation to tell what page to render
-    // at the background when rendering the Modal MediaPage in desktop.
-    navigate(`/${media.media_type}/${media.id}`, {
-      // Current location as default origin before viewing the modal,
-      // sourcePathName for recursive MediaPage viewing e.g. Viewing another
-      // Media inside recommendations in MediaPage, the original backgroundLocation
-      // is passed as sourcePathName from the first MediaPage's MediaCards.
-      state: {
-        backgroundLocation: sourcePathName || location,
-        showTrailerOnLoad,
-      },
-    });
-  };
-
   const backdropWithTitleFilePath: string | null = mediaImages
     ? findBackdropWithTitle(mediaImages)
     : null;
+
+  const previewImageSource = decideImagePreviewSource();
+  const mediaUrl = `/${media.media_type}/${media.id}`;
+  const mediaLabel = `${media.title} (${MEDIA_TYPE_NAME[media.media_type]})`;
+
+  /* Current location as default origin before viewing the modal,
+   sourcePathName for recursive MediaPage viewing e.g. Viewing another
+   Media inside recommendations in MediaPage, the original backgroundLocation
+   is passed as sourcePathName from the first MediaPage's MediaCards.
+   */
+  const backgroundLocation = sourcePathName || location;
 
   /**
    * On Desktop we use landscape/backdrop image, on mobile we use
    * portrait/poster image (this always has the title)
    * @returns source url for img attribute src
    */
-  const decideImagePreviewSource = () => {
+  function decideImagePreviewSource() {
     if (isSmUp) {
       if (!mediaImages) return null;
 
@@ -99,21 +96,48 @@ const MediaCard = ({
     return media.poster_path
       ? getTMDBImageURL(media.poster_path)
       : NO_IMAGE_PORTRAIT_PATH;
+  }
+
+  const handlePlay = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    navigate(mediaUrl, {
+      state: {
+        backgroundLocation,
+        showTrailerOnLoad: true,
+      },
+    });
   };
 
-  const previewImageSource = decideImagePreviewSource();
+  const handleAddToList = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    showAddListModal({
+      media_id: media.id,
+      media_type: media.media_type,
+    });
+  };
 
   return (
-    <div
-      onClick={() => handleMediaCardClick()}
+    <Link
+      aria-label={mediaLabel}
+      // Goto MediaPage and set backgroundLocation to tell what page to render
+      // at the background when rendering the Modal MediaPage in desktop.
+      to={mediaUrl}
+      state={{
+        backgroundLocation,
+        showTrailerOnLoad: false,
+      }}
       className={`group/mcard relative flex items-center justify-center shrink-0 cursor-pointer ${
         flexible
           ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
           : MEDIA_CARD_DIMENSIONS
       }`}
     >
-      {/** If flexible we have a static div container that will take the full space available. This is for grids where dimensions depends on defined cols
-       * and not exactly from width and height from our constant MEDIA_CARD_DIMENSIONS. While the actual content is Absolute, it like floats on top of the
+      {/** If flexible we have a static div container that will take the full space available.
+       * This is for grids where dimensions depends on defined cols and not exactly from width
+       * and height from our constant MEDIA_CARD_DIMENSIONS.
+       * While the actual content is Absolute, it like floats on top of the
        * static div and scale up on hover etc. */}
 
       <div
@@ -141,24 +165,18 @@ const MediaCard = ({
           )}
         </div>
 
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className="hidden p-2 group-hover/mcard:flex flex-col gap-2 bg-[var(--media-card-bg)] text-white shadow-2xl"
-        >
+        <div className="hidden p-2 group-hover/mcard:flex flex-col gap-2 bg-[var(--media-card-bg)] text-white shadow-2xl">
           <div className="flex gap-1 text-sm">
             <button
-              onClick={() => handleMediaCardClick(true)}
+              aria-label="Open Media Page and Play Trailer"
+              onClick={handlePlay}
               className="primary-icon-btn"
             >
               <BsPlayFill />
             </button>
             <button
-              onClick={() => {
-                showAddListModal({
-                  media_id: media.id,
-                  media_type: media.media_type,
-                });
-              }}
+              aria-label={`Add ${media.title} to a List`}
+              onClick={handleAddToList}
               className="secondary-icon-btn"
             >
               <BsPlusLg />
@@ -167,10 +185,7 @@ const MediaCard = ({
               <BsStar />
             </button>
             <div className="flex-1"></div>
-            <button
-              onClick={() => handleMediaCardClick()}
-              className="secondary-icon-btn"
-            >
+            <button aria-label="Open Media Page" className="secondary-icon-btn">
               <BsChevronDown />
             </button>
           </div>
@@ -180,7 +195,7 @@ const MediaCard = ({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
