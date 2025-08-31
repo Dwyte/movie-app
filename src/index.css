@@ -8,6 +8,14 @@
   --media-card-bg: #181818;
   --skeleton-color: #323232;
   --list-border-color: #252525;
+
+  --list-item-hover-bg: linear-gradient(
+    to bottom,
+    #1f1f1f 0%,
+    #202020 10%,
+    #202020 90%,
+    #1f1f1f 100%
+  );
 }
 
 @layer base {

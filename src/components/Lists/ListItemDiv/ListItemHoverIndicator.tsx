@@ -6,7 +6,7 @@ const ListItemHoverIndicator = () => {
 
   if (!isSmUp) return;
   return (
-    <div className="invisible text-lg text-stone-300/50 group-hover:visible">
+    <div className="invisible text-lg text-stone-300/50 group-hover:visible group-focus:visible">
       <BsGrid3X2GapFill className="rotate-90" />
       <BsGrid3X2GapFill className="rotate-90 mt-[-1px]" />
       <BsGrid3X2GapFill className="rotate-90 mt-[-1px]" />

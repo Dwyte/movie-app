@@ -45,17 +45,16 @@ const MyListsPage = () => {
         My Lists
       </h1>
       <div className="flex flex-col gap-4">
+        {isLoading && (
+          <div className="sr-only" role="status">
+            Loading My Lists...
+          </div>
+        )}
         <div>
           <UnorderedList
             aria-labelledby="my-lists-heading"
             aria-busy={isLoading}
           >
-            {isLoading && (
-              <li className="sr-only" role="status">
-                Loading My Lists...
-              </li>
-            )}
-
             {isLoading &&
               Array.from({ length: 10 }, (_, k) => (
                 <li key={k} aria-hidden={true}>
@@ -67,7 +66,10 @@ const MyListsPage = () => {
               userLists &&
               userLists.results.map((listItem, index) => (
                 <li key={listItem.id}>
-                  <Link to={`/list/${listItem.id}`}>
+                  <Link
+                    className="group focus:outline-none"
+                    to={`/list/${listItem.id}`}
+                  >
                     <ListItemDiv index={index + 1}>
                       <MyListsListItem listItem={listItem} />
                     </ListItemDiv>
@@ -76,7 +78,7 @@ const MyListsPage = () => {
               ))}
 
             {userLists?.results.length === 0 && (
-              <li aria-live="polite" className="sr-only">
+              <li aria-live="polite">
                 <EmptyListPlaceholder />
               </li>
             )}
