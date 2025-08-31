@@ -21,7 +21,7 @@ function Header() {
 
   return (
     <header className="fixed left-0 right-0 top-0 p-4 sm:px-12 sm:py-6 z-40 bg-linear-to-b from-[var(--header-bg)] via-50% via-[var(--header-bg)]/60 to-[var(--header-bg)]/0">
-      <nav className="flex justify-between items-center gap-4 mb-4 sm:gap-8">
+      <div className="flex items-center justify-between gap-4 mb-4 sm:gap-8">
         {/** Full name Logo in Desktop and Just the Letter N logo in Mobile */}
         <Link to="/">
           <img className="hidden w-30 sm:block" src="/logo.webp" alt="logo" />
@@ -31,30 +31,34 @@ function Header() {
         {/**
          * NavLinks are full screen and collapsable in Mobile.
          */}
-        <div
+        <nav
           onClick={handleNavModalClick}
-          className={`${
-            !isMobileNavVisible && "hidden"
-          } z-50 fixed flex flex-col items-center justify-center gap-10 bg-black/75 backdrop-blur-lg inset-0 text-4xl sm:static sm:justify-start sm:flex-row sm:text-base sm:bg-transparent sm:bg-none sm:backdrop-blur-none sm:flex-1 sm:gap-8 sm:flex`}
+          className={`${!isMobileNavVisible && "hidden"} z-50 fixed inset-0 sm:static bg-black/75 backdrop-blur-lg sm:block sm:bg-transparent sm:backdrop-blur-none sm:flex-1`}
         >
-          {NAV_LINKS.map((link) => (
-            <NavLink
-              key={link.path}
-              className={({ isActive }) =>
-                `text-stone-500 ${isActive && "text-white font-bold"}`
-              }
-              to={link.path}
-            >
-              {link.name}
-            </NavLink>
-          ))}
-        </div>
+          <ul
+            className={`flex flex-col items-center justify-center gap-10 h-[100%] text-4xl sm:justify-start sm:flex-row sm:text-base sm:gap-8 sm:flex`}
+          >
+            {NAV_LINKS.map((link) => (
+              <li>
+                <NavLink
+                  key={link.path}
+                  className={({ isActive }) =>
+                    `text-stone-500 ${isActive && "text-white font-bold"}`
+                  }
+                  to={link.path}
+                >
+                  {link.name}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
         <div className="flex flex-1 sm:max-w-75 items-center gap-4">
           <SearchBox />
           <UserProfile />
         </div>
-      </nav>
+      </div>
 
       {/** Discover button for activating fullscreen NavLinks in Mobile */}
       {!(searchMatch || myListsMatch || listPageMatch) && (
