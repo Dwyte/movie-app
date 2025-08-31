@@ -12,7 +12,7 @@ interface Props {
   listItem: List;
 }
 
-export const ListListItemSkeleton = () => {
+export const MyListsListItemSkeleton = () => {
   return (
     <div className="flex items-center gap-5 py-[1px] sm:px-4 sm:border-b sm:border-b-stone-800">
       <div className="hidden sm:block w-4"></div>
@@ -38,7 +38,7 @@ export const ListListItemSkeleton = () => {
   );
 };
 
-const ListListItem = ({ listItem }: Props) => {
+const MyListsListItem = ({ listItem }: Props) => {
   const thumbnail = listItem.backdrop_path
     ? getTMDBImageURL(listItem.backdrop_path)
     : NO_IMAGE_LANDSCAPE_PATH;
@@ -67,4 +67,4 @@ const ListListItem = ({ listItem }: Props) => {
   );
 };
 
-export default ListListItem;
+export default MyListsListItem;

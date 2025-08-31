@@ -11,7 +11,6 @@ import EditListDetails from "./EditListDetails";
 import EditListItemComment from "./EditListItemComment";
 import { useToast } from "../../contexts/ToastContext";
 import { MEDIA_TYPE_NAME } from "../../misc/constants";
-import ListItem from "../MyLists/ListItem";
 
 interface Props {
   listDetails: ListDetails;

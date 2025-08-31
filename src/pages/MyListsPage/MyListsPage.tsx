@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../contexts/AuthContext";
 import { getAccountLists } from "../../misc/tmdbAPI";
 
-import ListListItem, { ListListItemSkeleton } from "./ListListItem";
+import MyListsListItem, { MyListsListItemSkeleton } from "./MyListsListItem";
 import ListItemDiv from "../../components/Lists/ListItemDiv";
 import UnorderedList from "../../components/Lists/UnorderedList";
 import PageContainer from "../../components/PageContainer";
@@ -13,7 +13,7 @@ import ListPagination from "../../components/ListPagination";
 import ScrollToTop from "../../components/ScrollToTop";
 import EmptyListPlaceholder from "../ListPage/EmptyListPlaceholder";
 
-const MyLists = () => {
+const MyListsPage = () => {
   const { authDetails, isLoggedIn, isAuthInitialized } = useAuth();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,7 +51,7 @@ const MyLists = () => {
           <UnorderedList aria-labelledby="my-lists-heading">
             {(!userLists || isLoading) &&
               Array.from({ length: 10 }, (_, k) => (
-                <ListListItemSkeleton key={k} />
+                <MyListsListItemSkeleton key={k} />
               ))}
 
             {!isLoading &&
@@ -60,7 +60,7 @@ const MyLists = () => {
                 <li>
                   <Link key={listItem.id} to={`/list/${listItem.id}`}>
                     <ListItemDiv index={index + 1}>
-                      <ListListItem listItem={listItem} />
+                      <MyListsListItem listItem={listItem} />
                     </ListItemDiv>
                   </Link>
                 </li>
@@ -81,4 +81,4 @@ const MyLists = () => {
   );
 };
 
-export default MyLists;
+export default MyListsPage;

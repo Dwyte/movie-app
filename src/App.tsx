@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import Header from "./components/Header";
 import Test from "./pages/Test";
 import LoginPage from "./pages/LoginPage";
-import MyLists from "./pages/MyLists";
+import MyLists from "./pages/MyListsPage";
 import ListPage from "./pages/ListPage";
 import { useMediaQueries } from "./contexts/MediaQueriesContext";
 
