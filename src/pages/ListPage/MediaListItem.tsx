@@ -8,8 +8,12 @@ import {
   NO_IMAGE_PORTRAIT_PATH,
 } from "../../misc/constants";
 import { getTMDBImageURL } from "../../misc/utils";
-import { BsChatSquareDots, BsChevronRight, BsXLg } from "react-icons/bs";
-import { useLocation, useNavigate } from "react-router-dom";
+import {
+  BsChatSquareDots,
+  BsChevronRight,
+  BsTrash,
+  BsXLg,
+} from "react-icons/bs";
 import Skeleton from "../../components/Skeleton";
 import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 
@@ -82,19 +86,12 @@ const MediaListItem = ({
     ? getTMDBImageURL(thumbnailPath)
     : noImagePath;
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleOnClick = () => {
-    navigate(`/${media.media_type}/${media.id}`, {
-      state: { backgroundLocation: location },
-    });
-  };
-
   const mediaRef = { media_id: media.id, media_type: media.media_type };
 
+  const isAuthorized = onDelete && onComment;
+
   return (
-    <div onClick={handleOnClick} className="flex items-center w-full gap-2">
+    <div className="flex items-center w-full gap-2">
       <img
         src={thumbnail}
         alt=""
@@ -126,11 +123,13 @@ const MediaListItem = ({
               </div>
             )}
           </div>
-          <div
-            className="flex gap-2 sm:gap-4 ms-center justify-end"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {onComment && (
+
+          {isAuthorized && (
+            <div
+              className="flex gap-2 sm:gap-2 ms-center justify-end"
+              // Prevents Link/a defaults behavior to follow href.
+              onClick={(e) => e.preventDefault()}
+            >
               <button
                 onClick={() => onComment(media)}
                 className="secondary-icon-btn p-2"
@@ -138,8 +137,6 @@ const MediaListItem = ({
               >
                 <BsChatSquareDots />
               </button>
-            )}
-            {onDelete && (
               <button
                 onClick={() => onDelete(mediaRef)}
                 className="secondary-icon-btn p-2"
@@ -147,16 +144,17 @@ const MediaListItem = ({
               >
                 <BsXLg />
               </button>
-            )}
-            {!onComment && !onDelete && (
-              <button
-                onClick={handleOnClick}
-                className="secondary-icon-btn p-2"
-              >
-                <BsChevronRight />
-              </button>
-            )}
-          </div>
+            </div>
+          )}
+
+          {!isAuthorized && (
+            <button
+              className="secondary-icon-btn p-2"
+              aria-label={`Open ${media.title} media page.`}
+            >
+              <BsChevronRight />
+            </button>
+          )}
         </div>
 
         <div className="flex flex-col gap-2 sm:hidden text-sm">

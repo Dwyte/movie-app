@@ -64,7 +64,10 @@ const ListDetailsSection = ({
 
       <div className="flex flex-col absolute bottom-0 text-white w-full z-10">
         <div className="p-2 sm:p-4">
-          <h1 className="text-4xl font-bold flex gap-2 items-center">
+          <h1
+            id="list-page-name"
+            className="text-4xl font-bold flex gap-2 items-center"
+          >
             {listDetails.name}
           </h1>
           <p className="text-base">

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 
 import {
@@ -36,6 +36,7 @@ const ListPage = () => {
   const navigate = useNavigate();
 
   const listId = params?.listId ? parseInt(params?.listId) : null;
+  const location = useLocation();
 
   const { showToast, showConfirmation } = useToast();
   const [currentEditState, setCurrentEditState] =
@@ -66,13 +67,11 @@ const ListPage = () => {
     enabled: !!listId,
     queryKey: listResultsQueryKey,
     queryFn: async () => {
-      if (!listId) return;
-
       const paginatedListResults: Media[][] = [];
       let totalPages = 1;
       for (let page = 1; page <= totalPages; page++) {
         const response = await getListDetails(
-          listId,
+          listId!,
           authDetails?.accessToken,
           page
         );
@@ -90,6 +89,7 @@ const ListPage = () => {
     mutationFn: (mediaRefToDelete: MediaRef) => {
       if (!authDetails?.accessToken) throw Error("Unauthorized");
       if (!listId) throw Error("No List Id");
+
       return deleteListItems(authDetails?.accessToken, listId, [
         mediaRefToDelete,
       ]);
@@ -228,33 +228,48 @@ const ListPage = () => {
         />
       )}
 
-      <UnorderedList>
+      <UnorderedList
+        aria-busy={isListDetailsFetching}
+        aria-labelledby="user-list-page-name"
+      >
         {isListDetailsFetching &&
           Array.from({ length: 10 }, (_, k) => (
-            <MediaListItemSkeleton key={k} />
+            <li key={k} aria-hidden={true}>
+              <MediaListItemSkeleton />
+            </li>
           ))}
+
+        {isListDetailsFetching && (
+          <div role="status" className="sr-only">
+            Loading List Items...
+          </div>
+        )}
+
         {!isListDetailsFetching &&
           listDetails &&
           listResults.map((media, index) => {
-            const commentKey = `${media.media_type}:${media.id}`;
+            const comment =
+              listDetails.comments[`${media.media_type}:${media.id}`];
 
             return (
-              <div className="relative" key={media.id}>
+              <li className="relative" key={media.id}>
                 {!isDoneLoadingListItems && (
                   <div className="absolute inset-0">
                     <MediaListItemSkeleton />
                   </div>
                 )}
 
-                <div
-                  className={`transition-opacity ${
+                <Link
+                  to={`/${media.media_type}/${media.id}`}
+                  state={{ backgroundLocation: location }}
+                  className={`group outline-none transition-opacity ${
                     isDoneLoadingListItems ? "opacity-100" : "opacity-0"
                   }`}
                 >
                   <ListItemDiv index={index + 1}>
                     <MediaListItem
                       media={media}
-                      comment={listDetails.comments[commentKey]}
+                      comment={comment}
                       onDelete={isUserOwner ? handleDeleteListItem : null}
                       isDeleting={deleteListItemMutation.isPending}
                       onComment={isUserOwner ? handleListItemEdit : null}
@@ -265,13 +280,15 @@ const ListPage = () => {
                       }
                     />
                   </ListItemDiv>
-                </div>
-              </div>
+                </Link>
+              </li>
             );
           })}
 
         {isDoneLoadingListItems && listResults.length === 0 && (
-          <EmptyListPlaceholder />
+          <li aria-live="polite">
+            <EmptyListPlaceholder />
+          </li>
         )}
       </UnorderedList>
     </PageContainer>
