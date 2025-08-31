@@ -43,10 +43,12 @@ const MyLists = () => {
   return (
     <PageContainer>
       <ScrollToTop />
-      <h1 className="text-3xl text-white mb-2 sm:mb-6">My Lists</h1>
+      <h1 className="text-3xl text-white mb-2 sm:mb-6" id="my-lists-heading">
+        My Lists
+      </h1>
       <div className="flex flex-col gap-4">
         <div>
-          <UnorderedList>
+          <UnorderedList aria-labelledby="my-lists-heading">
             {(!userLists || isLoading) &&
               Array.from({ length: 10 }, (_, k) => (
                 <ListListItemSkeleton key={k} />
