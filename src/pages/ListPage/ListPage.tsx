@@ -7,23 +7,21 @@ import {
   deleteListItems,
   getListDetails,
 } from "../../misc/tmdbAPI";
+import { ListDetails, Media, MediaRef } from "../../misc/types";
+import { MEDIA_TYPE_NAME } from "../../misc/constants";
+import { useToast } from "../../contexts/ToastContext";
 import { useAuth } from "../../contexts/AuthContext";
 
-import ListContainer from "../MyLists/ListContainer";
-import MediaListItem, { MediaListItemSkeleton } from "../MyLists/MediaListItem";
-import ListItem from "../MyLists/ListItem";
-
-import { ListDetails, Media, MediaRef } from "../../misc/types";
-
+import UnorderedList from "../../components/Lists/UnorderedList";
+import ListItemDiv from "../../components/Lists/ListItemDiv";
 import PageContainer from "../../components/PageContainer";
-import EditListModal from "./EditListModal";
 import ScrollToTop from "../../components/ScrollToTop";
-import EmptyListPlaceholder from "./EmptyListPlaceholder";
 import Skeleton from "../../components/Skeleton";
+
+import MediaListItem, { MediaListItemSkeleton } from "./MediaListItem";
+import EmptyListPlaceholder from "./EmptyListPlaceholder";
+import EditListModal from "./EditListModal";
 import ListDetailsSection from "./ListDetailsSection";
-import ListSkeleton from "./ListSkeleton";
-import { useToast } from "../../contexts/ToastContext";
-import { MEDIA_TYPE_NAME } from "../../misc/constants";
 
 export enum EditListState {
   BACKDROP = "BACKDROP",
@@ -230,7 +228,7 @@ const ListPage = () => {
         />
       )}
 
-      <ListContainer>
+      <UnorderedList>
         {isListDetailsFetching &&
           Array.from({ length: 10 }, (_, k) => (
             <MediaListItemSkeleton key={k} />
@@ -253,7 +251,7 @@ const ListPage = () => {
                     isDoneLoadingListItems ? "opacity-100" : "opacity-0"
                   }`}
                 >
-                  <ListItem index={index + 1}>
+                  <ListItemDiv index={index + 1}>
                     <MediaListItem
                       media={media}
                       comment={listDetails.comments[commentKey]}
@@ -266,7 +264,7 @@ const ListPage = () => {
                         })
                       }
                     />
-                  </ListItem>
+                  </ListItemDiv>
                 </div>
               </div>
             );
@@ -275,7 +273,7 @@ const ListPage = () => {
         {isDoneLoadingListItems && listResults.length === 0 && (
           <EmptyListPlaceholder />
         )}
-      </ListContainer>
+      </UnorderedList>
     </PageContainer>
   );
 };

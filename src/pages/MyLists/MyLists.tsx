@@ -3,9 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../contexts/AuthContext";
 import { getAccountLists } from "../../misc/tmdbAPI";
 
-import ListItem from "./ListItem";
 import ListListItem, { ListListItemSkeleton } from "./ListListItem";
-import ListContainer from "./ListContainer";
+import ListItemDiv from "../../components/Lists/ListItemDiv";
+import UnorderedList from "../../components/Lists/UnorderedList";
 import PageContainer from "../../components/PageContainer";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -46,7 +46,7 @@ const MyLists = () => {
       <h1 className="text-3xl text-white mb-2 sm:mb-6">My Lists</h1>
       <div className="flex flex-col gap-4">
         <div>
-          <ListContainer>
+          <UnorderedList>
             {(!userLists || isLoading) &&
               Array.from({ length: 10 }, (_, k) => (
                 <ListListItemSkeleton key={k} />
@@ -55,14 +55,16 @@ const MyLists = () => {
             {!isLoading &&
               userLists &&
               userLists.results.map((listItem, index) => (
-                <Link key={listItem.id} to={`/list/${listItem.id}`}>
-                  <ListItem index={index + 1}>
-                    <ListListItem listItem={listItem} />
-                  </ListItem>
-                </Link>
+                <li>
+                  <Link key={listItem.id} to={`/list/${listItem.id}`}>
+                    <ListItemDiv index={index + 1}>
+                      <ListListItem listItem={listItem} />
+                    </ListItemDiv>
+                  </Link>
+                </li>
               ))}
             {userLists?.results.length === 0 && <EmptyListPlaceholder />}
-          </ListContainer>
+          </UnorderedList>
         </div>
         {userLists && userLists.results.length > 0 && (
           <ListPagination
