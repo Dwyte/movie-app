@@ -48,7 +48,7 @@ const SearchBox = () => {
   };
 
   return (
-    <div className="flex-1 rounded-sm overflow-hidden flex gap-2 items-center text-white border border-stone-400 bg-stone-950/50 backdrop-blur-xs px-3 sm:flex sm:items-center sm:relative">
+    <div className="focus-within:outline-1 flex-1 rounded-sm overflow-hidden flex gap-2 items-center text-white border border-stone-400 bg-stone-950/50 backdrop-blur-xs px-3 sm:flex sm:items-center sm:relative">
       <BsSearch onClick={handleSubmit} className="text-white text-md " />
       <form className="flex-1" onSubmit={handleSubmit}>
         <input
