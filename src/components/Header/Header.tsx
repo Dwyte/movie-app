@@ -39,9 +39,8 @@ function Header() {
             className={`flex flex-col items-center justify-center gap-10 h-[100%] text-4xl sm:justify-start sm:flex-row sm:text-base sm:gap-8 sm:flex`}
           >
             {NAV_LINKS.map((link) => (
-              <li>
+              <li key={link.path}>
                 <NavLink
-                  key={link.path}
                   className={({ isActive }) =>
                     `text-stone-500 ${isActive && "text-white font-bold"}`
                   }
