@@ -27,6 +27,7 @@ import { useAddListModal } from "../../contexts/AddListModalContext";
 import DisableBodyScroll from "../../components/DisableBodyScroll";
 import Skeleton from "../../components/Skeleton";
 import { useMediaQueries } from "../../contexts/MediaQueriesContext";
+import { useFocusTrap } from "../../hooks/useFocusTrap";
 
 interface Props {
   mediaType: MediaType;
@@ -105,6 +106,15 @@ const MediaPage = ({ mediaType }: Props) => {
     staleTime: Infinity,
   });
 
+  // Focus trap for the modal
+  const { focusFirstElement } = useFocusTrap(
+    modalRef as React.RefObject<HTMLElement>,
+    {
+      enabled: !!modalRef,
+      onEscape: closeModal,
+    }
+  );
+
   useEffect(() => {
     if (mediaItemTrailer === undefined) {
       setTrailerState("FETCHING");
@@ -130,20 +140,21 @@ const MediaPage = ({ mediaType }: Props) => {
     resetScroll();
   }, [mediaItemDetails?.id]);
 
+  // Focus the first focusable element when the modal opens
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closeModal();
-      }
-    };
+    if (mediaItemDetails) {
+      // Small delay to ensure DOM is fully rendered
+      const timer = setTimeout(() => {
+        focusFirstElement();
+      }, 100);
 
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, []);
+      return () => clearTimeout(timer);
+    }
+  }, [mediaItemDetails]);
 
-  const closeModal = () => {
+  function closeModal() {
     navigate(backgroundLocation);
-  };
+  }
 
   /** On desktop, h1 Title is at MediaPageHeroSection. */
   const renderH1MediaTitle = () => {
