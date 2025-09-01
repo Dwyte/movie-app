@@ -14,6 +14,7 @@ import {
 import { useAddListModal } from "../../contexts/AddListModalContext";
 import Img from "../Img";
 import { useMediaQueries } from "../../contexts/MediaQueriesContext";
+import { useState } from "react";
 
 export const MEDIA_CARD_DIMENSIONS = "w-30 h-45 sm:w-66 sm:h-36";
 const hoverWidth = "group-hover/mcard:w-72";
@@ -118,6 +119,8 @@ const MediaCard = ({
     });
   };
 
+  const [isCardActive, setIsCardActive] = useState(false);
+
   return (
     <Link
       aria-label={mediaLabel}
@@ -133,6 +136,12 @@ const MediaCard = ({
           ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
           : MEDIA_CARD_DIMENSIONS
       }`}
+      onMouseEnter={() => setIsCardActive(true)}
+      onMouseLeave={() => setIsCardActive(false)}
+      onFocus={() => setIsCardActive(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setIsCardActive(false);
+      }}
     >
       {/** If flexible we have a static div container that will take the full space available.
        * This is for grids where dimensions depends on defined cols and not exactly from width
@@ -165,35 +174,40 @@ const MediaCard = ({
           )}
         </div>
 
-        <div className="hidden p-2 group-hover/mcard:flex group-focus/mcard:flex group-focus-within/mcard:flex flex-col gap-2 bg-[var(--media-card-bg)] text-white shadow-2xl">
-          <div className="flex gap-1 text-sm">
-            <button
-              aria-label="Open Media Page and Play Trailer"
-              onClick={handlePlay}
-              className="primary-icon-btn"
-            >
-              <BsPlayFill />
-            </button>
-            <button
-              aria-label={`Add ${media.title} to a List`}
-              onClick={handleAddToList}
-              className="secondary-icon-btn"
-            >
-              <BsPlusLg />
-            </button>
-            <button className="secondary-icon-btn">
-              <BsStar />
-            </button>
-            <div className="flex-1"></div>
-            <button aria-label="Open Media Page" className="secondary-icon-btn">
-              <BsChevronDown />
-            </button>
-          </div>
+        {isCardActive && (
+          <div className="hidden p-2 group-hover/mcard:flex group-focus/mcard:flex group-focus-within/mcard:flex flex-col gap-2 bg-[var(--media-card-bg)] text-white shadow-2xl">
+            <div className="flex gap-1 text-sm">
+              <button
+                aria-label="Open Media Page and Play Trailer"
+                onClick={handlePlay}
+                className="primary-icon-btn"
+              >
+                <BsPlayFill />
+              </button>
+              <button
+                aria-label={`Add ${media.title} to a List`}
+                onClick={handleAddToList}
+                className="secondary-icon-btn"
+              >
+                <BsPlusLg />
+              </button>
+              <button className="secondary-icon-btn">
+                <BsStar />
+              </button>
+              <div className="flex-1"></div>
+              <button
+                aria-label="Open Media Page"
+                className="secondary-icon-btn"
+              >
+                <BsChevronDown />
+              </button>
+            </div>
 
-          <div className="text-xs text-stone-300">
-            {getGenreNamesFromIds(media.genre_ids, 3)}
+            <div className="text-xs text-stone-300">
+              {getGenreNamesFromIds(media.genre_ids, 3)}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </Link>
   );
