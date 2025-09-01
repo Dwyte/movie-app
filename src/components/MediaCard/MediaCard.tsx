@@ -128,7 +128,7 @@ const MediaCard = ({
         backgroundLocation,
         showTrailerOnLoad: false,
       }}
-      className={`group/mcard relative flex items-center justify-center shrink-0 cursor-pointer ${
+      className={`group/mcard hover:z-50 focus:z-50 focus-within:z-50 relative flex items-center justify-center shrink-0 cursor-pointer ${
         flexible
           ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
           : MEDIA_CARD_DIMENSIONS
@@ -141,7 +141,7 @@ const MediaCard = ({
        * static div and scale up on hover etc. */}
 
       <div
-        className={`absolute group rounded-sm overflow-hidden group-hover/mcard:scale-115 transition-transform group-hover/mcard:z-50 group-hover/mcard:drop-shadow-md/100 group-hover/mcard:drop-shadow-black`}
+        className={`absolute group rounded-sm overflow-hidden transition-transform group-hover/mcard:scale-115  group-hover/mcard:drop-shadow-md/100 group-hover/mcard:drop-shadow-black group-focus/mcard:scale-115 group-focus/mcard:drop-shadow-md/100 group-focus/mcard:drop-shadow-black group-focus-within/mcard:scale-115 group-focus-within:/mcard:drop-shadow-md/100 group-focus-within:/mcard:drop-shadow-black`}
       >
         <div className="relative">
           {previewImageSource && (
@@ -165,7 +165,7 @@ const MediaCard = ({
           )}
         </div>
 
-        <div className="hidden p-2 group-hover/mcard:flex flex-col gap-2 bg-[var(--media-card-bg)] text-white shadow-2xl">
+        <div className="hidden p-2 group-hover/mcard:flex group-focus/mcard:flex group-focus-within/mcard:flex flex-col gap-2 bg-[var(--media-card-bg)] text-white shadow-2xl">
           <div className="flex gap-1 text-sm">
             <button
               aria-label="Open Media Page and Play Trailer"
