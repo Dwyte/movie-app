@@ -102,7 +102,7 @@ const MediaPageDetailsSection = ({
       const [_, mediaType, timeWindow] = queryKey as [
         string,
         MediaType,
-        TimeWindow
+        TimeWindow,
       ];
 
       return (await getTrendingMediaItems(mediaType, timeWindow)).results;
@@ -171,37 +171,42 @@ const MediaPageDetailsSection = ({
           </div>
         )}
 
-        {trailerState === "AVAILABLE" && (
-          <button
-            onClick={onPlayTrailer}
-            className="primary-btn justify-center sm:hidden"
-          >
-            <BsPlayFill className="text-2xl mr-1" />
-            Play Trailer
-          </button>
+        {/* These are hidden on desktop. Buttons are at HeroSection instead. */}
+        {!isSmUp && (
+          <>
+            {trailerState === "AVAILABLE" && (
+              <button
+                onClick={onPlayTrailer}
+                className="primary-btn justify-center"
+              >
+                <BsPlayFill className="text-2xl mr-1" />
+                Play Trailer
+              </button>
+            )}
+            {trailerState === "UNAVAILABLE" && (
+              <button
+                onClick={onPlayTrailer}
+                className="primary-btn justify-center"
+              >
+                <BsBan className="text-2xl mr-1" />
+                No Trailer Available
+              </button>
+            )}
+            {trailerState === "PLAYING" && (
+              <button
+                onClick={onExitTrailer}
+                className="primary-btn justify-center"
+              >
+                <BsBoxArrowLeft className="text-2xl mr-1" />
+                Exit Trailer
+              </button>
+            )}
+            <button className="secondary-btn justify-center">
+              <RiDownloadLine className="text-2xl mr-1" />
+              Download
+            </button>
+          </>
         )}
-        {trailerState === "UNAVAILABLE" && (
-          <button
-            onClick={onPlayTrailer}
-            className="primary-btn justify-center sm:hidden"
-          >
-            <BsBan className="text-2xl mr-1" />
-            No Trailer Available
-          </button>
-        )}
-        {trailerState === "PLAYING" && (
-          <button
-            onClick={onExitTrailer}
-            className="primary-btn justify-center sm:hidden"
-          >
-            <BsBoxArrowLeft className="text-2xl mr-1" />
-            Exit Trailer
-          </button>
-        )}
-        <button className="secondary-btn justify-center sm:hidden">
-          <RiDownloadLine className="text-2xl mr-1" />
-          Download
-        </button>
 
         <p className="text-stone-300 text-sm">
           {mediaItemDetails && shortenParagraph(mediaItemDetails.overview, 200)}
