@@ -25,12 +25,15 @@ const getFocusableElements = (container: HTMLElement): HTMLElement[] => {
   ) as HTMLElement[];
 };
 
+type InputModality = "keyboard" | "mouse";
+
 export const useFocusTrap = (
   containerRef: React.RefObject<HTMLElement>,
   options: UseFocusTrapOptions = {}
 ) => {
   const { enabled = true, onEscape } = options;
   const previousActiveElement = useRef<Element | null>(null);
+  const lastAction = useRef<InputModality>("mouse");
 
   useEffect(() => {
     if (!enabled || !containerRef.current) return;
@@ -49,6 +52,8 @@ export const useFocusTrap = (
      * @returns
      */
     const handleKeyDown = (event: KeyboardEvent) => {
+      lastAction.current = "keyboard";
+
       if (event.key === "Tab") {
         const focusableElements = getFocusableElements(container);
 
@@ -73,13 +78,22 @@ export const useFocusTrap = (
       }
     };
 
+    const handleMouseClick = (event: MouseEvent) => {
+      lastAction.current = "mouse";
+    };
+
     container.addEventListener("keydown", handleKeyDown);
+    container.addEventListener("mousedown", handleMouseClick);
 
     return () => {
       container.removeEventListener("keydown", handleKeyDown);
+      container.removeEventListener("mousedown", handleMouseClick);
 
-      // Restore focus to the previously focused element when the trap is removed
-      if (previousActiveElement.current instanceof HTMLElement) {
+      // Restore focus to the previously focused element when the trap is removed and when the user used keyboard.
+      if (
+        previousActiveElement.current instanceof HTMLElement &&
+        lastAction.current === "keyboard"
+      ) {
         previousActiveElement.current.focus();
       }
     };

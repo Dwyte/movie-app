@@ -169,12 +169,12 @@ const MediaPage = ({ mediaType }: Props) => {
 
   return (
     <div
+      ref={modalRef}
       onMouseDown={closeModal}
       className="flex flex-col items-center text-white z-50 modal-backdrop fade-in"
     >
       <DisableBodyScroll />
       <div
-        ref={modalRef}
         onMouseDown={(e) => e.stopPropagation()}
         className="flex-1 w-full sm:w-220 sm:mt-8 sm:rounded-sm scrollable bg-[var(--media-page-bg)]"
       >
