@@ -187,23 +187,25 @@ const MediaItemsRow = ({
               tabIndex={0}
               aria-label={title}
               ref={scrollableDiv}
-              className="scrollable sm:pt-15 sm:pb-15"
+              className="scrollable sm:pt-15 sm:pb-15 group/scroll outline-0"
             >
               <div className="flex items-center gap-2">
                 {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
                 <div className="shrink-0 w-2 sm:w-10 bg-white"></div>
 
-                {mediaItems.map((mediaItem) => (
-                  <MediaCard
-                    key={mediaItem.id}
-                    media={mediaItem}
-                    onImageLoad={() =>
-                      setIsMediaCardsLoaded((p) => {
-                        return { ...p, [mediaItem.id]: true };
-                      })
-                    }
-                  />
-                ))}
+                <div className="flex items-center gap-2 group-focus/scroll:outline-2 outline-offset-2 rounded-sm outline-blue-300">
+                  {mediaItems.map((mediaItem) => (
+                    <MediaCard
+                      key={mediaItem.id}
+                      media={mediaItem}
+                      onImageLoad={() =>
+                        setIsMediaCardsLoaded((p) => {
+                          return { ...p, [mediaItem.id]: true };
+                        })
+                      }
+                    />
+                  ))}
+                </div>
 
                 {/** Acts as right padding/space when the user reaches the last page. */}
                 <div className="shrink-0 w-2 sm:w-4  h-1"></div>
