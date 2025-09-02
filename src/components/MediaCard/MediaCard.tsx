@@ -103,6 +103,7 @@ const MediaCard = ({
         <Link
           // Goto MediaPage and set backgroundLocation to tell what page to render
           // at the background when rendering the Modal MediaPage in desktop.
+          className="group/link outline-0"
           to={mediaUrl}
           state={{
             backgroundLocation,

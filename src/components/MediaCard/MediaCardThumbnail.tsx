@@ -74,7 +74,7 @@ export const MediaCardThumbnail = ({ media, onLoad, flexible }: Props) => {
     <div className="relative">
       {previewImageSource && (
         <Img
-          className={`${
+          className={`group-focus/link:border-2 border-blue-300 rounded-t-sm ${
             flexible
               ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
               : MEDIA_CARD_DIMENSIONS
