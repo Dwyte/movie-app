@@ -15,6 +15,7 @@ import { useAddListModal } from "../../contexts/AddListModalContext";
 import Img from "../Img";
 import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 import { useState } from "react";
+import { MediaCardDetails } from "./MediaCardDetails";
 
 export const MEDIA_CARD_DIMENSIONS = "w-30 h-45 sm:w-66 sm:h-36";
 const hoverWidth = "group-hover/mcard:w-72";
@@ -175,38 +176,11 @@ const MediaCard = ({
         </div>
 
         {isCardActive && (
-          <div className="hidden p-2 group-hover/mcard:flex group-focus/mcard:flex group-focus-within/mcard:flex flex-col gap-2 bg-[var(--media-card-bg)] text-white shadow-2xl">
-            <div className="flex gap-1 text-sm">
-              <button
-                aria-label="Open Media Page and Play Trailer"
-                onClick={handlePlay}
-                className="primary-icon-btn"
-              >
-                <BsPlayFill />
-              </button>
-              <button
-                aria-label={`Add ${media.title} to a List`}
-                onClick={handleAddToList}
-                className="secondary-icon-btn"
-              >
-                <BsPlusLg />
-              </button>
-              <button className="secondary-icon-btn">
-                <BsStar />
-              </button>
-              <div className="flex-1"></div>
-              <button
-                aria-label="Open Media Page"
-                className="secondary-icon-btn"
-              >
-                <BsChevronDown />
-              </button>
-            </div>
-
-            <div className="text-xs text-stone-300">
-              {getGenreNamesFromIds(media.genre_ids, 3)}
-            </div>
-          </div>
+          <MediaCardDetails
+            media={media}
+            onPlay={handlePlay}
+            onAddToList={handleAddToList}
+          />
         )}
       </div>
     </Link>
