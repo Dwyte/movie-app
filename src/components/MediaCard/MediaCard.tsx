@@ -80,7 +80,7 @@ const MediaCard = ({
 
   return (
     <div
-      className={`group/mcard [:is(:hover,:focus,:focus-within)]:z-50 relative flex items-center justify-center shrink-0 ${
+      className={`group/mcard relative flex items-center justify-center shrink-0 ${isCardActive && "z-50"} ${
         flexible
           ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
           : MEDIA_CARD_DIMENSIONS
