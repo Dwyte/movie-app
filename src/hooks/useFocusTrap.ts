@@ -1,10 +1,5 @@
 import { useEffect, useRef } from "react";
 
-interface UseFocusTrapOptions {
-  enabled?: boolean;
-  onEscape?: () => void;
-}
-
 const FOCUSABLE_SELECTORS = [
   "button:not([disabled])",
   "input:not([disabled])",
@@ -27,24 +22,30 @@ const getFocusableElements = (container: HTMLElement): HTMLElement[] => {
 
 type InputModality = "keyboard" | "mouse";
 
-export const useFocusTrap = (
-  containerRef: React.RefObject<HTMLElement>,
-  options: UseFocusTrapOptions = {}
-) => {
-  const { enabled = true, onEscape } = options;
+export const useFocusTrap = () => {
   const previousActiveElement = useRef<Element | null>(null);
   const lastAction = useRef<InputModality>("mouse");
 
-  useEffect(() => {
-    // Store the currently focused element before trapping focus
+  const refContainer = useRef<HTMLElement | null>(null);
+  const keyDownEventListener = useRef<(e: KeyboardEvent) => void | null>(null);
+  const mouseDownEventListener = useRef<(e: MouseEvent) => void | null>(null);
+
+  if (previousActiveElement.current === null) {
+    // Store Previous Active Element before the component mounts.
     previousActiveElement.current = document.activeElement;
-  }, []);
+  }
 
-  useEffect(() => {
-    if (!enabled || !containerRef.current) return;
-
-    const container = containerRef.current;
-
+  /**
+   * Creates and Adds the EventListeners for FocusTrapping.
+   * To be used on container's refCallback.
+   * @param container
+   * @param onEscape
+   * @returns
+   */
+  const initializeFocusTrap = (
+    container: HTMLElement,
+    onEscape?: () => void
+  ) => {
     /**
      * Passed as argument to addEventListener.
      * This makes sure tab navigation won't go beyond the container.
@@ -54,6 +55,7 @@ export const useFocusTrap = (
      * @returns
      */
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Track Last Input Modality
       lastAction.current = "keyboard";
 
       if (event.key === "Tab") {
@@ -80,16 +82,39 @@ export const useFocusTrap = (
       }
     };
 
-    const handleMouseClick = (event: MouseEvent) => {
+    const handleMouseDown = (event: MouseEvent) => {
       lastAction.current = "mouse";
     };
 
-    container.addEventListener("keydown", handleKeyDown);
-    container.addEventListener("mousedown", handleMouseClick);
+    try {
+      container.addEventListener("keydown", handleKeyDown);
+    } catch (error) {
+      console.error(error);
+    }
+    container.addEventListener("mousedown", handleMouseDown);
 
-    return () => {
-      container.removeEventListener("keydown", handleKeyDown);
-      container.removeEventListener("mousedown", handleMouseClick);
+    keyDownEventListener.current = handleKeyDown;
+    mouseDownEventListener.current = handleMouseDown;
+    refContainer.current = container;
+  };
+
+  useEffect(() => {
+    const cleanUp = () => {
+      if (refContainer.current instanceof HTMLElement) {
+        if (keyDownEventListener.current) {
+          refContainer.current.removeEventListener(
+            "keydown",
+            keyDownEventListener.current
+          );
+        }
+
+        if (mouseDownEventListener.current) {
+          refContainer.current.removeEventListener(
+            "mousedown",
+            mouseDownEventListener.current
+          );
+        }
+      }
 
       // Restore focus to the previously focused element when the trap is removed and when the user used keyboard.
       if (
@@ -99,20 +124,19 @@ export const useFocusTrap = (
         previousActiveElement.current.focus();
       }
     };
-  }, [enabled, onEscape]);
 
-  const focusFirstElement = () => {
-    if (containerRef.current) {
-      const focusableElements = getFocusableElements(containerRef.current);
+    return cleanUp;
+  }, []);
 
-      if (focusableElements.length > 0) {
-        focusableElements[0].focus();
-      }
+  const focusFirstElement = (container: HTMLElement) => {
+    const focusableElements = getFocusableElements(container);
+    if (focusableElements.length > 0) {
+      focusableElements[0].focus();
     }
   };
 
   return {
-    // Method to manually focus the first focusable element
     focusFirstElement,
+    initializeFocusTrap,
   };
 };

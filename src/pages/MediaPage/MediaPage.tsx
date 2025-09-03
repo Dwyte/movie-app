@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   NavLink,
   Route,
@@ -107,13 +107,7 @@ const MediaPage = ({ mediaType }: Props) => {
   });
 
   // Focus trap for the modal
-  const { focusFirstElement } = useFocusTrap(
-    modalRef as React.RefObject<HTMLElement>,
-    {
-      enabled: !!modalRef.current,
-      onEscape: closeModal,
-    }
-  );
+  const { focusFirstElement, initializeFocusTrap } = useFocusTrap();
 
   useEffect(() => {
     if (mediaItemTrailer === undefined) {
@@ -140,18 +134,6 @@ const MediaPage = ({ mediaType }: Props) => {
     resetScroll();
   }, [mediaItemDetails?.id]);
 
-  // Focus the first focusable element when the modal opens
-  useEffect(() => {
-    if (mediaItemDetails) {
-      // Small delay to ensure DOM is fully rendered
-      const timer = setTimeout(() => {
-        focusFirstElement();
-      }, 100);
-
-      return () => clearTimeout(timer);
-    }
-  }, [mediaItemDetails]);
-
   function closeModal() {
     navigate(backgroundLocation);
   }
@@ -167,14 +149,23 @@ const MediaPage = ({ mediaType }: Props) => {
     );
   };
 
+  const refCallback = useCallback((node: HTMLDivElement | null) => {
+    modalRef.current = node;
+
+    if (node instanceof HTMLDivElement) {
+      initializeFocusTrap(node, closeModal);
+      focusFirstElement(node);
+    }
+  }, []);
+
   return (
     <div
-      ref={modalRef}
       onMouseDown={closeModal}
       className="flex flex-col items-center text-white z-50 modal-backdrop fade-in"
     >
       <DisableBodyScroll />
       <div
+        ref={refCallback}
         onMouseDown={(e) => e.stopPropagation()}
         className="flex-1 w-full sm:w-220 sm:mt-8 sm:rounded-sm scrollable bg-[var(--media-page-bg)]"
       >
