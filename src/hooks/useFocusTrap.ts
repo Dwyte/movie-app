@@ -36,12 +36,14 @@ export const useFocusTrap = (
   const lastAction = useRef<InputModality>("mouse");
 
   useEffect(() => {
+    // Store the currently focused element before trapping focus
+    previousActiveElement.current = document.activeElement;
+  }, []);
+
+  useEffect(() => {
     if (!enabled || !containerRef.current) return;
 
     const container = containerRef.current;
-
-    // Store the currently focused element before trapping focus
-    previousActiveElement.current = document.activeElement;
 
     /**
      * Passed as argument to addEventListener.
@@ -105,7 +107,6 @@ export const useFocusTrap = (
 
       if (focusableElements.length > 0) {
         focusableElements[0].focus();
-        console.log("focus first");
       }
     }
   };

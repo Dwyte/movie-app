@@ -110,7 +110,7 @@ const MediaPage = ({ mediaType }: Props) => {
   const { focusFirstElement } = useFocusTrap(
     modalRef as React.RefObject<HTMLElement>,
     {
-      enabled: !!modalRef,
+      enabled: !!modalRef.current,
       onEscape: closeModal,
     }
   );
