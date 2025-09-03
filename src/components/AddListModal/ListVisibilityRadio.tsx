@@ -23,7 +23,7 @@ interface Props {
 
 const ListVisibilityRadio = ({ value, onChange }: Props) => {
   return (
-    <div className="rounded-sm overflow-hidden">
+    <div className="rounded-sm overflow-hidden focus-within:outline-2 outline-blue-300 ">
       {visibilityOptions.map((option) => {
         return (
           <label
@@ -33,7 +33,7 @@ const ListVisibilityRadio = ({ value, onChange }: Props) => {
           >
             <input
               id={option.id.toString()}
-              className="hidden peer"
+              className="sr-only peer"
               type="radio"
               name="visibility"
               checked={value === option.isPublic}
