@@ -1,97 +1,97 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
-import Toast, { ToastAccentColor, ToastPosition } from "../components/Toast";
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useRef,
+  useState,
+} from "react";
+import Toast, {
+  ToastAccentColor,
+  ToastConfirmation,
+  ToastPosition,
+} from "../components/Toast";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 
 interface ToastContextValue {
   showToast: (
-    message: ReactNode,
+    message: string,
     status?: ToastAccentColor,
     position?: ToastPosition
   ) => void;
   showConfirmation: (
-    message: ReactNode,
+    message: string,
     onConfirm: () => void,
     onCancel: () => void
   ) => void;
 }
 
+interface ToastObject {
+  message: string;
+  status?: ToastAccentColor;
+  position?: ToastPosition;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+}
+
 const ToastContext = createContext<ToastContextValue | undefined>(undefined);
 
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
-  const [activeToast, setAcitveToast] = useState<ReactNode | null>(null);
-  const [currTimeoutId, setCurrTimeoutId] = useState<number>(0);
+  const [activeToast, setAcitveToast] = useState<ToastObject | null>(null);
+  const refTimeoutId = useRef(0);
 
   const showToast = (
-    message: ReactNode,
+    message: string,
     status: ToastAccentColor = "success",
     position: ToastPosition = "top"
   ) => {
-    clearTimeout(currTimeoutId);
+    clearTimeout(refTimeoutId.current);
 
-    setAcitveToast(
-      <Toast accentColor={status} position={position}>
-        {message}
-      </Toast>
-    );
+    setAcitveToast({ message, status, position });
 
     const timeoutId = setTimeout(() => {
       setAcitveToast(null);
     }, 3000);
 
-    setCurrTimeoutId(timeoutId);
+    refTimeoutId.current = timeoutId;
   };
 
   const showConfirmation = (
-    message: ReactNode,
+    message: string,
     onConfirm: () => void,
     onCancel: () => void
   ) => {
-    clearTimeout(currTimeoutId);
+    clearTimeout(refTimeoutId.current);
 
-    const handleConfirm = () => {
-      onConfirm();
-      setAcitveToast(null);
-    };
-
-    const handleCancel = () => {
-      onCancel();
-      setAcitveToast(null);
-    };
-
-    setAcitveToast(
-      <div
-        className="modal-backdrop z-50 fade-in"
-        onMouseDown={() => {
-          handleCancel();
-        }}
-      >
-        <div onMouseDown={(e) => e.stopPropagation()}>
-          <Toast accentColor="error" position="center">
-            <div className="flex flex-col gap-4 min-w-75">
-              <div className="text-xl">{message}</div>
-              <div className="flex gap-2">
-                <button
-                  className="secondary-btn flex-1 justify-center"
-                  onClick={handleCancel}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="primary-btn flex-1 justify-center"
-                  onClick={handleConfirm}
-                >
-                  Yes
-                </button>
-              </div>
-            </div>
-          </Toast>
-        </div>
-      </div>
-    );
+    setAcitveToast({
+      message,
+      onConfirm: () => {
+        onConfirm();
+        setAcitveToast(null);
+      },
+      onCancel: () => {
+        onCancel();
+        setAcitveToast(null);
+      },
+    });
   };
 
   return (
     <ToastContext.Provider value={{ showToast, showConfirmation }}>
-      {activeToast} {children}
+      {activeToast &&
+        (activeToast.onCancel && activeToast.onConfirm ? (
+          <ToastConfirmation
+            message={activeToast.message}
+            status="error"
+            onCancel={activeToast.onCancel}
+            onConfirm={activeToast.onConfirm}
+          />
+        ) : (
+          <Toast accentColor={activeToast.status!} position="top">
+            {activeToast.message}
+          </Toast>
+        ))}
+
+      {children}
     </ToastContext.Provider>
   );
 };
