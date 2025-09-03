@@ -13,7 +13,7 @@ import {
   getTMDBImageURL,
   getGenreNamesFromIds,
 } from "../misc/utils";
-import { MediaType, TimeWindow } from "../misc/types";
+import { MediaType, TimeWindow, LanguageCode } from "../misc/types";
 
 import Skeleton from "./Skeleton";
 
@@ -28,7 +28,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
       const [_, mediaType, timeWindow] = queryKey as [
         string,
         MediaType,
-        TimeWindow
+        TimeWindow,
       ];
 
       const { results } = await getTrendingMediaItems(mediaType, timeWindow);
@@ -63,7 +63,13 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
       (backdrop) => backdrop.iso_639_1 === null
     )[Math.floor(Math.random() * mediaItemImages.backdrops.length)];
 
-    const logo = mediaItemImages.logos.find((logo) => logo.iso_639_1 === "en");
+    let logo = mediaItemImages.logos.find((logo) => logo.iso_639_1 === "en");
+    if (!logo) {
+      logo =
+        mediaItemImages.logos[
+          Math.floor(Math.random() * mediaItemImages.logos.length)
+        ];
+    }
 
     return [
       getTMDBImageURL(backdrop?.file_path || mediaItem.backdrop_path, "1920"),
