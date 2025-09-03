@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useCallback } from "react";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 
 type Props = React.ComponentProps<"div"> & { onClose: () => void };
 
 const ModalContainer = ({ children, onClose, ...rest }: Props) => {
+  const { focusFirstElement, initializeFocusTrap } = useFocusTrap();
+
+  const refCallback = useCallback((node: HTMLDivElement) => {
+    if (node) {
+      initializeFocusTrap(node, onClose);
+      focusFirstElement(node);
+    }
+  }, []);
+
   return (
     <div
+      ref={refCallback}
       onMouseDown={onClose}
       className="flex items-center justify-center z-50 modal-backdrop fade-in"
       {...rest}
