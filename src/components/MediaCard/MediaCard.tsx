@@ -8,6 +8,7 @@ import { MEDIA_TYPE_NAME } from "../../misc/constants";
 import { useAddListModal } from "../../contexts/AddListModalContext";
 import { MediaCardThumbnail } from "./MediaCardThumbnail";
 import { MediaCardDetails } from "./MediaCardDetails";
+import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 
 export const MEDIA_CARD_DIMENSIONS = "w-30 h-45 sm:w-66 sm:h-36";
 const hoverWidth = "group-hover/mcard:w-72";
@@ -32,6 +33,7 @@ const MediaCard = ({
   const { showAddListModal } = useAddListModal();
   const mediaUrl = `/${media.media_type}/${media.id}`;
   const mediaLabel = `${media.title} (${MEDIA_TYPE_NAME[media.media_type]})`;
+  const { isSmUp } = useMediaQueries();
 
   /* Current location as default origin before viewing the modal,
    sourcePathName for recursive MediaPage viewing e.g. Viewing another
@@ -103,7 +105,7 @@ const MediaCard = ({
 
       <div
         className={`absolute group rounded-sm overflow-hidden transition-transform 
-          ${isCardActive && "scale-115 drop-shadow-md drop-shadow-black"}`}
+          ${isCardActive && isSmUp && "scale-115 drop-shadow-md drop-shadow-black"}`}
       >
         <Link
           // Goto MediaPage and set backgroundLocation to tell what page to render
@@ -123,7 +125,7 @@ const MediaCard = ({
           />
         </Link>
 
-        {isCardActive && (
+        {isCardActive && isSmUp && (
           <MediaCardDetails
             media={media}
             onPlay={handlePlay}

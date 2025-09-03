@@ -10,7 +10,7 @@ interface Props {
 
 export const MediaCardDetails = ({ media, onPlay, onAddToList }: Props) => {
   return (
-    <div className="hidden p-2 group-hover/mcard:flex group-focus/mcard:flex group-focus-within/mcard:flex flex-col gap-2 bg-[var(--media-card-bg)] text-white shadow-2xl">
+    <div className="hidden p-2 sm:group-hover/mcard:flex sm:group-focus/mcard:flex sm:group-focus-within/mcard:flex flex-col gap-2 bg-[var(--media-card-bg)] text-white shadow-2xl">
       <div className="flex gap-1 text-sm">
         <button
           aria-label="Open Media Page and Play Trailer"
