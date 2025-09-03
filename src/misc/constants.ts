@@ -19,7 +19,7 @@ export const NAV_LINKS: NavLinks[] = [
   { name: "My Lists", path: "/mylists" },
 ];
 
-export const MEDIA_PAGE_NAV_LINKS: NavLinks[] = [
+export const MEDIA_PAGE_TV_NAV_LINKS: NavLinks[] = [
   {
     name: "More Like This",
     path: "",
@@ -27,6 +27,17 @@ export const MEDIA_PAGE_NAV_LINKS: NavLinks[] = [
   {
     name: "Episodes",
     path: "/episodes",
+  },
+  {
+    name: "Casts & Crew",
+    path: "/casts",
+  },
+];
+
+export const MEDIA_PAGE_MOVIE_NAV_LINKS: NavLinks[] = [
+  {
+    name: "More Like This",
+    path: "",
   },
   {
     name: "Casts & Crew",

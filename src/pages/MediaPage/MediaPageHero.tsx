@@ -35,7 +35,7 @@ const ButtonsSkeleton = () => {
   );
 };
 
-const MediaPageHeroSection = ({
+const MediaPageHero = ({
   mediaItemDetails,
   mediaItemTrailer,
   trailerState,
@@ -193,4 +193,4 @@ const MediaPageHeroSection = ({
   );
 };
 
-export default MediaPageHeroSection;
+export default MediaPageHero;

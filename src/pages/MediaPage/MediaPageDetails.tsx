@@ -88,7 +88,7 @@ const MobileSkeleton = () => {
   );
 };
 
-const MediaPageDetailsSection = ({
+const MediaPageDetails = ({
   mediaItemDetails,
   mediaItemCredits,
   trailerState,
@@ -238,4 +238,4 @@ const MediaPageDetailsSection = ({
   );
 };
 
-export default MediaPageDetailsSection;
+export default MediaPageDetails;

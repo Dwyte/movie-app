@@ -18,11 +18,11 @@ const CastSkeleton = ({ className }: React.ComponentProps<"div">) => {
   );
 };
 
-const MediaPageCastsSection = ({ mediaItemCredits }: Props) => {
+const MediaPageCasts = ({ mediaItemCredits }: Props) => {
+  // To Refactor, bad implementation, but it works, for now...
   const [doneLoadingCount, setDoneLoadingCount] = useState(0);
 
   const mediaItemCasts = mediaItemCredits?.cast.slice(0, 10);
-
   const isLoadingImages =
     !mediaItemCasts || doneLoadingCount !== mediaItemCasts.length;
 
@@ -76,4 +76,4 @@ const MediaPageCastsSection = ({ mediaItemCredits }: Props) => {
   );
 };
 
-export default MediaPageCastsSection;
+export default MediaPageCasts;

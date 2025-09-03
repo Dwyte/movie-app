@@ -12,7 +12,7 @@ interface Props {
   mediaItemDetails: MediaDetails | null;
 }
 
-const RelatedMediaSection = ({ mediaItemDetails }: Props) => {
+const MediaPageRecommendations = ({ mediaItemDetails }: Props) => {
   const { data: relatedMediaItems, isFetching } = useQuery({
     enabled: !!mediaItemDetails,
     queryKey: ["related", mediaItemDetails?.media_type, mediaItemDetails?.id],
@@ -99,4 +99,4 @@ const RelatedMediaSection = ({ mediaItemDetails }: Props) => {
   );
 };
 
-export default RelatedMediaSection;
+export default MediaPageRecommendations;

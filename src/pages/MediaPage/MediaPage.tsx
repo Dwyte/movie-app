@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   NavLink,
   Route,
@@ -8,52 +8,32 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { BsPlusLg, BsSend, BsStar } from "react-icons/bs";
 
 import {
   getMediaItemCredits,
   getMediaItemDetails,
   getMediaVideos,
 } from "../../misc/tmdbAPI";
-import { MEDIA_PAGE_NAV_LINKS } from "../../misc/constants";
 import { MediaType, TrailerState } from "../../misc/types";
 
-import RelatedMediaSection from "./RelatedMediaSection";
-import MediaPageHeroSection from "./MediaPageHeroSection";
-import MediaPageDetailsSection from "./MediaPageDetailsSection";
-import MediaPageCastsSection from "./MediaPageCastsSection";
-import MediaPageEpisodesSection from "./MediaPageEpisodesSection";
-import { useAddListModal } from "../../contexts/AddListModalContext";
+import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 import DisableBodyScroll from "../../components/DisableBodyScroll";
 import Skeleton from "../../components/Skeleton";
-import { useMediaQueries } from "../../contexts/MediaQueriesContext";
+
 import { useFocusTrap } from "../../hooks/useFocusTrap";
+
+import MediaPageMobileButtons from "./MediaPageMobileButtons";
+import MediaPageExtrasNav from "./MediaPageExtrasNav";
+import MediaPageDetails from "./MediaPageDetails";
+import MediaPageExtras from "./MediaPageExtras";
+import MediaPageHero from "./MediaPageHero";
 
 interface Props {
   mediaType: MediaType;
 }
 
-const MediaExtrasNavSkeleton = () => {
-  return (
-    <div className="flex gap-2 mb-4">
-      <Skeleton className="h-10 w-34" />
-      <Skeleton className="h-10 w-34" />
-    </div>
-  );
-};
-
-const MobileButtonsSkeleton = () => {
-  return (
-    <div className="flex gap-2 h-14 sm:hidden">
-      <Skeleton className="aspect-[1.4/1] h-full" />
-      <Skeleton className="aspect-[1.4/1] h-full" />
-      <Skeleton className="aspect-[1.4/1] h-full" />
-    </div>
-  );
-};
-
 const MediaPage = ({ mediaType }: Props) => {
-  const modalRef = useRef<HTMLDivElement | null>(null);
+  const contentDivRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { isSmUp } = useMediaQueries();
@@ -67,10 +47,13 @@ const MediaPage = ({ mediaType }: Props) => {
     ? location.state.showTrailerOnLoad
     : false;
 
-  const { showAddListModal } = useAddListModal();
   const [trailerState, setTrailerState] = useState<TrailerState>("AVAILABLE");
 
+  // Focus trap for the modal
+  const { focusFirstElement, initializeFocusTrap } = useFocusTrap();
+
   const { data: mediaItemDetails } = useQuery({
+    enabled: mediaId !== null,
     queryKey: [mediaType, mediaId, "details"],
     initialData: null,
     queryFn: ({ queryKey }) => {
@@ -80,6 +63,7 @@ const MediaPage = ({ mediaType }: Props) => {
   });
 
   const { data: mediaItemCredits } = useQuery({
+    enabled: mediaId !== null,
     queryKey: [mediaType, mediaId, "credits"],
     initialData: null,
     queryFn: ({ queryKey }) => {
@@ -106,9 +90,6 @@ const MediaPage = ({ mediaType }: Props) => {
     staleTime: Infinity,
   });
 
-  // Focus trap for the modal
-  const { focusFirstElement, initializeFocusTrap } = useFocusTrap();
-
   useEffect(() => {
     if (mediaItemTrailer === undefined) {
       setTrailerState("FETCHING");
@@ -122,9 +103,9 @@ const MediaPage = ({ mediaType }: Props) => {
   // Scroll to the Top when selecting a new Media to view from related media section.
   useEffect(() => {
     const resetScroll = () => {
-      if (!modalRef) return;
+      if (!contentDivRef) return;
 
-      modalRef.current?.scrollTo({
+      contentDivRef.current?.scrollTo({
         top: 0,
         left: 0,
         behavior: "smooth",
@@ -139,7 +120,7 @@ const MediaPage = ({ mediaType }: Props) => {
   }
 
   /** On desktop, h1 Title is at MediaPageHeroSection. */
-  const renderH1MediaTitle = () => {
+  const h1MediaTitleMobile = useMemo(() => {
     if (isSmUp) return;
 
     return mediaItemDetails ? (
@@ -147,10 +128,10 @@ const MediaPage = ({ mediaType }: Props) => {
     ) : (
       <Skeleton className="h-8 w-[75%]" />
     );
-  };
+  }, [isSmUp, mediaItemDetails]);
 
   const refCallback = useCallback((node: HTMLDivElement | null) => {
-    modalRef.current = node;
+    contentDivRef.current = node;
 
     if (node instanceof HTMLDivElement) {
       initializeFocusTrap(node, closeModal);
@@ -169,7 +150,7 @@ const MediaPage = ({ mediaType }: Props) => {
         onMouseDown={(e) => e.stopPropagation()}
         className="flex-1 w-full sm:w-220 sm:mt-8 sm:rounded-sm scrollable bg-[var(--media-page-bg)]"
       >
-        <MediaPageHeroSection
+        <MediaPageHero
           mediaItemDetails={mediaItemDetails}
           mediaItemTrailer={mediaItemTrailer}
           trailerState={trailerState}
@@ -178,9 +159,9 @@ const MediaPage = ({ mediaType }: Props) => {
           onClose={closeModal}
         />
         <div className="flex flex-col gap-2 p-4 sm:px-10 sm:py-8 sm:gap-8">
-          {renderH1MediaTitle()}
+          {h1MediaTitleMobile}
 
-          <MediaPageDetailsSection
+          <MediaPageDetails
             mediaItemDetails={mediaItemDetails}
             mediaItemCredits={mediaItemCredits}
             trailerState={trailerState}
@@ -188,80 +169,20 @@ const MediaPage = ({ mediaType }: Props) => {
             onExitTrailer={() => setTrailerState("AVAILABLE")}
           />
 
-          {/* In Mobile */}
-          {!mediaItemDetails && !isSmUp && <MobileButtonsSkeleton />}
-          {mediaItemDetails && !isSmUp && (
-            <div className="flex gap-2 sm:hidden">
-              <button
-                onClick={() => {
-                  if (mediaItemDetails)
-                    showAddListModal({
-                      media_id: mediaItemDetails.id,
-                      media_type: mediaItemDetails.media_type,
-                    });
-                }}
-                className="flex flex-col justify-between items-center gap-1 px-3 py-2 min-w-16"
-              >
-                <BsPlusLg className="text-2xl p-[3px]" />
-                <span className="text-sm">My Lists</span>
-              </button>
-              <button className="flex flex-col justify-between items-center px-3 py-2 min-w-16">
-                <BsSend className="text-2xl p-[3px]" />
-                <span className="text-sm">Share</span>
-              </button>
-              <button className="flex flex-col justify-between items-center px-3 py-2 min-w-16">
-                <BsStar className="text-2xl p-[3px]" />
-                <span className="text-sm">Rate</span>
-              </button>
-            </div>
+          {/* For Mobile */}
+          {!isSmUp && (
+            <MediaPageMobileButtons mediaItemDetails={mediaItemDetails} />
           )}
-          <div>
-            {!mediaItemDetails && <MediaExtrasNavSkeleton />}
-            {mediaItemDetails && (
-              <nav className="flex gap-4 scrollable">
-                {MEDIA_PAGE_NAV_LINKS.map((navLink, index) => {
-                  if (navLink.path === "/episodes" && mediaType === "movie")
-                    return;
 
-                  return (
-                    <NavLink
-                      key={navLink.path}
-                      className={({ isActive }) =>
-                        `media-page-nav${isActive ? "-active" : ""}`
-                      }
-                      state={{ backgroundLocation }}
-                      to={`/${mediaType}/${mediaId}${navLink.path}`}
-                      end
-                    >
-                      {navLink.name}
-                    </NavLink>
-                  );
-                })}
-              </nav>
-            )}
-            <Routes>
-              <Route
-                path=""
-                element={
-                  <RelatedMediaSection mediaItemDetails={mediaItemDetails} />
-                }
-              />
-              <Route
-                path="/casts"
-                element={
-                  <MediaPageCastsSection mediaItemCredits={mediaItemCredits} />
-                }
-              />
-              <Route
-                path="/episodes"
-                element={
-                  <MediaPageEpisodesSection
-                    mediaId={mediaId}
-                    seasons={mediaItemDetails?.seasons}
-                  />
-                }
-              />
-            </Routes>
+          <div>
+            <MediaPageExtrasNav
+              mediaItemDetails={mediaItemDetails}
+              backgroundLocation={backgroundLocation}
+            />
+            <MediaPageExtras
+              mediaItemCredits={mediaItemCredits}
+              mediaItemDetails={mediaItemDetails}
+            />
           </div>
         </div>
       </div>
