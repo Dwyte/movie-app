@@ -32,7 +32,7 @@ const MediaPageExtrasNav = ({
       : MEDIA_PAGE_TV_NAV_LINKS;
 
   return (
-    <nav className="flex gap-4 scrollable">
+    <nav className="flex gap-4">
       {navLinks.map((navLink) => {
         return (
           <NavLink

@@ -29,7 +29,7 @@ export const MEDIA_PAGE_TV_NAV_LINKS: NavLinks[] = [
     path: "/episodes",
   },
   {
-    name: "Casts & Crew",
+    name: "Casts",
     path: "/casts",
   },
 ];
@@ -40,7 +40,7 @@ export const MEDIA_PAGE_MOVIE_NAV_LINKS: NavLinks[] = [
     path: "",
   },
   {
-    name: "Casts & Crew",
+    name: "Casts",
     path: "/casts",
   },
 ];
