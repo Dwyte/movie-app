@@ -14,6 +14,7 @@ const YoutubeEmbed = ({ title, videoKey, onExit }: Props) => {
     <div className="absolute inset-0 z-50">
       {isSmUp && (
         <button
+          ref={(node) => node?.focus()}
           onClick={onExit}
           className="secondary-icon-btn absolute left-4 bottom-10 translate-y-[-50%] gap-1"
         >
@@ -29,6 +30,7 @@ const YoutubeEmbed = ({ title, videoKey, onExit }: Props) => {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerPolicy="strict-origin-when-cross-origin"
         allowFullScreen
+        autoFocus
       ></iframe>
     </div>
   );
