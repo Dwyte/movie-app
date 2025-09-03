@@ -148,7 +148,7 @@ const MediaPage = ({ mediaType }: Props) => {
       <div
         ref={refCallback}
         onMouseDown={(e) => e.stopPropagation()}
-        className="flex-1 w-full pb-10 sm:w-220 sm:mt-8 sm:rounded-sm scrollable bg-[var(--media-page-bg)]"
+        className="flex-1 w-full pb-10 sm:w-220 sm:mt-8 sm:rounded-t-sm scrollable bg-[var(--media-page-bg)]"
       >
         <MediaPageHero
           mediaItemDetails={mediaItemDetails}
