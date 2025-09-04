@@ -6,6 +6,7 @@ import ModalContainer from "../ModalContainer";
 import DisableBodyScroll from "../DisableBodyScroll";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { MEDIA_TYPE_NAME } from "../../misc/constants";
 
 enum AddListModalStates {
   LIST_SELECTION,
@@ -40,8 +41,14 @@ const AddListModal = ({ mediaRef, onClose }: Props) => {
     }
   }, [isAuthInitialized]);
 
+  const mediaTypeName = MEDIA_TYPE_NAME[mediaRef.media_type];
+  const modalTitle =
+    currentState === AddListModalStates.LIST_SELECTION
+      ? `Add ${mediaTypeName} to List`
+      : "Create List";
+
   return (
-    <ModalContainer onClose={handleClose}>
+    <ModalContainer modalTitle={modalTitle} onClose={handleClose}>
       <DisableBodyScroll />
       {currentState === AddListModalStates.LIST_SELECTION && (
         <ListSelection

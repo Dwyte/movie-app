@@ -5,6 +5,7 @@ import { MediaRef } from "../../misc/types";
 import { BsCheckLg } from "react-icons/bs";
 import ListVisibilityRadio from "./ListVisibilityRadio";
 import { useToast } from "../../contexts/ToastContext";
+import Input from "../Input";
 
 interface Props {
   mediaRef: MediaRef;
@@ -66,31 +67,28 @@ const ListCreation = ({ mediaRef, onClose }: Props) => {
   };
 
   return (
-    <>
-      <h3 className="text-2xl text-white font-bold sm:text-xl">New List</h3>
-      <form action="" className="flex flex-col gap-2" onSubmit={handleSubmit}>
-        <input
-          value={listName}
-          onChange={(e) => setListName(e.target.value)}
-          className="input"
-          type="text"
-          placeholder="Choose a Title"
-          autoFocus
-        />
+    <form action="" className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <Input
+        label="Title"
+        value={listName}
+        onChange={(e) => setListName(e.target.value)}
+        type="text"
+        placeholder="Choose a Title"
+        autoFocus
+      />
 
-        <ListVisibilityRadio value={isListPublic} onChange={setIsListPublic} />
+      <ListVisibilityRadio value={isListPublic} onChange={setIsListPublic} />
 
-        <div className="flex gap-2">
-          <button
-            onClick={onClose}
-            className="secondary-btn flex-1 justify-center p-4"
-          >
-            <span>Cancel</span>
-          </button>
-          <input type="submit" className="primary-btn flex-1" value="Create" />
-        </div>
-      </form>
-    </>
+      <div className="flex gap-2">
+        <button
+          onClick={onClose}
+          className="secondary-btn flex-1 justify-center p-4"
+        >
+          <span>Cancel</span>
+        </button>
+        <input type="submit" className="primary-btn flex-1" value="Create" />
+      </div>
+    </form>
   );
 };
 
