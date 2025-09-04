@@ -62,13 +62,8 @@ const MediaCard = ({
     });
   };
 
-  const blurCurrentFocus = () => {
-    (document.activeElement as HTMLElement).blur();
-  };
-
   const handleMouseEnter = () => {
     setIsCardActive(true);
-    blurCurrentFocus();
   };
 
   const handleMouseLeave = () => {
