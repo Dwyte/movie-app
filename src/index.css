@@ -49,7 +49,7 @@
 
   .btn {
     @apply rounded-sm p-2 font-semibold cursor-pointer flex items-center;
-    transition: all 150ms ease;
+    transition: background 150ms ease;
   }
 
   .btn[data-variant="primary"] {

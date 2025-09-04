@@ -10,12 +10,12 @@ const UserDropdownContent = () => {
 
   return (
     <div className="inline-block sm:hidden sm:group-hover:inline-block sm:group-focus:inline-block sm:group-focus-within:inline-block absolute min-w-42 right-0 text-white pt-2 w-max">
-      <div className="fixed inset-0 bg-black/75 backdrop-blur-lg flex flex-col justify-center items-center text-4xl sm:items-stretch sm:text-base sm:rounded-sm sm:overflow-hidden sm:static sm:bg-black">
+      <div className="fixed inset-0 bg-black/75 backdrop-blur-lg flex flex-col justify-center items-center text-4xl sm:items-stretch sm:text-base sm:static sm:bg-black rounded-sm">
         {auth.isLoggedIn ? (
           <>
             <Link
               to={`${TMDBProfileBaseURL}/${auth.account?.username}`}
-              className="p-4 flex flex-col gap-1 items-center sm:items-start hover:bg-stone-900 focus:bg-stone-900 focus:border-1"
+              className="p-4 flex flex-col gap-1 items-center sm:items-start hover:bg-stone-900 focus:bg-stone-900 rounded-t-sm"
             >
               <strong className="font-bold">xanderdwightm</strong>
               <small className="text-sm text-stone-400">
@@ -24,7 +24,7 @@ const UserDropdownContent = () => {
             </Link>
             <button
               onClick={auth.logout}
-              className="text-left text-stone-300 hover:bg-stone-900 cursor-pointer p-4 focus:border-1"
+              className="text-left text-stone-300 hover:bg-stone-900 focus:bg-stone-900 cursor-pointer p-4 rounded-b-sm"
             >
               Log-out
             </button>
@@ -32,7 +32,7 @@ const UserDropdownContent = () => {
         ) : (
           <Link
             to="/login"
-            className="shrink-0 hover:bg-stone-900 cursor-pointer p-4"
+            className="shrink-0 hover:bg-stone-900 cursor-pointer p-4 rounded-sm"
           >
             Log-in
           </Link>
