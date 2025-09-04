@@ -193,7 +193,7 @@ const MediaItemsRow = ({
                 {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
                 <div className="shrink-0 w-2 sm:w-10 bg-white"></div>
 
-                <div className="flex items-center gap-2 group-focus/scroll:outline-2 outline-offset-2 rounded-sm outline-blue-300">
+                <div className="flex items-center gap-2 group-focus/scroll:outline rounded-sm">
                   {mediaItems.map((mediaItem) => (
                     <MediaCard
                       key={mediaItem.id}
