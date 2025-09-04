@@ -75,7 +75,7 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
 
   const renderList = () => {
     if (isLoading) {
-      return <ListSkeleton className="h-12" count={10} />;
+      return <ListSkeleton className="h-15" count={10} />;
     }
 
     if (userLists && userLists.length > 0) {
@@ -83,7 +83,7 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
         <button
           key={listItem.id}
           onClick={() => handleSelect(listItem.id)}
-          className="btn rounded-sm text-white font-normal text-lg p-4 sm:text-base sm:p-6"
+          className="btn rounded-sm text-white font-normal text-lg p-4 sm:text-base sm:p-4"
           data-variant="secondary"
         >
           <span className="flex-1 text-left">{listItem.name}</span>
