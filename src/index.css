@@ -4,6 +4,9 @@
   --main-bg: #141414;
   --media-page-bg: #141414;
   --header-bg: #080808;
+  --input-bg: #242424;
+  --primary-btn-bg: #e1e1e1;
+  --secondary-btn-bg: #242424;
   --media-card-bg: #181818;
   --skeleton-color: #323232;
   --list-border-color: #252525;
@@ -34,15 +37,11 @@
 
 @layer components {
   .primary-btn {
-    @apply rounded-sm py-2 px-3 text-stone-900 font-semibold cursor-pointer bg-stone-200 flex items-center hover:invert-100;
+    @apply rounded-sm py-2 px-3 text-stone-900 font-semibold cursor-pointer bg-[var(--primary-btn-bg)] flex items-center hover:brightness-150;
   }
 
   .secondary-btn {
-    @apply rounded-sm py-2 px-3 text-stone-100 font-semibold cursor-pointer bg-stone-800 flex items-center hover:invert-100;
-  }
-
-  .input {
-    @apply w-full text-white p-4 bg-stone-700 rounded-sm outline-0;
+    @apply rounded-sm py-2 px-3 text-stone-200 font-semibold cursor-pointer bg-[var(--secondary-btn-bg)] flex items-center hover:brightness-150;
   }
 
   .primary-icon-btn {
