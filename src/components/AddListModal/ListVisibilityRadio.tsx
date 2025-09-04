@@ -23,39 +23,42 @@ interface Props {
 
 const ListVisibilityRadio = ({ value, onChange }: Props) => {
   return (
-    <div className="rounded-sm overflow-hidden focus-within:outline-2 outline-blue-300 ">
-      {visibilityOptions.map((option) => {
-        return (
-          <label
-            key={option.id}
-            htmlFor={option.id.toString()}
-            className="block cursor-pointer"
-          >
-            <input
-              id={option.id.toString()}
-              className="sr-only peer"
-              type="radio"
-              name="visibility"
-              checked={value === option.isPublic}
-              onChange={() => onChange(option.isPublic)}
-            />
-            <div className="text-white flex gap-2 items-center bg-stone-700 px-4 py-2 peer-checked:bg-stone-800">
-              <div className="flex flex-col flex-1">
-                <span className="">{option.name}</span>
-                <span className="text-xs text-stone-300">
-                  {option.description}
-                </span>
-              </div>
-              <BsCheckLg
-                className={`text-xl ${
-                  value !== option.isPublic && "invisible"
-                }`}
+    <fieldset>
+      <legend className="font-bold mb-2">Visibility</legend>
+      <div className="rounded-sm overflow-hidden has-[:focus-visible]:outline-2 outline-white outline-offset-2">
+        {visibilityOptions.map((option) => {
+          return (
+            <label
+              key={option.id}
+              htmlFor={option.id.toString()}
+              className="block cursor-pointer"
+            >
+              <input
+                id={option.id.toString()}
+                className="sr-only peer"
+                type="radio"
+                name="visibility"
+                checked={value === option.isPublic}
+                onChange={() => onChange(option.isPublic)}
               />
-            </div>
-          </label>
-        );
-      })}
-    </div>
+              <div className="text-white flex gap-2 items-center bg-[var(--input-bg)] px-4 py-2 peer-checked:brightness-150 hover:brightness-125">
+                <div className="flex flex-col flex-1">
+                  <span className="">{option.name}</span>
+                  <span className="text-xs text-stone-300">
+                    {option.description}
+                  </span>
+                </div>
+                <BsCheckLg
+                  className={`text-xl ${
+                    value !== option.isPublic && "invisible"
+                  }`}
+                />
+              </div>
+            </label>
+          );
+        })}
+      </div>
+    </fieldset>
   );
 };
 
