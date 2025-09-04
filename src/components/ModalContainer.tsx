@@ -1,9 +1,13 @@
 import React, { useCallback } from "react";
 import { useFocusTrap } from "../hooks/useFocusTrap";
+import { BsXLg } from "react-icons/bs";
 
-type Props = React.ComponentProps<"div"> & { onClose: () => void };
+type Props = React.ComponentProps<"div"> & {
+  modalTitle: string;
+  onClose: () => void;
+};
 
-const ModalContainer = ({ children, onClose, ...rest }: Props) => {
+const ModalContainer = ({ modalTitle, children, onClose, ...rest }: Props) => {
   const { focusFirstElement, initializeFocusTrap } = useFocusTrap();
 
   const refCallback = useCallback((node: HTMLDivElement) => {
@@ -22,9 +26,15 @@ const ModalContainer = ({ children, onClose, ...rest }: Props) => {
     >
       <div
         onMouseDown={(e) => e.stopPropagation()}
-        className="fixed left-0 right-0 bottom-0 flex flex-col bg-stone-900 rounded-t-xl p-6 sm:gap-2 sm:static sm: min-w-100 sm:rounded-lg"
+        className="fixed left-0 right-0 bottom-0 flex flex-col bg-[var(--main-bg)] rounded-t-xl sm:static sm:min-w-150 sm:rounded-lg overflow-hidden"
       >
-        {children}
+        <div className="flex items-center justify-between px-8 py-6 bg-[#101010]">
+          <h2 className="m-0">{modalTitle}</h2>
+          <button onClick={onClose} className="secondary-icon-btn">
+            <BsXLg />
+          </button>
+        </div>
+        <div className="p-8">{children}</div>
       </div>
     </div>
   );

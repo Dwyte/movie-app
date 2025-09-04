@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ModalContainer from "../../components/ModalContainer";
 import { ListDetails, ListOptions, Media, MediaRef } from "../../misc/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -122,10 +122,21 @@ const EditListModal = ({
     }
   };
 
+  const modalTitle = useMemo(() => {
+    switch (currentState) {
+      case EditListState.BACKDROP:
+        return "List Backdrop";
+      case EditListState.COMMENTS:
+        return listItem!.title.slice(0, 32) + "...";
+      case EditListState.DETAILS:
+        return "List Details";
+    }
+  }, [currentState]);
+
   return (
-    <ModalContainer onClose={onClose}>
+    <ModalContainer modalTitle={modalTitle} onClose={onClose}>
       <DisableBodyScroll />
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-8">
         {currentState === EditListState.BACKDROP && (
           <EditListBackdrop
             setListOptions={setListOptions}
@@ -147,7 +158,7 @@ const EditListModal = ({
           />
         )}
 
-        <div className="flex h-12 text-lg flex-row-reverse [&>*]:flex-1 gap-2">
+        <div className="flex h-12 text-lg justify-center flex-row-reverse [&>*]:flex-1 sm:[&>*]:max-w-50 gap-2">
           <input
             type="submit"
             className="primary-btn justify-center"

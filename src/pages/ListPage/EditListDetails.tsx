@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { ListDetails, ListOptions } from "../../misc/types";
 import ListVisibilityRadio from "../../components/AddListModal/ListVisibilityRadio";
+import Input from "../../components/Input";
 
 interface Props {
   listDetails: ListDetails;
@@ -13,9 +14,9 @@ const EditListDetails = ({ listDetails, setListOptions }: Props) => {
   const [isPublic, setIsPublic] = useState(listDetails.public);
 
   return (
-    <div className="flex flex-col gap-2">
-      <h2 className="m-0"> Edit List Details: </h2>
-      <input
+    <div className="flex flex-col gap-6">
+      <Input
+        label="List Title"
         type="text"
         placeholder="Choose a Title"
         value={name}
@@ -25,9 +26,10 @@ const EditListDetails = ({ listDetails, setListOptions }: Props) => {
             return { ...p, name: e.target.value } as ListOptions;
           });
         }}
-        className="input"
       />
-      <input
+
+      <Input
+        label="List Description"
         type="text"
         placeholder="Enter Description"
         value={description}
@@ -37,7 +39,6 @@ const EditListDetails = ({ listDetails, setListOptions }: Props) => {
             return { ...p, description: e.target.value } as ListOptions;
           });
         }}
-        className="input"
       />
       <ListVisibilityRadio
         value={isPublic}
