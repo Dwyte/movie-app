@@ -142,13 +142,18 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
                     media_type: mediaItem.media_type,
                   })
                 }
-                className="primary-btn"
+                className="btn"
+                data-variant="primary"
               >
                 <BsPlusCircleFill className="text-md mr-2" />
                 Add to my List
               </button>
 
-              <button onClick={handleMoreInfoClick} className="secondary-btn">
+              <button
+                onClick={handleMoreInfoClick}
+                className="btn"
+                data-variant="secondary"
+              >
                 <FaInfoCircle className="text-md mr-2" />
                 More Info
               </button>

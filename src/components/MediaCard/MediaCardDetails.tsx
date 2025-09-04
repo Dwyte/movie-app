@@ -15,22 +15,28 @@ export const MediaCardDetails = ({ media, onPlay, onAddToList }: Props) => {
         <button
           aria-label="Open Media Page and Play Trailer"
           onClick={onPlay}
-          className="primary-icon-btn"
+          className="btn rounded-full"
+          data-variant="primary-icon"
         >
           <BsPlayFill />
         </button>
         <button
           aria-label={`Add ${media.title} to a List`}
           onClick={onAddToList}
-          className="secondary-icon-btn"
+          className="btn rounded-full"
+          data-variant="secondary-icon"
         >
           <BsPlusLg />
         </button>
-        <button className="secondary-icon-btn">
+        <button className="btn rounded-full" data-variant="secondary-icon">
           <BsStar />
         </button>
         <div className="flex-1"></div>
-        <button aria-label="Open Media Page" className="secondary-icon-btn">
+        <button
+          aria-label="Open Media Page"
+          className="btn rounded-full"
+          data-variant="secondary-icon"
+        >
           <BsChevronDown />
         </button>
       </div>

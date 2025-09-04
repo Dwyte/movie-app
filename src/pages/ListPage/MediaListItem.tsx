@@ -132,15 +132,17 @@ const MediaListItem = ({
             >
               <button
                 onClick={() => onComment(media)}
-                className="secondary-icon-btn p-2"
+                className="btn rounded-full p-2"
                 disabled={isDeleting}
+                data-variant="secondary-icon"
               >
                 <BsChatSquareDots />
               </button>
               <button
                 onClick={() => onDelete(mediaRef)}
-                className="secondary-icon-btn p-2"
+                className="btn rounded-full p-2"
                 disabled={isDeleting}
+                data-variant="secondary-icon"
               >
                 <BsXLg />
               </button>
@@ -149,8 +151,9 @@ const MediaListItem = ({
 
           {!isAuthorized && (
             <button
-              className="secondary-icon-btn p-2"
+              className="btn rounded-full p-3"
               aria-label={`Open ${media.title} media page.`}
+              data-variant="secondary-icon"
             >
               <BsChevronRight />
             </button>

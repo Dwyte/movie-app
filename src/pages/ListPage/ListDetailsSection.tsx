@@ -47,16 +47,32 @@ const ListDetailsSection = ({
 
       {isUserOwner && (
         <div className="absolute top-0 right-0 p-4 flex flex-col gap-2 z-20">
-          <button onClick={handleShare} className="secondary-icon-btn p-3">
+          <button
+            onClick={handleShare}
+            className="btn rounded-full p-3"
+            data-variant="secondary-icon"
+          >
             <BsBoxArrowUpRight />
           </button>
-          <button onClick={onEditBackdrop} className="secondary-icon-btn p-3">
+          <button
+            onClick={onEditBackdrop}
+            className="btn rounded-full p-3"
+            data-variant="secondary-icon"
+          >
             <BsImages />
           </button>
-          <button onClick={onEditDetails} className="secondary-icon-btn p-3">
+          <button
+            onClick={onEditDetails}
+            className="btn rounded-full p-3"
+            data-variant="secondary-icon"
+          >
             <BsPencilSquare />
           </button>
-          <button onClick={onDeleteList} className="secondary-icon-btn p-3">
+          <button
+            onClick={onDeleteList}
+            className="btn rounded-full p-3"
+            data-variant="secondary-icon"
+          >
             <BsTrash />
           </button>
         </div>

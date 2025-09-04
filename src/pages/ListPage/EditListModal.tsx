@@ -161,10 +161,15 @@ const EditListModal = ({
         <div className="flex h-12 text-lg justify-center flex-row-reverse [&>*]:flex-1 sm:[&>*]:max-w-50 gap-2">
           <input
             type="submit"
-            className="primary-btn justify-center"
+            className="btn justify-center"
             value="Save"
+            data-variant="primary"
           />
-          <button onClick={onClose} className="secondary-btn justify-center">
+          <button
+            onClick={onClose}
+            className="btn justify-center"
+            data-variant="secondary"
+          >
             Cancel
           </button>
         </div>

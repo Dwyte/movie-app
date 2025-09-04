@@ -15,10 +15,11 @@ const ListPagination = ({
     <div className="flex justify-center text-white gap-2 items-center">
       <button
         onClick={onPrevPage}
-        className={`secondary-btn gap-1 items-center font-normal ${
+        className={`btn gap-1 items-center font-normal ${
           currentPage === 1 && "invisible"
         }`}
         disabled={currentPage === 1}
+        data-variant="secondary"
       >
         <BsChevronLeft /> PREV
       </button>
@@ -28,10 +29,11 @@ const ListPagination = ({
       </div>
       <button
         onClick={onNextPage}
-        className={`secondary-btn gap-1 items-center font-normal ${
+        className={`btn gap-1 items-center font-normal ${
           currentPage === totalPages && "invisible"
         }`}
         disabled={currentPage === totalPages}
+        data-variant="secondary"
       >
         NEXT <BsChevronRight />
       </button>

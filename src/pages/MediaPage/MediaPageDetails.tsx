@@ -177,7 +177,8 @@ const MediaPageDetails = ({
             {trailerState === "AVAILABLE" && (
               <button
                 onClick={onPlayTrailer}
-                className="primary-btn justify-center"
+                className="btn justify-center"
+                data-variant="primary"
               >
                 <BsPlayFill className="text-2xl mr-1" />
                 Play Trailer
@@ -186,7 +187,8 @@ const MediaPageDetails = ({
             {trailerState === "UNAVAILABLE" && (
               <button
                 onClick={onPlayTrailer}
-                className="primary-btn justify-center"
+                className="btn justify-center"
+                data-variant="primary"
               >
                 <BsBan className="text-2xl mr-1" />
                 No Trailer Available
@@ -195,13 +197,14 @@ const MediaPageDetails = ({
             {trailerState === "PLAYING" && (
               <button
                 onClick={onExitTrailer}
-                className="primary-btn justify-center"
+                className="btn justify-center"
+                data-variant="primary"
               >
                 <BsBoxArrowLeft className="text-2xl mr-1" />
                 Exit Trailer
               </button>
             )}
-            <button className="secondary-btn justify-center">
+            <button className="btn justify-center" data-variant="secondary">
               <RiDownloadLine className="text-2xl mr-1" />
               Download
             </button>

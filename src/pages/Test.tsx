@@ -43,10 +43,10 @@ const Test = () => {
       <p className="max-w-100">
         Request_Token {requestToken && requestToken.request_token}
       </p>
-      <button className="primary-btn" onClick={login}>
+      <button className="btn" onClick={login} data-variant="primary">
         Login
       </button>
-      <button className="primary-btn" onClick={access}>
+      <button className="btn" onClick={access} data-variant="primary">
         access
       </button>
     </div>

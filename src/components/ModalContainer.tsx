@@ -30,7 +30,11 @@ const ModalContainer = ({ modalTitle, children, onClose, ...rest }: Props) => {
       >
         <div className="flex items-center justify-between px-8 py-6 bg-[#101010]">
           <h2 className="m-0">{modalTitle}</h2>
-          <button onClick={onClose} className="secondary-icon-btn">
+          <button
+            onClick={onClose}
+            className="btn rounded-full"
+            data-variant="secondary-icon"
+          >
             <BsXLg />
           </button>
         </div>

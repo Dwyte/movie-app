@@ -102,7 +102,8 @@ const MediaPageHero = ({
     <div className="relative bg-[var(--media-page-bg)] w-full">
       <button
         onClick={onClose}
-        className="secondary-icon-btn absolute right-3 top-3 border-0 z-50"
+        className="btn rounded-full absolute right-3 top-3 z-50"
+        data-variant="secondary-icon"
       >
         <BsXLg />
       </button>
@@ -151,7 +152,8 @@ const MediaPageHero = ({
               {trailerState !== "UNAVAILABLE" ? (
                 <button
                   onClick={onPlayTrailer}
-                  className="primary-btn justify-center min-w-30"
+                  className="btn justify-center min-w-30"
+                  data-variant="primary"
                 >
                   <BsPlayFill className="text-2xl mr-1" />
                   <span>Play Trailer</span>
@@ -159,7 +161,8 @@ const MediaPageHero = ({
               ) : (
                 <button
                   disabled
-                  className="primary-btn justify-center min-w-30"
+                  className="btn justify-center min-w-30"
+                  data-variant="primary"
                 >
                   <BsBan className="text-xl mr-1" />
                   <span>No Trailer Available</span>
@@ -175,15 +178,22 @@ const MediaPageHero = ({
                     media_type: mediaItemDetails.media_type,
                   });
                 }}
-                className="secondary-icon-btn"
+                className="btn rounded-full"
+                data-variant="secondary-icon"
               >
                 <BsPlusLg />
               </button>
-              <button className="secondary-icon-btn">
+              <button
+                className="btn rounded-full"
+                data-variant="secondary-icon"
+              >
                 <BsStar />
               </button>
               <div className="flex-1"></div>
-              <button className="secondary-icon-btn opacity-65">
+              <button
+                className="btn rounded-full opacity-65"
+                data-variant="secondary-icon"
+              >
                 <RiDownloadLine />
               </button>
             </div>

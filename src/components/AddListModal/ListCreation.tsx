@@ -82,11 +82,17 @@ const ListCreation = ({ mediaRef, onClose }: Props) => {
       <div className="flex gap-2">
         <button
           onClick={onClose}
-          className="secondary-btn flex-1 justify-center p-4"
+          className="btn flex-1 justify-center p-4"
+          data-variant="secondary"
         >
           <span>Cancel</span>
         </button>
-        <input type="submit" className="primary-btn flex-1" value="Create" />
+        <input
+          type="submit"
+          className="btn flex-1"
+          value="Create"
+          data-variant="primary"
+        />
       </div>
     </form>
   );

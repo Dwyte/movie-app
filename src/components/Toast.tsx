@@ -66,14 +66,16 @@ export const ToastConfirmation = ({
             <div className="text-xl">{message}</div>
             <div className="flex gap-2">
               <button
-                className="secondary-btn flex-1 justify-center"
+                className="btn flex-1 justify-center"
                 onClick={onCancel}
+                data-variant="secondary"
               >
                 Cancel
               </button>
               <button
-                className="primary-btn flex-1 justify-center"
+                className="btn flex-1 justify-center"
                 onClick={onConfirm}
+                data-variant="primary"
               >
                 Yes
               </button>

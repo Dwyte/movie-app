@@ -83,7 +83,8 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
         <button
           key={listItem.id}
           onClick={() => handleSelect(listItem.id)}
-          className="secondary-btn rounded-sm text-white font-normal text-lg p-4 sm:text-base sm:p-6"
+          className="btn rounded-sm text-white font-normal text-lg p-4 sm:text-base sm:p-6"
+          data-variant="secondary"
         >
           <span className="flex-1 text-left">{listItem.name}</span>
           <VisibilityIcon isPublic={listItem.public === 1} />
@@ -103,7 +104,8 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
       </div>
       <button
         onClick={onCreate}
-        className="primary-btn p-4 justify-center gap-1 text-lg text-center rounded-sm sm:text-base sm:p-4"
+        className="btn p-4 justify-center gap-1 text-lg text-center rounded-sm sm:text-base sm:p-4"
+        data-variant="primary"
       >
         <BsPlusLg className="text-2xl sm:text-xl" />
         <span>Create New List</span>
