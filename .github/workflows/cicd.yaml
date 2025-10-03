@@ -16,7 +16,12 @@ jobs:
 
       # 2. Build Docker image
       - name: Build Docker image
-        run: docker build -t my-app:ci .
+        run: |
+          docker build \
+            --build-arg VITE_BASE="/movie-app/" \
+            --build-arg VITE_TMDB_API_KEY_V4="${{ secrets.VITE_TMDB_API_KEY_V4 }}" \
+            --build-arg VITE_TMDB_API_KEY_V3="${{ secrets.VITE_TMDB_API_KEY_V3 }}" \
+            -t my-app:ci .
 
       # 3. Extract build output (dist/) from Docker image
       - name: Copy dist from Docker container
