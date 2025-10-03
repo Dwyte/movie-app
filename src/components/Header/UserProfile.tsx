@@ -5,6 +5,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 
+import profilePicture from "/profile-picture.webp";
+
 const UserDropdownContent = () => {
   const auth = useAuth();
 
@@ -63,7 +65,7 @@ const UserProfile = () => {
       <div className="flex gap-2 items-center cursor-pointer">
         <img
           className="rounded-sm w-10 h-10 sm:block"
-          src="/profile-picture.webp"
+          src={profilePicture}
           alt="Smiley Icon"
         />
         <BsChevronDown />

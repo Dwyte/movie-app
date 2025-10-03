@@ -7,6 +7,9 @@ import SearchBox from "./SearchBox";
 import { NAV_LINKS } from "../../misc/constants";
 import UserProfile from "./UserProfile";
 
+import mobileLogo from "/n-logo.svg";
+import webLogo from "/logo.webp";
+
 function Header() {
   const location = useLocation();
   const searchMatch = useMatch("/search");
@@ -24,8 +27,8 @@ function Header() {
       <div className="flex items-center justify-between gap-4 mb-4 sm:gap-8">
         {/** Full name Logo in Desktop and Just the Letter N logo in Mobile */}
         <Link to="/">
-          <img className="hidden w-30 sm:block" src="/logo.webp" alt="logo" />
-          <img className="w-5 sm:hidden" src="/n-logo.svg" alt="logo" />
+          <img className="hidden w-30 sm:block" src={webLogo} alt="logo" />
+          <img className="w-5 sm:hidden" src={mobileLogo} alt="logo" />
         </Link>
 
         {/**
@@ -33,7 +36,9 @@ function Header() {
          */}
         <nav
           onClick={handleNavModalClick}
-          className={`${!isMobileNavVisible && "hidden"} z-50 fixed inset-0 sm:static bg-black/75 backdrop-blur-lg sm:block sm:bg-transparent sm:backdrop-blur-none sm:flex-1`}
+          className={`${
+            !isMobileNavVisible && "hidden"
+          } z-50 fixed inset-0 sm:static bg-black/75 backdrop-blur-lg sm:block sm:bg-transparent sm:backdrop-blur-none sm:flex-1`}
         >
           <ul
             className={`flex flex-col items-center justify-center gap-10 h-[100%] text-4xl sm:justify-start sm:flex-row sm:text-base sm:gap-8 sm:flex`}

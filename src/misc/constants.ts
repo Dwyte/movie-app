@@ -1,8 +1,7 @@
 import { Genre, NavLinks } from "./types";
-
-export const NO_IMAGE_PORTRAIT_PATH = "/no-image-portrait.webp";
-export const NO_IMAGE_USER_PATH = "/profile-picture.webp";
-export const NO_IMAGE_LANDSCAPE_PATH = "/no-image-landscape.webp";
+export { default as NO_IMAGE_LANDSCAPE_PATH } from "/no-image-landscape.webp";
+export { default as NO_IMAGE_USER_PATH } from "/profile-picture.webp";
+export { default as NO_IMAGE_PORTRAIT_PATH } from "/no-image-portrait.webp";
 
 export const MEDIA_TYPE_NAME = {
   movie: "Movie",

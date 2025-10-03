@@ -6,6 +6,7 @@ import {
 } from "../misc/tmdbAPI";
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import heroImage from "/hero-image.jpg";
 
 enum LoginState {
   INITIAL,
@@ -79,7 +80,7 @@ const LoginPage = () => {
     <div className="text-white h-full flex flex-col items-center justify-center">
       <img
         className="h-[100vh] opacity-75 object-cover"
-        src="/hero-image.jpg"
+        src={heroImage}
         alt=""
       />
       <div className="absolute p-8 bg-black/90 rounded-sm sm:min-w-125">
