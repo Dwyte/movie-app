@@ -1,0 +1,38 @@
+name: CI/CD with Docker
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - uses: actions/checkout@v3
+
+      # 2. Build Docker image
+      - name: Build Docker image
+        run: docker build -t my-app:ci .
+
+      # 3. Extract build output (dist/) from Docker image
+      - name: Copy dist from Docker container
+        run: |
+          container_id=$(docker create my-app:ci)
+          docker cp $container_id:/app/dist ./dist
+          docker rm $container_id
+
+      # 4. Optional: run tests inside container
+      # - name: Run tests
+      #  run: docker run --rm my-app:ci npm test
+
+      # 5. Deploy to GitHub Pages (only on main)
+      - name: Deploy
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
