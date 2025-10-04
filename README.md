@@ -14,11 +14,8 @@ npm i
 
 Rename **sample.env** to **.env.local** and fill the following:
 ```
-VITE_TMDB_API_KEY=
-
-VITE_APPWRITE_PROJECT_ID=
-VITE_APPWRITE_DATABASE_URL=
-VITE_APPWRITE_COLLECTION_URL=
+VITE_TMDB_API_KEY_V4=
+VITE_TMDB_API_KEY_V3=
 ```
 
 ## Run Locally
