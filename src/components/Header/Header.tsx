@@ -7,7 +7,7 @@ import SearchBox from "./SearchBox";
 import { NAV_LINKS } from "../../misc/constants";
 import UserProfile from "./UserProfile";
 
-import mobileLogo from "/n-logo.svg";
+import mobileLogo from "/logo-mobile.webp";
 import webLogo from "/logo.webp";
 
 function Header() {
@@ -28,7 +28,7 @@ function Header() {
         {/** Full name Logo in Desktop and Just the Letter N logo in Mobile */}
         <Link to="/">
           <img className="hidden w-30 sm:block" src={webLogo} alt="logo" />
-          <img className="w-5 sm:hidden" src={mobileLogo} alt="logo" />
+          <img className="w-12 sm:hidden" src={mobileLogo} alt="logo" />
         </Link>
 
         {/**
