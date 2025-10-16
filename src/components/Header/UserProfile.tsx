@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 
 import profilePicture from "/profile-picture.webp";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "../ErrorFallback";
 
 const UserDropdownContent = () => {
   const auth = useAuth();
@@ -71,7 +73,9 @@ const UserProfile = () => {
         <BsChevronDown />
       </div>
 
-      {isActive && <UserDropdownContent />}
+      <ErrorBoundary fallbackRender={(props) => <ErrorFallback {...props} />}>
+        {isActive && <UserDropdownContent />}
+      </ErrorBoundary>
     </div>
   );
 };

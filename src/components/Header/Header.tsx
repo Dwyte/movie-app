@@ -9,6 +9,8 @@ import UserProfile from "./UserProfile";
 
 import mobileLogo from "/logo-mobile.webp";
 import webLogo from "/logo.webp";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "../ErrorFallback";
 
 function Header() {
   const location = useLocation();
@@ -58,8 +60,13 @@ function Header() {
           </ul>
         </nav>
 
-        <div className="flex flex-1 sm:max-w-75 items-center gap-4">
-          <SearchBox />
+        <div className="flex flex-1 sm:max-w-75 items-center justify-end gap-4">
+          <ErrorBoundary
+            fallbackRender={(props) => <ErrorFallback {...props} />}
+          >
+            <SearchBox />
+          </ErrorBoundary>
+
           <UserProfile />
         </div>
       </div>
