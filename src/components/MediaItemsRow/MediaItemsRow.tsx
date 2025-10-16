@@ -8,6 +8,8 @@ import useIsOnMobile from "../../hooks/useIsOnMobile";
 
 import { Media } from "../../misc/types";
 import Skeleton from "../Skeleton";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "../ErrorFallback";
 
 const MEDIA_CARD_DIV_WIDTH = 272; // Includes 8px right-gap
 const LEFT_END_SPACE_WIDTH = 48; // Includes 8px right-gap
@@ -195,15 +197,19 @@ const MediaItemsRow = ({
 
                 <div className="flex items-center gap-2 group-focus/scroll:outline rounded-sm">
                   {mediaItems.map((mediaItem) => (
-                    <MediaCard
-                      key={mediaItem.id}
-                      media={mediaItem}
-                      onImageLoad={() =>
-                        setIsMediaCardsLoaded((p) => {
-                          return { ...p, [mediaItem.id]: true };
-                        })
-                      }
-                    />
+                    <ErrorBoundary
+                      fallbackRender={(props) => <ErrorFallback {...props} />}
+                    >
+                      <MediaCard
+                        key={mediaItem.id}
+                        media={mediaItem}
+                        onImageLoad={() =>
+                          setIsMediaCardsLoaded((p) => {
+                            return { ...p, [mediaItem.id]: true };
+                          })
+                        }
+                      />
+                    </ErrorBoundary>
                   ))}
                 </div>
 
