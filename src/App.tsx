@@ -10,6 +10,8 @@ import LoginPage from "./pages/LoginPage";
 import MyLists from "./pages/MyListsPage";
 import ListPage from "./pages/ListPage";
 import { useMediaQueries } from "./contexts/MediaQueriesContext";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "./components/ErrorFallback";
 
 const App = () => {
   const location = useLocation();
@@ -27,7 +29,18 @@ const App = () => {
         {/** This renders current location or the origin page
          * before Modal Page was activated. */}
         <Routes location={isSmUp ? backgroundLocation || location : location}>
-          <Route path="/search" element={<SearchResults />} />
+          <Route
+            path="/search"
+            element={
+              <ErrorBoundary
+                fallbackRender={(props) => (
+                  <ErrorFallback className="h-[100vh]" {...props} displayMessage />
+                )}
+              >
+                <SearchResults />
+              </ErrorBoundary>
+            }
+          />
           <Route path="/" element={<Home />} />
           <Route
             path="/movies"

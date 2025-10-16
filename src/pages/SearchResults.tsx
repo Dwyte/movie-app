@@ -9,6 +9,8 @@ import PageContainer from "../components/PageContainer";
 import Skeleton from "../components/Skeleton";
 import { useState } from "react";
 import ScrollToTop from "../components/ScrollToTop";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "../components/ErrorFallback";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
@@ -34,7 +36,6 @@ const SearchResults = () => {
   const isLoadingMediaImages =
     results && !results.every((m) => loadedMedia[m.id]);
 
-
   const renderResults = () => {
     if (isFetching) {
       return Array.from({ length: 30 }, (_, i) => (
@@ -44,20 +45,22 @@ const SearchResults = () => {
 
     if (results) {
       return results.map((media) => (
-        <div key={media.id} className="relative">
-          {isLoadingMediaImages && <Skeleton className="absolute inset-0" />}
-          <MediaCard
-            key={media.id}
-            media={media}
-            onImageLoad={() =>
-              setLoadedMedia((p) => {
+        <ErrorBoundary fallbackRender={(props) => <ErrorFallback {...props} />}>
+          <div key={media.id} className="relative">
+            {isLoadingMediaImages && <Skeleton className="absolute inset-0" />}
 
-                return { ...p, [media.id]: true };
-              })
-            }
-            flexible
-          />
-        </div>
+            <MediaCard
+              key={media.id}
+              media={media}
+              onImageLoad={() =>
+                setLoadedMedia((p) => {
+                  return { ...p, [media.id]: true };
+                })
+              }
+              flexible
+            />
+          </div>
+        </ErrorBoundary>
       ));
     }
   };
