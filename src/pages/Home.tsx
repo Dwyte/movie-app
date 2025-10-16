@@ -13,6 +13,8 @@ import {
 import ScrollToTop from "../components/ScrollToTop";
 import { useEffect, useState } from "react";
 import { MediaType } from "../misc/types";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "../components/ErrorFallback";
 
 const discoveryMediaConfigs = [...discoveryMovieConfigs, ...discoveryTVConfigs];
 const randomIndex = (length: number) => Math.ceil(Math.random() * length) - 1;
@@ -118,11 +120,21 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
     <div>
       <ScrollToTop />
       {/* If there's no mediaType we randomly choose between movie or tv type to show in Hero */}
-      <HeroSection
-        mediaType={
-          mediaType ? mediaType : Math.random() >= 0.5 ? "movie" : "tv"
-        }
-      />
+      <ErrorBoundary
+        fallbackRender={(props) => (
+          <ErrorFallback
+            className="h-150 sm:h-[100vh]"
+            {...props}
+            displayMessage
+          />
+        )}
+      >
+        <HeroSection
+          mediaType={
+            mediaType ? mediaType : Math.random() >= 0.5 ? "movie" : "tv"
+          }
+        />
+      </ErrorBoundary>
 
       <div className="relative z-20">
         <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-175px] sm:pt-6 sm:pb-6">
@@ -132,13 +144,15 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
 
             if (mediaItems?.length === 0 && !isFetching) return;
             return (
-              <MediaItemsRow
-                style={{ position: "relative", zIndex: 1000 - index }}
-                title={mediaSection.title}
-                key={mediaSection.id}
-                className="sm:mt-[-42px]"
-                mediaItems={mediaItems}
-              />
+              <ErrorBoundary fallbackRender={(props) => null}>
+                <MediaItemsRow
+                  style={{ position: "relative", zIndex: 1000 - index }}
+                  title={mediaSection.title}
+                  key={mediaSection.id}
+                  className="sm:mt-[-42px]"
+                  mediaItems={mediaItems}
+                />
+              </ErrorBoundary>
             );
           })}
         </div>
