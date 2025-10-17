@@ -144,11 +144,13 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
 
             if (mediaItems?.length === 0 && !isFetching) return;
             return (
-              <ErrorBoundary fallbackRender={(props) => null}>
+              <ErrorBoundary
+                key={mediaSection.id}
+                fallbackRender={(props) => null}
+              >
                 <MediaItemsRow
                   style={{ position: "relative", zIndex: 1000 - index }}
                   title={mediaSection.title}
-                  key={mediaSection.id}
                   className="sm:mt-[-42px]"
                   mediaItems={mediaItems}
                 />

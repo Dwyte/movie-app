@@ -199,9 +199,9 @@ const MediaItemsRow = ({
                   {mediaItems.map((mediaItem) => (
                     <ErrorBoundary
                       fallbackRender={(props) => <ErrorFallback {...props} />}
+                      key={mediaItem.id}
                     >
                       <MediaCard
-                        key={mediaItem.id}
                         media={mediaItem}
                         onImageLoad={() =>
                           setIsMediaCardsLoaded((p) => {

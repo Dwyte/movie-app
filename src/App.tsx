@@ -10,8 +10,7 @@ import LoginPage from "./pages/LoginPage";
 import MyLists from "./pages/MyListsPage";
 import ListPage from "./pages/ListPage";
 import { useMediaQueries } from "./contexts/MediaQueriesContext";
-import { ErrorBoundary } from "react-error-boundary";
-import ErrorFallback from "./components/ErrorFallback";
+import RouteErrorBoundary from "./components/RouteErrorBoundary";
 
 const App = () => {
   const location = useLocation();
@@ -32,30 +31,83 @@ const App = () => {
           <Route
             path="/search"
             element={
-              <ErrorBoundary
-                fallbackRender={(props) => (
-                  <ErrorFallback className="h-[100vh]" {...props} displayMessage />
-                )}
-              >
+              <RouteErrorBoundary>
                 <SearchResults />
-              </ErrorBoundary>
+              </RouteErrorBoundary>
             }
           />
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={
+              <RouteErrorBoundary>
+                <Home />
+              </RouteErrorBoundary>
+            }
+          />
           <Route
             path="/movies"
-            element={<Home key="movie" mediaType="movie" />}
+            element={
+              <RouteErrorBoundary key="movie">
+                <Home mediaType="movie" />
+              </RouteErrorBoundary>
+            }
           />
-          <Route path="/series" element={<Home key="tv" mediaType="tv" />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="/mylists" element={<MyLists />} />
-          <Route path="/list/:listId" element={<ListPage />} />
+          <Route
+            path="/series"
+            element={
+              <RouteErrorBoundary key="tv">
+                <Home mediaType="tv" />
+              </RouteErrorBoundary>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <RouteErrorBoundary>
+                <LoginPage />
+              </RouteErrorBoundary>
+            }
+          />
+          <Route
+            path="/test"
+            element={
+              <RouteErrorBoundary>
+                <Test />
+              </RouteErrorBoundary>
+            }
+          />
+          <Route
+            path="/mylists"
+            element={
+              <RouteErrorBoundary>
+                <MyLists />
+              </RouteErrorBoundary>
+            }
+          />
+          <Route
+            path="/list/:listId"
+            element={
+              <RouteErrorBoundary>
+                <ListPage />
+              </RouteErrorBoundary>
+            }
+          />
           {/** In mobile, render the MoviePage as standalone page. */}
-          <Route path="/tv/:mediaId/*" element={<MediaPage mediaType="tv" />} />
+          <Route
+            path="/tv/:mediaId/*"
+            element={
+              <RouteErrorBoundary>
+                <MediaPage mediaType="tv" />
+              </RouteErrorBoundary>
+            }
+          />
           <Route
             path="/movie/:mediaId/*"
-            element={<MediaPage mediaType="movie" />}
+            element={
+              <RouteErrorBoundary>
+                <MediaPage mediaType="movie" />
+              </RouteErrorBoundary>
+            }
           />
         </Routes>
 
@@ -64,11 +116,19 @@ const App = () => {
           <Routes>
             <Route
               path="/tv/:mediaId/*"
-              element={<MediaPage mediaType="tv" />}
+              element={
+                <RouteErrorBoundary isModal>
+                  <MediaPage mediaType="tv" />
+                </RouteErrorBoundary>
+              }
             />
             <Route
               path="/movie/:mediaId/*"
-              element={<MediaPage mediaType="movie" />}
+              element={
+                <RouteErrorBoundary isModal>
+                  <MediaPage mediaType="movie" />
+                </RouteErrorBoundary>
+              }
             />
           </Routes>
         )}
