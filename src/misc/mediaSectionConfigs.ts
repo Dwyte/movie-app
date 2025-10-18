@@ -2,8 +2,9 @@ import { UseQueryOptions } from "@tanstack/react-query";
 
 import { getTrendingMediaItems, getDiscoverMediaItems } from "./tmdbAPI";
 import { MOVIE_GENRES, TV_SHOWS_GENRES } from "./constants";
-import { Media, MediaType } from "./types";
+import { Media, MediaSection, MediaType } from "./types";
 import { formatDateString } from "./utils";
+import _ from "lodash";
 
 export interface MediaSectionConfig {
   id: string;
@@ -430,3 +431,35 @@ export const discoveryTVConfigs: MediaSectionConfig[] = [
     },
   },
 ];
+
+export const createMediaSectionConfigs = (mediaType?: MediaType) => {
+  const discoveryMediaConfigs = [
+    ...discoveryMovieConfigs,
+    ...discoveryTVConfigs,
+  ];
+
+  const discoveryConfigs = {
+    tv: discoveryTVConfigs,
+    movie: discoveryMovieConfigs,
+  };
+
+  const trendingConfigs = {
+    tv: trendingTVConfigs,
+    movie: trendingMovieConfigs,
+  };
+
+  if (mediaType) {
+    return [
+      _.sample(trendingConfigs[mediaType]) as MediaSectionConfig,
+      ..._.shuffle(discoveryConfigs[mediaType]),
+    ];
+  }
+
+  return [
+    _.sample([
+      ...trendingMovieConfigs,
+      ...trendingTVConfigs,
+    ]) as MediaSectionConfig,
+    ..._.shuffle(discoveryMediaConfigs),
+  ];
+};

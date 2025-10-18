@@ -2,7 +2,6 @@ import { MOVIE_GENRES, TV_SHOWS_GENRES } from "./constants";
 import {
   Media,
   MediaDetails,
-  MediaType,
   Movie,
   MovieDetails,
   TV,

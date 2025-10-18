@@ -5,10 +5,7 @@ import MediaItemsRow from "../components/MediaItemsRow";
 
 import {
   MediaSectionConfig,
-  discoveryMovieConfigs,
-  discoveryTVConfigs,
-  trendingTVConfigs,
-  trendingMovieConfigs,
+  createMediaSectionConfigs,
 } from "../misc/mediaSectionConfigs";
 import ScrollToTop from "../components/ScrollToTop";
 import { useEffect, useState } from "react";
@@ -16,90 +13,26 @@ import { MediaType } from "../misc/types";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "../components/ErrorFallback";
 
-const discoveryMediaConfigs = [...discoveryMovieConfigs, ...discoveryTVConfigs];
-const randomIndex = (length: number) => Math.ceil(Math.random() * length) - 1;
-
-const discoveryConfigs = {
-  tv: discoveryTVConfigs,
-  movie: discoveryMovieConfigs,
-};
-
-const trendingConfigs = {
-  tv: trendingTVConfigs,
-  movie: trendingMovieConfigs,
-};
-
 const Home = ({ mediaType }: { mediaType?: MediaType }) => {
-  const [configs, setConfigs] = useState<MediaSectionConfig[]>([]);
+  const [configs, setConfigs] = useState<MediaSectionConfig[]>(() =>
+    createMediaSectionConfigs(mediaType)
+  );
+
+  const [activeMediaRowCount, setActiveMediaRowCount] = useState(1);
+
+  const activeConfigs = configs.slice(0, activeMediaRowCount);
 
   const mediaSectionsQueries = useQueries({
-    queries: configs.map((config) => config.useQuery),
+    queries: activeConfigs.map((config) => config.useQuery),
     combine: (results) => {
       return results.map((result, index) => {
         return {
-          mediaSection: configs[index],
+          mediaSection: activeConfigs[index],
           useQueryResult: result,
         };
       });
     },
   });
-
-  const pickNewMediaSection = () => {
-    setConfigs((p) => {
-      const configsPool = !!mediaType
-        ? discoveryConfigs[mediaType]
-        : discoveryMediaConfigs;
-
-      const unpickedConfigs = configsPool.filter(
-        (mediaConfig) => !p.find((config) => config.id === mediaConfig.id)
-      );
-
-      if (unpickedConfigs.length) {
-        const newConfig = unpickedConfigs[randomIndex(unpickedConfigs.length)];
-        return [...p, newConfig];
-      } else {
-        console.log(
-          "You've reached the end of the page. No More Media Section Configs Available."
-        );
-      }
-      return p;
-    });
-  };
-
-  useEffect(() => {
-    let initialMediaSections: MediaSectionConfig[] = [];
-
-    if (mediaType) {
-      const discoveryConfigsPool = discoveryConfigs[mediaType];
-      const trendingConfigsPool = trendingConfigs[mediaType];
-
-      const firstIndex = randomIndex(discoveryConfigsPool.length);
-      let secondIndex = randomIndex(discoveryConfigsPool.length);
-      while (firstIndex === secondIndex) {
-        secondIndex = randomIndex(discoveryConfigsPool.length);
-      }
-
-      initialMediaSections = [
-        trendingConfigsPool[randomIndex(trendingConfigsPool.length)],
-        discoveryConfigsPool[firstIndex],
-        discoveryConfigsPool[secondIndex],
-      ];
-    } else {
-      const trendingMovies =
-        trendingMovieConfigs[randomIndex(trendingMovieConfigs.length)];
-      const trendingTVShows =
-        trendingTVConfigs[randomIndex(trendingTVConfigs.length)];
-
-      initialMediaSections = [
-        trendingMovies,
-        trendingTVShows,
-        discoveryMovieConfigs[randomIndex(discoveryMovieConfigs.length)],
-        discoveryTVConfigs[randomIndex(discoveryTVConfigs.length)],
-      ];
-    }
-
-    setConfigs(initialMediaSections);
-  }, []);
 
   useEffect(() => {
     document.addEventListener("scroll", () => {
@@ -111,7 +44,8 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
         console.log(
           "React the bottom of the page, looking for more media lists to display."
         );
-        pickNewMediaSection();
+
+        setActiveMediaRowCount((p) => p + 1);
       }
     });
   }, []);
@@ -137,7 +71,7 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
       </ErrorBoundary>
 
       <div className="relative z-20">
-        <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-175px] sm:pt-6 sm:pb-6">
+        <div className="max-w-[100%] flex flex-col py-6 sm:absolute sm:top-[-175px] sm:pt-6 sm:pb-18">
           {mediaSectionsQueries.map((query, index) => {
             const { mediaSection, useQueryResult } = query;
             const { data: mediaItems, isFetching } = useQueryResult;
