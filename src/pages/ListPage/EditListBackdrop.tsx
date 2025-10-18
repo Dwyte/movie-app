@@ -18,7 +18,7 @@ const EditListBackdrop = ({
 
   return (
     <div
-      className={`grid grid-cols-1 max-w-200 bg-[#101010] gap-2 max-h-120 scrollable p-2 rounded-sm focus-within:outline ${
+      className={`grid grid-cols-1 max-w-200 bg-[#101010] gap-2 max-h-120 scrollable p-2  focus-within:outline ${
         listResults.length === 2 && "grid-cols-2"
       } ${listResults.length > 3 && "grid-cols-2 sm:grid-cols-3"}
         `}
@@ -47,7 +47,7 @@ const EditListBackdrop = ({
               onChange={handleClick}
             />
             <img
-              className="rounded-sm"
+              className=""
               src={getTMDBImageURL(media.backdrop_path)}
             />
 

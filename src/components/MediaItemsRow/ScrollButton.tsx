@@ -27,7 +27,7 @@ const ScrollButton = ({ direction, onClick, isVisible = true }: Props) => {
     >
       <button
         onClick={onClick}
-        className="btn rounded-full p-2 cursor-pointer"
+        className="btn  p-2 cursor-pointer"
         data-variant="secondary-icon"
       >
         <Icon className="text-xl" />

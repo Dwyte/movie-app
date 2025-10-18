@@ -195,7 +195,7 @@ const MediaItemsRow = ({
                 {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
                 <div className="shrink-0 w-2 sm:w-10 bg-white"></div>
 
-                <div className="flex items-center gap-2 group-focus/scroll:outline rounded-sm">
+                <div className="flex items-center gap-2 group-focus/scroll:outline ">
                   {mediaItems.map((mediaItem) => (
                     <ErrorBoundary
                       fallbackRender={(props) => <ErrorFallback {...props} />}

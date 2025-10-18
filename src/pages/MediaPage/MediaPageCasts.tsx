@@ -47,7 +47,7 @@ const MediaPageCasts = ({ mediaItemCredits }: Props) => {
                   }`}
                 >
                   <img
-                    className={`rounded-sm aspect-square object-cover`}
+                    className={` aspect-square object-cover`}
                     src={
                       cast.profile_path
                         ? getTMDBImageURL(cast.profile_path, "200")

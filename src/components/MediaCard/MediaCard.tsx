@@ -99,7 +99,7 @@ const MediaCard = ({
        * static div and scale up on hover etc. */}
 
       <div
-        className={`rounded-sm overflow-hidden focus-within:outline absolute group transition-transform 
+        className={` overflow-hidden focus-within:outline absolute group transition-transform 
           ${isCardActive && isSmUp && "scale-115 drop-shadow-md drop-shadow-black"}`}
       >
         <Link

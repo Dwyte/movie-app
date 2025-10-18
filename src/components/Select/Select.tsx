@@ -51,13 +51,13 @@ const Select = <SelectValueType,>({
       <div ref={ref} className="relative">
         <button
           onClick={() => setIsOpen((prev) => !prev)}
-          className="w-full flex items-center gap-2 p-2 border border-stone-400 rounded-sm bg-black/0 shadow-sm text-left cursor-pointer"
+          className="w-full flex items-center gap-2 p-2 border border-stone-400  bg-black/0 shadow-sm text-left cursor-pointer"
         >
           <span className="flex-1">{selectedLabel || "Select an option"}</span>
           <BsChevronDown />
         </button>
         {isOpen && (
-          <div className="w-full absolute z-10 mt-1 bg-black border border-stone-400 rounded-sm shadow-md max-h-60 scrollable">
+          <div className="w-full absolute z-10 mt-1 bg-black border border-stone-400  shadow-md max-h-60 scrollable">
             {children}
           </div>
         )}

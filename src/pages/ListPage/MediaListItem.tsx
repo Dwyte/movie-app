@@ -30,12 +30,11 @@ export const MediaListItemSkeleton = () => {
   return (
     <div className="flex items-center gap-5 py-[1px] sm:px-4 sm:border-b sm:border-b-stone-800">
       <div className="hidden sm:block w-4"></div>
-      <Skeleton rounded="rounded-full" className="hidden sm:block h-6 w-6" />
+      <Skeleton rounded="" className="hidden sm:block h-6 w-6" />
 
       <div className="flex items-center w-full gap-2">
         <Skeleton
           className="h-42 sm:h-24 aspect-[1/1.5] sm:aspect-[16/9]"
-          rounded="rounded-sm sm:rounded-none"
         />
 
         <div className="flex flex-col gap-4 flex-1">
@@ -53,8 +52,8 @@ export const MediaListItemSkeleton = () => {
               <Skeleton className="h-6 w-32" />
             </div>
             <div className="flex gap-2 sm:gap-4 ms-center justify-end">
-              <Skeleton className="w-8 h-8" rounded="rounded-full" />
-              <Skeleton className="w-8 h-8" rounded="rounded-full" />
+              <Skeleton className="w-8 h-8" rounded="" />
+              <Skeleton className="w-8 h-8" rounded="" />
             </div>
           </div>
 
@@ -95,7 +94,7 @@ const MediaListItem = ({
       <img
         src={thumbnail}
         alt=""
-        className="h-42 sm:h-24 rounded-sm sm:rounded-none"
+        className="h-42 sm:h-24"
         onLoad={onLoad}
       />
 
@@ -132,7 +131,7 @@ const MediaListItem = ({
             >
               <button
                 onClick={() => onComment(media)}
-                className="btn rounded-full p-2"
+                className="btn  p-2"
                 disabled={isDeleting}
                 data-variant="secondary-icon"
               >
@@ -140,7 +139,7 @@ const MediaListItem = ({
               </button>
               <button
                 onClick={() => onDelete(mediaRef)}
-                className="btn rounded-full p-2"
+                className="btn  p-2"
                 disabled={isDeleting}
                 data-variant="secondary-icon"
               >
@@ -151,7 +150,7 @@ const MediaListItem = ({
 
           {!isAuthorized && (
             <button
-              className="btn rounded-full p-3"
+              className="btn  p-3"
               aria-label={`Open ${media.title} media page.`}
               data-variant="secondary-icon"
             >

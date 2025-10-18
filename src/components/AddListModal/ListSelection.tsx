@@ -83,7 +83,7 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
         <button
           key={listItem.id}
           onClick={() => handleSelect(listItem.id)}
-          className="btn rounded-sm text-white font-normal text-lg p-4 sm:text-base sm:p-4"
+          className="btn  text-white font-normal text-lg p-4 sm:text-base sm:p-4"
           data-variant="secondary"
         >
           <span className="flex-1 text-left">{listItem.name}</span>
@@ -97,14 +97,14 @@ const ListSelection = ({ mediaRef, onCreate, onClose }: Props) => {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="bg-[#101010] rounded-sm">
+      <div className="bg-[#101010] ">
         <div className="flex flex-col flex-1 max-h-75 p-2 gap-2 sm:overflow-y scrollable">
           {renderList()}
         </div>
       </div>
       <button
         onClick={onCreate}
-        className="btn p-4 justify-center gap-1 text-lg text-center rounded-sm sm:text-base sm:p-4"
+        className="btn p-4 justify-center gap-1 text-lg text-center  sm:text-base sm:p-4"
         data-variant="primary"
       >
         <BsPlusLg className="text-2xl sm:text-xl" />

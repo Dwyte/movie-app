@@ -38,7 +38,7 @@
   }
 
   * {
-    @apply focus-visible:outline-1 focus-visible:rounded-sm outline-white outline-offset-1;
+    @apply focus-visible:outline-1 outline-white outline-offset-1;
   }
 }
 
@@ -48,7 +48,7 @@
   }
 
   .btn {
-    @apply rounded-sm p-2 font-semibold cursor-pointer flex items-center;
+    @apply p-2 font-semibold cursor-pointer flex items-center rounded-none;
     transition: background 150ms ease;
   }
 

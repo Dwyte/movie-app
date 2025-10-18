@@ -83,10 +83,10 @@ const LoginPage = () => {
         src={heroImage}
         alt=""
       />
-      <div className="absolute p-8 bg-black/90 rounded-sm sm:min-w-125">
+      <div className="absolute p-8 bg-black/90  sm:min-w-125">
         <h2 className="text-2xl mt-0 mb-4">Sign-in</h2>
         <button
-          className="w-full font-bold bg-red-700 px-8 py-4 rounded-sm cursor-pointer hover:opacity-70"
+          className="w-full font-bold bg-red-700 px-8 py-4  cursor-pointer hover:opacity-70"
           onClick={startLogin}
           disabled={!requestToken?.success}
         >

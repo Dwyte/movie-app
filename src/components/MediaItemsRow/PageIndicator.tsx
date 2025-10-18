@@ -9,7 +9,7 @@ const PageIndicator = ({ totalPages, currentPage }: Props) => {
       {Array.from({ length: totalPages }, (_, index) => (
         <div
           key={index}
-          className={`h-0.5 rounded-sm ${
+          className={`h-0.5  ${
             currentPage === index ? "w-5 bg-white" : "w-2 bg-stone-400"
           } `}
         ></div>

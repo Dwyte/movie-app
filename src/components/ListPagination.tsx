@@ -23,7 +23,7 @@ const ListPagination = ({
       >
         <BsChevronLeft /> PREV
       </button>
-      <div className="px-6 py-2 flex gap-2 bg-stone-800 rounded-sm">
+      <div className="px-6 py-2 flex gap-2 bg-stone-800 ">
         <span>{currentPage}</span> OF
         <span>{totalPages}</span>
       </div>

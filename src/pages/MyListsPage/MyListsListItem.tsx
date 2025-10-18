@@ -16,12 +16,11 @@ export const MyListsListItemSkeleton = () => {
   return (
     <div className="flex items-center gap-5 py-[1px] sm:px-4 sm:border-b sm:border-b-stone-800">
       <div className="hidden sm:block w-4"></div>
-      <Skeleton rounded="rounded-full" className="hidden sm:block h-6 w-6" />
+      <Skeleton rounded="" className="hidden sm:block h-6 w-6" />
       <div className="flex items-center justify-between w-full">
         <div className="flex w-100 items-center gap-2">
           <Skeleton
             className="w-42 aspect-[16/9]"
-            rounded="rounded-sm sm:rounded-none"
           />
 
           <div className="flex flex-col gap-2 sm:flex-col">
@@ -31,7 +30,7 @@ export const MyListsListItemSkeleton = () => {
         </div>
 
         <Skeleton className="h-5 w-28" />
-        <Skeleton className="w-4 h-4" rounded="rounded-full" />
+        <Skeleton className="w-4 h-4" rounded="" />
       </div>
       <div className="hidden sm:block"></div>
     </div>

@@ -26,13 +26,13 @@ const ModalContainer = ({ modalTitle, children, onClose, ...rest }: Props) => {
     >
       <div
         onMouseDown={(e) => e.stopPropagation()}
-        className="fixed left-0 right-0 bottom-0 flex flex-col bg-[var(--main-bg)] rounded-t-xl sm:static sm:min-w-150 sm:rounded-lg overflow-hidden"
+        className="fixed left-0 right-0 bottom-0 flex flex-col bg-[var(--main-bg)] sm:static sm:min-w-150 overflow-hidden"
       >
         <div className="flex items-center justify-between px-8 py-6 bg-[#101010]">
           <h2 className="m-0">{modalTitle}</h2>
           <button
             onClick={onClose}
-            className="btn rounded-full"
+            className="btn "
             data-variant="secondary-icon"
           >
             <BsXLg />

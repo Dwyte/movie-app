@@ -27,10 +27,10 @@ const ButtonsSkeleton = () => {
   return (
     <div className="flex items-center gap-4 w-full h-9">
       <Skeleton className="h-full min-w-33" />
-      <Skeleton className="h-full aspect-square" rounded="rounded-full" />
-      <Skeleton className="h-full aspect-square" rounded="rounded-full" />
+      <Skeleton className="h-full aspect-square" rounded="" />
+      <Skeleton className="h-full aspect-square" rounded="" />
       <div className="flex-1"></div>
-      <Skeleton className="h-full aspect-square" rounded="rounded-full" />
+      <Skeleton className="h-full aspect-square" rounded="" />
     </div>
   );
 };
@@ -102,7 +102,7 @@ const MediaPageHero = ({
     <div className="relative bg-[var(--media-page-bg)] w-full">
       <button
         onClick={onClose}
-        className="btn rounded-full absolute right-3 top-3 z-50"
+        className="btn  absolute right-3 top-3 z-50"
         data-variant="secondary-icon"
       >
         <BsXLg />
@@ -110,12 +110,7 @@ const MediaPageHero = ({
 
       <div className="relative w-full aspect-[16/9]">
         <div className="hidden sm:block absolute inset-0 bottom-[-1px] bg-linear-to-t from-[var(--media-page-bg)] to-[var(--media-card-bg)]/0 via-[var(--main-bg)]/50 via-25% to-50% z-10"></div>
-        {!isBackdropLoaded && (
-          <Skeleton
-            className="absolute inset-0"
-            rounded="rounded-none sm:rounded-t-sm"
-          />
-        )}
+        {!isBackdropLoaded && <Skeleton className="absolute inset-0" />}
 
         {backdropImgSrc && (
           <Img
@@ -178,22 +173,16 @@ const MediaPageHero = ({
                     media_type: mediaItemDetails.media_type,
                   });
                 }}
-                className="btn rounded-full"
+                className="btn "
                 data-variant="secondary-icon"
               >
                 <BsPlusLg />
               </button>
-              <button
-                className="btn rounded-full"
-                data-variant="secondary-icon"
-              >
+              <button className="btn " data-variant="secondary-icon">
                 <BsStar />
               </button>
               <div className="flex-1"></div>
-              <button
-                className="btn rounded-full opacity-65"
-                data-variant="secondary-icon"
-              >
+              <button className="btn  opacity-65" data-variant="secondary-icon">
                 <RiDownloadLine />
               </button>
             </div>

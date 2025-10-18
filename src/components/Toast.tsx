@@ -25,7 +25,7 @@ interface Props {
 const Toast = ({ children, position, accentColor }: Props) => {
   return (
     <div
-      className={`fade-in fixed bg-linear-to-r via-10% to-30% bg-stone-900 ${accentColorStyles[accentColor]} ${positionStyles[position]} w-max shadow-xl shadow-black/75 font-bold rounded-sm overflow-hidden transform translate-[-50%] p-6 text-white z-100`}
+      className={`fade-in fixed bg-linear-to-r via-10% to-30% bg-stone-900 ${accentColorStyles[accentColor]} ${positionStyles[position]} w-max shadow-xl shadow-black/75 font-bold  overflow-hidden transform translate-[-50%] p-6 text-white z-100`}
     >
       <div>{children}</div>
     </div>

@@ -23,7 +23,7 @@ const EpisodeItem = ({ episode, onLoad }: Props) => {
       </span>
       <img
         src={thumbnailSrc}
-        className="aspect-16/10 object-cover rounded-sm max-w-[200px]"
+        className="aspect-16/10 object-cover  max-w-[200px]"
         alt=""
         onLoad={onLoad}
       />

@@ -41,7 +41,7 @@ const ListDetailsSection = ({
   };
 
   return (
-    <div className="relative mb-4 rounded-sm overflow-hidden">
+    <div className="relative mb-4  overflow-hidden">
       <img className="h-80 sm:h-80 sm:w-full object-cover" src={thumbnail} />
       <div className="bg-black/33 w-full h-full absolute top-0"></div>
 
@@ -49,28 +49,28 @@ const ListDetailsSection = ({
         <div className="absolute top-0 right-0 p-4 flex flex-col gap-2 z-20">
           <button
             onClick={handleShare}
-            className="btn rounded-full p-3"
+            className="btn  p-3"
             data-variant="secondary-icon"
           >
             <BsBoxArrowUpRight />
           </button>
           <button
             onClick={onEditBackdrop}
-            className="btn rounded-full p-3"
+            className="btn  p-3"
             data-variant="secondary-icon"
           >
             <BsImages />
           </button>
           <button
             onClick={onEditDetails}
-            className="btn rounded-full p-3"
+            className="btn  p-3"
             data-variant="secondary-icon"
           >
             <BsPencilSquare />
           </button>
           <button
             onClick={onDeleteList}
-            className="btn rounded-full p-3"
+            className="btn  p-3"
             data-variant="secondary-icon"
           >
             <BsTrash />

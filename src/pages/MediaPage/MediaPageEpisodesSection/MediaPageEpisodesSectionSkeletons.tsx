@@ -13,7 +13,7 @@ export const EpisodeSkeleton = () => {
   return (
     <div className="flex py-2 flex-col sm:py-4 sm:border-b-stone-800 sm:border-b-1">
       <div className="flex sm:px-4 gap-3 items-center">
-        <Skeleton className="hidden sm:block h-5 w-5" rounded="rounded-full" />
+        <Skeleton className="hidden sm:block h-5 w-5" rounded="" />
         <div className="flex gap-4 w-full">
           <Skeleton className="h-full w-full max-w-[201px] aspect-[16/10]" />
 

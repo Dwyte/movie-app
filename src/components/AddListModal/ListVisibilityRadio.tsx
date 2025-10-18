@@ -25,7 +25,7 @@ const ListVisibilityRadio = ({ value, onChange }: Props) => {
   return (
     <fieldset>
       <legend className="font-bold mb-2">Visibility</legend>
-      <div className="rounded-sm overflow-hidden has-[:focus-visible]:outline">
+      <div className=" overflow-hidden has-[:focus-visible]:outline">
         {visibilityOptions.map((option) => {
           return (
             <label

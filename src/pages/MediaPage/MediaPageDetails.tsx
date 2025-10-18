@@ -162,7 +162,7 @@ const MediaPageDetails = ({
 
         {rankInTrendingToday !== -1 && (
           <div className="flex items-center gap-2">
-            <div className="flex flex-col items-center leading-none text-[8px] font-bold bg-red-600 p-[3px] rounded-[2px]">
+            <div className="flex flex-col items-center leading-none text-[8px] font-bold bg-red-600 p-[3px]">
               <span>TOP</span> <span className="text-[11px]">10</span>
             </div>
             <h3 className="font-bold text-lg">
