@@ -22,6 +22,7 @@ import MediaListItem, { MediaListItemSkeleton } from "./MediaListItem";
 import EmptyListPlaceholder from "./EmptyListPlaceholder";
 import EditListModal from "./EditListModal";
 import ListDetailsSection from "./ListDetailsSection";
+import ListPageListItem from "./ListPageListItem";
 
 export enum EditListState {
   BACKDROP = "BACKDROP",
@@ -183,9 +184,10 @@ const ListPage = () => {
   const [loadedMediaRecord, setLoadedMediaRecord] = useState<{
     [key: number]: boolean;
   }>({});
-  const isDoneLoadingListItems =
+  const isDoneLoadingListItems = Boolean(
     listDetails &&
-    listDetails.results.every((media) => loadedMediaRecord[media.id]);
+      listDetails.results.every((media) => loadedMediaRecord[media.id])
+  );
 
   const handleDeleteList = () => {
     showConfirmation(
@@ -252,36 +254,21 @@ const ListPage = () => {
               listDetails.comments[`${media.media_type}:${media.id}`];
 
             return (
-              <li className="relative" key={media.id}>
-                {!isDoneLoadingListItems && (
-                  <div className="absolute inset-0">
-                    <MediaListItemSkeleton />
-                  </div>
-                )}
-
-                <Link
-                  to={`/${media.media_type}/${media.id}`}
-                  state={{ backgroundLocation: location }}
-                  className={`group outline-none transition-opacity ${
-                    isDoneLoadingListItems ? "opacity-100" : "opacity-0"
-                  }`}
-                >
-                  <ListItemDiv index={index + 1}>
-                    <MediaListItem
-                      media={media}
-                      comment={comment}
-                      onDelete={isUserOwner ? handleDeleteListItem : null}
-                      isDeleting={deleteListItemMutation.isPending}
-                      onComment={isUserOwner ? handleListItemEdit : null}
-                      onLoad={() =>
-                        setLoadedMediaRecord((p) => {
-                          return { ...p, [media.id]: true };
-                        })
-                      }
-                    />
-                  </ListItemDiv>
-                </Link>
-              </li>
+              <ListPageListItem
+                key={media.id}
+                index={index}
+                media={media}
+                comment={comment}
+                isDeleting={deleteListItemMutation.isPending}
+                isDoneLoadingListItems={isDoneLoadingListItems}
+                onDelete={isUserOwner ? handleDeleteListItem : null}
+                onComment={isUserOwner ? handleListItemEdit : null}
+                onLoad={() =>
+                  setLoadedMediaRecord((p) => {
+                    return { ...p, [media.id]: true };
+                  })
+                }
+              />
             );
           })}
 
