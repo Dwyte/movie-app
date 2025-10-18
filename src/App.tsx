@@ -1,16 +1,18 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 
-import SearchResults from "./pages/SearchResults";
-import MediaPage from "./pages/MediaPage";
 import Home from "./pages/Home";
 
 import Header from "./components/Header";
-import Test from "./pages/Test";
-import LoginPage from "./pages/LoginPage";
-import MyLists from "./pages/MyListsPage";
-import ListPage from "./pages/ListPage";
 import { useMediaQueries } from "./contexts/MediaQueriesContext";
 import RouteErrorBoundary from "./components/RouteErrorBoundary";
+
+const SearchResults = lazy(() => import("./pages/SearchResults"));
+const TestPage = lazy(() => import("./pages/Test"));
+const MyListsPage = lazy(() => import("./pages/MyListsPage"));
+const ListPage = lazy(() => import("./pages/ListPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const MediaPage = lazy(() => import("./pages/MediaPage/MediaPage"));
 
 const App = () => {
   const location = useLocation();
@@ -32,7 +34,9 @@ const App = () => {
             path="/search"
             element={
               <RouteErrorBoundary>
-                <SearchResults />
+                <Suspense>
+                  <SearchResults />
+                </Suspense>
               </RouteErrorBoundary>
             }
           />
@@ -64,7 +68,9 @@ const App = () => {
             path="/login"
             element={
               <RouteErrorBoundary>
-                <LoginPage />
+                <Suspense>
+                  <LoginPage />
+                </Suspense>
               </RouteErrorBoundary>
             }
           />
@@ -72,7 +78,9 @@ const App = () => {
             path="/test"
             element={
               <RouteErrorBoundary>
-                <Test />
+                <Suspense>
+                  <TestPage />
+                </Suspense>
               </RouteErrorBoundary>
             }
           />
@@ -80,7 +88,9 @@ const App = () => {
             path="/mylists"
             element={
               <RouteErrorBoundary>
-                <MyLists />
+                <Suspense>
+                  <MyListsPage />
+                </Suspense>
               </RouteErrorBoundary>
             }
           />
@@ -97,7 +107,9 @@ const App = () => {
             path="/tv/:mediaId/*"
             element={
               <RouteErrorBoundary>
-                <MediaPage mediaType="tv" />
+                <Suspense>
+                  <MediaPage mediaType="tv" />
+                </Suspense>
               </RouteErrorBoundary>
             }
           />
@@ -105,7 +117,9 @@ const App = () => {
             path="/movie/:mediaId/*"
             element={
               <RouteErrorBoundary>
-                <MediaPage mediaType="movie" />
+                <Suspense>
+                  <MediaPage mediaType="movie" />
+                </Suspense>
               </RouteErrorBoundary>
             }
           />
@@ -118,7 +132,9 @@ const App = () => {
               path="/tv/:mediaId/*"
               element={
                 <RouteErrorBoundary isModal>
-                  <MediaPage mediaType="tv" />
+                  <Suspense>
+                    <MediaPage mediaType="tv" />
+                  </Suspense>
                 </RouteErrorBoundary>
               }
             />
@@ -126,7 +142,9 @@ const App = () => {
               path="/movie/:mediaId/*"
               element={
                 <RouteErrorBoundary isModal>
-                  <MediaPage mediaType="movie" />
+                  <Suspense>
+                    <MediaPage mediaType="movie" />
+                  </Suspense>
                 </RouteErrorBoundary>
               }
             />
