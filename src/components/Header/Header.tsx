@@ -29,8 +29,10 @@ function Header() {
       <div className="flex items-center justify-between gap-4 mb-4 sm:gap-8">
         {/** Full name Logo in Desktop and Just the Letter N logo in Mobile */}
         <Link to="/">
-          <img className="hidden w-30 sm:block" src={webLogo} alt="logo" />
-          <img className="w-12 sm:hidden" src={mobileLogo} alt="logo" />
+          <picture>
+            <source media="(min-width: 640px)" srcSet={webLogo} />
+            <img className="w-12 sm:w-30" src={mobileLogo} alt="logo" />
+          </picture>
         </Link>
 
         {/**
