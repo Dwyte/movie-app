@@ -3,6 +3,7 @@ import { MediaCreditsAPIResult, MediaDetails } from "../../misc/types";
 import MediaPageEpisodesSection from "./MediaPageEpisodesSection";
 import MediaPageRecommendations from "./MediaPageRecommendations";
 import MediaPageCasts from "./MediaPageCasts";
+import RouteErrorBoundary from "../../components/RouteErrorBoundary";
 
 interface Props {
   mediaItemDetails: MediaDetails | null;
@@ -15,20 +16,28 @@ const MediaPageExtras = ({ mediaItemDetails, mediaItemCredits }: Props) => {
       <Route
         path=""
         element={
-          <MediaPageRecommendations mediaItemDetails={mediaItemDetails} />
+          <RouteErrorBoundary key="recommendations">
+            <MediaPageRecommendations mediaItemDetails={mediaItemDetails} />
+          </RouteErrorBoundary>
         }
       />
       <Route
         path="/casts"
-        element={<MediaPageCasts mediaItemCredits={mediaItemCredits} />}
+        element={
+          <RouteErrorBoundary key="casts">
+            <MediaPageCasts mediaItemCredits={mediaItemCredits} />
+          </RouteErrorBoundary>
+        }
       />
       <Route
         path="/episodes"
         element={
-          <MediaPageEpisodesSection
-            mediaId={mediaItemDetails?.id ? mediaItemDetails.id : null}
-            seasons={mediaItemDetails?.seasons}
-          />
+          <RouteErrorBoundary key="episodes">
+            <MediaPageEpisodesSection
+              mediaId={mediaItemDetails?.id ? mediaItemDetails.id : null}
+              seasons={mediaItemDetails?.seasons}
+            />
+          </RouteErrorBoundary>
         }
       />
     </Routes>
