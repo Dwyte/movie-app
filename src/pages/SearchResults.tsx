@@ -66,7 +66,7 @@ const SearchResults = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer className="px-8 pt-8">
       <ScrollToTop />
       <h1 className="hidden sm:block text-2xl text-stone-500 sm:mb-8">
         Search Results for: <span className="text-white">"{searchQuery}"</span>
