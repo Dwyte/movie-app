@@ -1,15 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --main-bg: #141414;
+  --main-bg: #090909;
   --media-page-bg: #141414;
   --header-bg: #080808;
   --input-bg: #242424;
   --primary-btn-bg: #e1e1e1;
   --secondary-btn-bg: #242424;
   --media-card-bg: #181818;
-  --skeleton-color: #323232;
+  --skeleton-color: #202020;
   --list-border-color: #252525;
+  --light-border-color: #424242;
 
   --primary-btn-bg-hover: #f8f8f8;
   --secondary-btn-bg-hover: #2a2a2a;
@@ -48,7 +49,7 @@
   }
 
   .btn {
-    @apply p-2 font-semibold cursor-pointer flex items-center rounded-none;
+    @apply p-3 font-semibold cursor-pointer flex items-center rounded-none;
     transition: background 150ms ease;
   }
 
@@ -101,7 +102,7 @@
 
   /* Scrollable content but scroll bar not visible */
   .scrollable {
-    @apply overflow-y-scroll;
+    @apply overflow-x-scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
@@ -125,5 +126,21 @@
 
   .modal-backdrop {
     @apply fixed inset-0 bg-black/50 backdrop-blur-xs;
+  }
+}
+
+.popover-content {
+  animation: slideDown 200ms ease-in-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }

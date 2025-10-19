@@ -12,6 +12,7 @@ import Img from "../Img";
 import { useMediaQueries } from "../../contexts/MediaQueriesContext";
 import clsx from "clsx";
 import { Link, LinkProps } from "react-router-dom";
+import { MEDIA_CARD_DIMENSIONS } from "./MediaCard";
 
 interface Props {
   media: Media;
@@ -92,12 +93,10 @@ export const MediaCardThumbnail = ({
       }}
       aria-label={mediaLabel}
     >
-      <div className="relative">
+      <div className="relative w-full h-full">
         {previewImageSource && (
           <Img
-            className={clsx(
-              "w-full h-full aspect-[1/1.5] sm:aspect-[16/9] object-cover"
-            )}
+            className={clsx("w-full h-full object-cover")}
             onLoad={onLoad}
             src={previewImageSource}
             alt={media.title}

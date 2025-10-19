@@ -188,7 +188,7 @@ const MediaItemsRow = ({
 
             <div
               ref={scrollableDiv}
-              className="scrollable flex items-center gap-2 py-1"
+              className="scrollable flex items-center gap-2"
             >
               {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
               <div className="shrink-0 w-2 sm:w-10 bg-white"></div>

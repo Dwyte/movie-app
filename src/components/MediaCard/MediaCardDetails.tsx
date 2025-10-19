@@ -39,7 +39,7 @@ export const MediaCardDetails = ({
   };
 
   return (
-    <div className="p-4 flex flex-col gap-4 bg-[var(--media-card-bg)] text-white shadow-2xl">
+    <div className="p-4 flex flex-col gap-4 text-white shadow-2xl">
       <div className="flex gap-2 text-xl">
         <button
           aria-label="Open Media Page and Play Trailer"
