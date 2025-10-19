@@ -26,5 +26,5 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
-  </StrictMode>
+  </StrictMode>,
 );
