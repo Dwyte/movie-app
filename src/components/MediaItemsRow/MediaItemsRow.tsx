@@ -188,10 +188,10 @@ const MediaItemsRow = ({
 
             <div
               ref={scrollableDiv}
-              className="scrollable flex items-center gap-2"
+              className="scrollable flex items-stretch gap-2"
             >
               {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
-              <div className="shrink-0 w-2 sm:w-10 bg-white"></div>
+              <div className="shrink-0 w-2 sm:w-10 checkered-background"></div>
 
               <div className="flex gap-2">
                 {mediaItems.map((mediaItem) => (
@@ -212,7 +212,7 @@ const MediaItemsRow = ({
               </div>
 
               {/** Acts as right padding/space when the user reaches the last page. */}
-              <div className="shrink-0 w-2 sm:w-4  h-1"></div>
+              <div className="shrink-0 w-2 sm:w-4 scroll-padding checkered-background"></div>
             </div>
           </div>
         </section>

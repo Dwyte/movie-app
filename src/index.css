@@ -129,6 +129,15 @@
   }
 }
 
+.checkered-background {
+  background: repeating-conic-gradient(
+    var(--light-border-color) 0% 25%,
+    /* White for the first quarter of the cone */ #000 25% 50%
+      /* Black for the second quarter */
+  );
+  background-size: 4px 4px;
+  background-repeat: repeat;
+}
 .popover-content {
   animation: slideDown 200ms ease-in-out;
 }
