@@ -39,16 +39,8 @@ export const MediaCardDetails = ({
   };
 
   return (
-    <div className="p-4 flex flex-col gap-4 text-white shadow-2xl">
+    <div className="p-4 flex flex-col items-center gap-4 text-white shadow-2xl">
       <div className="flex gap-2 text-xl">
-        <button
-          aria-label="Open Media Page and Play Trailer"
-          onClick={handlePlay}
-          className="btn"
-          data-variant="primary-icon"
-        >
-          <BsPlayFill />
-        </button>
         <button
           aria-label={`Add ${media.title} to a List`}
           onClick={handleAddToList}
@@ -57,10 +49,19 @@ export const MediaCardDetails = ({
         >
           <BsPlusLg />
         </button>
-        <button className="btn" data-variant="secondary-icon">
-          <BsStar />
+        <button
+          aria-label="Open Media Page and Play Trailer"
+          onClick={handlePlay}
+          className="btn"
+          data-variant="primary-icon"
+        >
+          <BsPlayFill />
+          <span className="leading-none">PLAY</span>
         </button>
-        <div className="flex-1"></div>
+        {/* <button className="btn" data-variant="secondary-icon">
+          <BsStar />
+        </button> */}
+        {/* <div className="flex-1"></div> */}
         <Link
           to={mediaUrl}
           state={{
@@ -76,7 +77,7 @@ export const MediaCardDetails = ({
       </div>
 
       <div className="text-stone-300">
-        {getGenreNamesFromIds(media.genre_ids, 3)}
+        {getGenreNamesFromIds(media.genre_ids, 4)}
       </div>
     </div>
   );
