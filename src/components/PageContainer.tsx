@@ -1,7 +1,16 @@
+import clsx from "clsx";
 import React from "react";
 
 const PageContainer = (props: React.ComponentProps<"div">) => {
-  return <div {...props} className="px-4 pb-4 pt-20 sm:px-12 sm:py-24" />;
+  return (
+    <div
+      {...props}
+      className={clsx(
+        "min-h-screen mx-4 sm:mx-20 border-x-1 border-[var(--list-border-color)]",
+        props.className
+      )}
+    />
+  );
 };
 
 export default PageContainer;
