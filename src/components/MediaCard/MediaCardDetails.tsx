@@ -1,47 +1,81 @@
 import { BsPlayFill, BsPlusLg, BsStar, BsChevronDown } from "react-icons/bs";
 import { getGenreNamesFromIds } from "../../misc/utils";
 import { Media } from "../../misc/types";
+import { useAddListModal } from "../../contexts/AddListModalContext";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Props {
   media: Media;
-  onPlay: React.MouseEventHandler<HTMLButtonElement>;
-  onAddToList: React.MouseEventHandler<HTMLButtonElement>;
+  mediaUrl: string;
+  backgroundLocation: string;
 }
 
-export const MediaCardDetails = ({ media, onPlay, onAddToList }: Props) => {
+export const MediaCardDetails = ({
+  media,
+  mediaUrl,
+  backgroundLocation,
+}: Props) => {
+  const navigate = useNavigate();
+  const { showAddListModal } = useAddListModal();
+
+  const handlePlay = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    navigate(mediaUrl, {
+      state: {
+        backgroundLocation,
+        showTrailerOnLoad: true,
+      },
+    });
+  };
+
+  const handleAddToList = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    showAddListModal({
+      media_id: media.id,
+      media_type: media.media_type,
+    });
+  };
+
   return (
-    <div className="hidden p-2 sm:group-hover/mcard:flex sm:group-focus/mcard:flex sm:group-focus-within/mcard:flex flex-col gap-2 bg-[var(--media-card-bg)] text-white shadow-2xl">
-      <div className="flex gap-1 text-sm">
+    <div className="p-4 flex flex-col gap-4 bg-[var(--media-card-bg)] text-white shadow-2xl">
+      <div className="flex gap-2 text-xl">
         <button
           aria-label="Open Media Page and Play Trailer"
-          onClick={onPlay}
-          className="btn "
+          onClick={handlePlay}
+          className="btn"
           data-variant="primary-icon"
         >
           <BsPlayFill />
         </button>
         <button
           aria-label={`Add ${media.title} to a List`}
-          onClick={onAddToList}
-          className="btn "
+          onClick={handleAddToList}
+          className="btn"
           data-variant="secondary-icon"
         >
           <BsPlusLg />
         </button>
-        <button className="btn " data-variant="secondary-icon">
+        <button className="btn" data-variant="secondary-icon">
           <BsStar />
         </button>
         <div className="flex-1"></div>
-        <button
+        <Link
+          to={mediaUrl}
+          state={{
+            backgroundLocation,
+            showTrailerOnLoad: false,
+          }}
           aria-label="Open Media Page"
-          className="btn "
+          className="btn"
           data-variant="secondary-icon"
         >
           <BsChevronDown />
-        </button>
+        </Link>
       </div>
 
-      <div className="text-xs text-stone-300">
+      <div className="text-stone-300">
         {getGenreNamesFromIds(media.genre_ids, 3)}
       </div>
     </div>

@@ -150,19 +150,19 @@ const MediaItemsRow = ({
     <div {...rest}>
       {isShowSkeleton && (
         <MediaItemsRowSkeleton
-          className={
-            !!mediaItems ? "absolute inset-0 pt-3 z-0" : "sm:pt-3 sm:pb-15"
-          }
+          className={!!mediaItems ? "pt-3 z-0" : "sm:pt-3 sm:pb-15"}
         />
       )}
       {mediaItems && (
         <section
-          className={`group/root transition-opacity duration-200 ease-in sm:relative sm:z-0 ${
+          className={`group/root transition-opacity duration-200 ease-in sm:relative ${
             isDoneLoadingAll ? "opacity-100" : "opacity-0"
           }`}
         >
-          <div className="flex justify-between items-end ml-4 sm:absolute sm:z-0 sm:left-0 sm:right-0 sm:ml-12">
-            <h2>{title}</h2>
+          <div className="flex justify-between items-end ml-4 sm:ml-12">
+            <h2 tabIndex={0} className="focus-visible:outline">
+              {title}
+            </h2>
             {!isOnMobile && (
               <PageIndicator
                 totalPages={totalPages}
@@ -185,37 +185,34 @@ const MediaItemsRow = ({
                 />
               </Fragment>
             )}
+
             <div
-              tabIndex={0}
-              aria-label={title}
               ref={scrollableDiv}
-              className="scrollable sm:pt-15 sm:pb-15 group/scroll outline-0"
+              className="scrollable flex items-center gap-2 py-1"
             >
-              <div className="flex items-center gap-2">
-                {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
-                <div className="shrink-0 w-2 sm:w-10 bg-white"></div>
+              {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
+              <div className="shrink-0 w-2 sm:w-10 bg-white"></div>
 
-                <div className="flex items-center gap-2 group-focus/scroll:outline ">
-                  {mediaItems.map((mediaItem) => (
-                    <ErrorBoundary
-                      fallbackRender={(props) => <ErrorFallback {...props} />}
-                      key={mediaItem.id}
-                    >
-                      <MediaCard
-                        media={mediaItem}
-                        onImageLoad={() =>
-                          setIsMediaCardsLoaded((p) => {
-                            return { ...p, [mediaItem.id]: true };
-                          })
-                        }
-                      />
-                    </ErrorBoundary>
-                  ))}
-                </div>
-
-                {/** Acts as right padding/space when the user reaches the last page. */}
-                <div className="shrink-0 w-2 sm:w-4  h-1"></div>
+              <div className="flex gap-2">
+                {mediaItems.map((mediaItem) => (
+                  <ErrorBoundary
+                    fallbackRender={(props) => <ErrorFallback {...props} />}
+                    key={mediaItem.id}
+                  >
+                    <MediaCard
+                      media={mediaItem}
+                      onImageLoad={() =>
+                        setIsMediaCardsLoaded((p) => {
+                          return { ...p, [mediaItem.id]: true };
+                        })
+                      }
+                    />
+                  </ErrorBoundary>
+                ))}
               </div>
+
+              {/** Acts as right padding/space when the user reaches the last page. */}
+              <div className="shrink-0 w-2 sm:w-4  h-1"></div>
             </div>
           </div>
         </section>

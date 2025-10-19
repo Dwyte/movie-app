@@ -22,7 +22,7 @@ const ScrollButton = ({ direction, onClick, isVisible = true }: Props) => {
   return (
     <div
       className={`${
-        isVisible ? "hidden group-hover/root:flex z-100" : "hidden"
+        isVisible ? "hidden group-hover/root:flex z-50" : "hidden"
       } absolute items-center text-white ${styles[direction]}`}
     >
       <button

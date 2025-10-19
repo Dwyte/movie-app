@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import {
+  MEDIA_TYPE_NAME,
   NO_IMAGE_LANDSCAPE_PATH,
   NO_IMAGE_PORTRAIT_PATH,
 } from "../../misc/constants";
@@ -7,13 +8,16 @@ import { getMediaItemImages } from "../../misc/tmdbAPI";
 import { Media, MediaImagesResult } from "../../misc/types";
 import { getTMDBImageURL } from "../../misc/utils";
 import Img from "../Img";
-import { MEDIA_CARD_DIMENSIONS } from "./MediaCard";
+
 import { useMediaQueries } from "../../contexts/MediaQueriesContext";
+import clsx from "clsx";
+import { Link, LinkProps } from "react-router-dom";
 
 interface Props {
   media: Media;
+  mediaUrl: string;
+  backgroundLocation: string;
   onLoad: () => void;
-  flexible: boolean;
 }
 
 /**
@@ -33,7 +37,12 @@ const findBackdropWithTitle = (mediaImages: MediaImagesResult) => {
   return null;
 };
 
-export const MediaCardThumbnail = ({ media, onLoad, flexible }: Props) => {
+export const MediaCardThumbnail = ({
+  media,
+  mediaUrl,
+  backgroundLocation,
+  onLoad,
+}: Props) => {
   const { isSmUp } = useMediaQueries();
 
   const { data: mediaImages } = useQuery({
@@ -70,27 +79,38 @@ export const MediaCardThumbnail = ({ media, onLoad, flexible }: Props) => {
       : NO_IMAGE_PORTRAIT_PATH;
   }
 
-  return (
-    <div className="relative">
-      {previewImageSource && (
-        <Img
-          className={`${
-            flexible
-              ? "w-full h-full aspect-[1/1.5] sm:aspect-[16/9]"
-              : MEDIA_CARD_DIMENSIONS
-          }  object-cover`}
-          onLoad={onLoad}
-          src={previewImageSource}
-          alt={media.title}
-        />
-      )}
+  const mediaLabel = `${media.title} (${MEDIA_TYPE_NAME[media.media_type]})`;
 
-      {/** We Display a Title Text if there's no available Image that contains the title for the Thumbnail */}
-      {!backdropWithTitleFilePath && isSmUp && (
-        <h3 className="absolute text-sm text-white text-center font-bold left-0 bottom-0 right-0 bg-black/70">
-          {media.title}
-        </h3>
-      )}
-    </div>
+  return (
+    <Link
+      // Goto MediaPage and set backgroundLocation to tell what page to render
+      // at the background when rendering the Modal MediaPage in desktop.
+      to={mediaUrl}
+      state={{
+        backgroundLocation,
+        showTrailerOnLoad: false,
+      }}
+      aria-label={mediaLabel}
+    >
+      <div className="relative">
+        {previewImageSource && (
+          <Img
+            className={clsx(
+              "w-full h-full aspect-[1/1.5] sm:aspect-[16/9] object-cover"
+            )}
+            onLoad={onLoad}
+            src={previewImageSource}
+            alt={media.title}
+          />
+        )}
+
+        {/** We Display a Title Text if there's no available Image that contains the title for the Thumbnail */}
+        {!backdropWithTitleFilePath && isSmUp && (
+          <h3 className="absolute text-sm text-white text-center font-bold left-0 bottom-0 right-0 bg-black/70">
+            {media.title}
+          </h3>
+        )}
+      </div>
+    </Link>
   );
 };
