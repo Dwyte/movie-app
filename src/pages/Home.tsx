@@ -70,8 +70,8 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
         />
       </ErrorBoundary>
 
-      <div className="relative z-20">
-        <div className="max-w-[100%] flex flex-col gap-4 py-6">
+      <div className="relative z-20 mx-4 sm:mx-20">
+        <div className="max-w-[100%] flex flex-col gap-4 py-6 border-x-1  border-[var(--list-border-color)]">
           {mediaSectionsQueries.map((query, index) => {
             const { mediaSection, useQueryResult } = query;
             const { data: mediaItems, isFetching } = useQueryResult;

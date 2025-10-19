@@ -39,9 +39,9 @@ const MyListsPage = () => {
   }, [isAuthInitialized]);
 
   return (
-    <PageContainer>
+    <PageContainer className="pt-6">
       <ScrollToTop />
-      <h1 className="text-3xl text-white mb-2 sm:mb-6" id="my-lists-heading">
+      <h1 className="text-3xl text-white mb-2 sm:mb-6 ml-2 sm:ml-4" id="my-lists-heading">
         My Lists
       </h1>
       <div className="flex flex-col gap-4">

@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import heroImage from "/hero-image.jpg";
+import PageContainer from "../components/PageContainer";
 
 enum LoginState {
   INITIAL,
@@ -77,7 +78,7 @@ const LoginPage = () => {
   }, [isLoggedIn]);
 
   return (
-    <div className="text-white h-full flex flex-col items-center justify-center">
+    <PageContainer className="p-1 text-white h-full flex flex-col items-center justify-center">
       <img
         className="h-[100vh] opacity-75 object-cover"
         src={heroImage}
@@ -103,7 +104,7 @@ const LoginPage = () => {
           </p>
         )}
       </div>
-    </div>
+    </PageContainer>
   );
 };
 

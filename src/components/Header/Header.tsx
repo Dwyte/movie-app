@@ -25,63 +25,70 @@ function Header() {
   };
 
   return (
-    <header className="fixed left-0 right-0 top-0 p-4 sm:px-12 sm:py-6 z-40 bg-linear-to-b from-[var(--header-bg)] via-50% via-[var(--header-bg)]/60 to-[var(--header-bg)]/0">
-      <div className="flex items-center justify-between gap-4 mb-4 sm:gap-8">
-        {/** Full name Logo in Desktop and Just the Letter N logo in Mobile */}
-        <Link to="/">
-          <picture>
-            <source media="(min-width: 640px)" srcSet={webLogo} />
-            <img className="w-12 sm:w-30" src={mobileLogo} alt="logo" />
-          </picture>
-        </Link>
+    <header className="relative">
+      <div>
+        <div className="mx-4 text-center h-6 sm:h-20 sm:mx-20 border-x-[1px] border-[var(--list-border-color)]">
+          {/* <h1 className="font-mono">MOVIE DEX</h1> */}
+        </div>
+        <div className="border-y-[1px]  border-[var(--list-border-color)]">
+          <div className="flex items-center justify-between gap-4 mx-4 sm:mx-20 sm:px-4 px-2 py-2 border-x-[1px]  border-[var(--list-border-color)]">
+            {/** Full name Logo in Desktop and Just the Letter N logo in Mobile */}
+            <Link to="/">
+              <picture>
+                <source media="(min-width: 640px)" srcSet={webLogo} />
+                <img className="w-12 sm:w-30" src={mobileLogo} alt="logo" />
+              </picture>
+            </Link>
 
-        {/**
-         * NavLinks are full screen and collapsable in Mobile.
-         */}
-        <nav
-          onClick={handleNavModalClick}
-          className={`${
-            !isMobileNavVisible && "hidden"
-          } z-50 fixed inset-0 sm:static bg-black/75 backdrop-blur-lg sm:block sm:bg-transparent sm:backdrop-blur-none sm:flex-1`}
-        >
-          <ul
-            className={`flex flex-col items-center justify-center gap-10 h-[100%] text-4xl sm:justify-start sm:flex-row sm:text-base sm:gap-8 sm:flex`}
-          >
-            {NAV_LINKS.map((link) => (
-              <li key={link.path}>
-                <NavLink
-                  className={({ isActive }) =>
-                    `text-stone-500 ${isActive && "text-white font-bold"}`
-                  }
-                  to={link.path}
-                >
-                  {link.name}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
+            {/**
+             * NavLinks are full screen and collapsable in Mobile.
+             */}
+            <nav
+              onClick={handleNavModalClick}
+              className={`${
+                !isMobileNavVisible && "hidden"
+              } z-50 fixed inset-0 sm:static bg-black/75 backdrop-blur-lg sm:block sm:bg-transparent sm:backdrop-blur-none sm:flex-1`}
+            >
+              <ul
+                className={`flex flex-col items-center justify-center gap-10 h-[100%] text-4xl sm:justify-start sm:flex-row sm:text-base sm:gap-8 sm:flex`}
+              >
+                {NAV_LINKS.map((link) => (
+                  <li key={link.path}>
+                    <NavLink
+                      className={({ isActive }) =>
+                        `text-stone-500 ${isActive && "text-white font-bold"}`
+                      }
+                      to={link.path}
+                    >
+                      {link.name}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-        <div className="flex flex-1 sm:max-w-75 items-center justify-end gap-4">
-          <ErrorBoundary
-            fallbackRender={(props) => <ErrorFallback {...props} />}
-          >
-            <SearchBox />
-          </ErrorBoundary>
+            <div className="flex flex-1 sm:max-w-75 items-center justify-end gap-4 z-50">
+              <ErrorBoundary
+                fallbackRender={(props) => <ErrorFallback {...props} />}
+              >
+                <SearchBox />
+              </ErrorBoundary>
 
-          <UserProfile />
+              <UserProfile />
+            </div>
+          </div>
         </div>
       </div>
 
       {/** Discover button for activating fullscreen NavLinks in Mobile */}
-      {!(searchMatch || myListsMatch || listPageMatch) && (
+      {/* {!(searchMatch || myListsMatch || listPageMatch) && (
         <button
           onClick={() => setIsMobileNavVisible(true)}
-          className="flex items-center gap-1 justify-center w-full text-white cursor-pointer sm:hidden"
+          className="absolute -bottom-8 flex items-center gap-1 justify-center w-full text-white cursor-pointer sm:hidden z-50"
         >
           <span>Discover</span> <BsChevronDown className="text-sm" />
         </button>
-      )}
+      )} */}
     </header>
   );
 }

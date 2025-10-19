@@ -16,6 +16,7 @@ import {
 import { MediaType, TimeWindow, LanguageCode } from "../misc/types";
 
 import Skeleton from "./Skeleton";
+import clsx from "clsx";
 
 const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
       const [_, mediaType, timeWindow] = queryKey as [
         string,
         MediaType,
-        TimeWindow,
+        TimeWindow
       ];
 
       const { results } = await getTrendingMediaItems(mediaType, timeWindow);
@@ -88,78 +89,81 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
   const [isLogoLoaded, setIsLogoLoaded] = useState(false);
 
   return (
-    <div className="relative min-h-150">
-      <div
+    <div className="relative min-h-150 border-b-1  border-[var(--list-border-color)]">
+      {/* <div
         className={`hidden sm:block absolute inset-0 bg-linear-to-r ${
           isBackdropLoaded ? "from-[var(--main-bg)]" : "from-[var(--main-bg)]/0"
         } to-black/0 to-60% z-10`}
-      ></div>
-      <div className="w-full h-150 sm:h-screen relative z-0">
+      ></div> */}
+      <div className="h-150 sm:h-200 relative z-0 mx-4 sm:mx-20 border-x-1 p-1 border-[var(--list-border-color)]">
         {(!backdropImgSrc || !isBackdropLoaded) && (
-          <Skeleton className="absolute inset-0" />
+          <Skeleton className="absolute inset-0 m-1" />
         )}
         {backdropImgSrc && (
           <img
-            className={`w-full h-full object-cover transition-opacity duration-500 ${
-              isBackdropLoaded ? "opacity-100" : "opacity-0"
-            }`}
+            className={clsx(
+              "w-full h-full object-cover transition-opacity duration-500",
+              isBackdropLoaded ? "opacity-100" : "opacity-0",
+              "brightness-75"
+            )}
             src={backdropImgSrc}
             onLoad={() => setIsBackdropLoaded(true)}
           />
         )}
-      </div>
-      <div
-        className={`flex items-end sm:items-center sm:mt-[-100px] justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 bg-linear-to-t from-[var(--main-bg)] to-[var(--main-bg)]/0 to-50% sm:to-25% z-10`}
-      >
-        {mediaItem && logoImgSrc && isBackdropLoaded && (
-          <div
-            className={`flex flex-col gap-2 sm:gap-4 justify-center sm:ml-12 transition-opacity duration-500 ${
-              isLogoLoaded ? "opactiy-100" : "opacity-0"
-            }`}
-          >
-            <div className="flex mb-2 px-10 justify-center sm:px-0 sm:justify-start">
-              <img
-                className={`w-auto max-h-50 sm:w-auto sm:max-h-65`}
-                src={logoImgSrc}
-                alt=""
-                onLoad={() => setTimeout(() => setIsLogoLoaded(true), 500)}
-              />
-            </div>
 
-            <div className="hidden text-white sm:block sm:w-150 sm:text-sm">
-              {shortenParagraph(mediaItem.overview, 100)}
-            </div>
+        <div
+          className={`flex items-end sm:items-center justify-center sm:justify-start absolute top-0 bottom-[-1px] right-0 left-0 z-10`}
+        >
+          {mediaItem && logoImgSrc && isBackdropLoaded && (
+            <div
+              className={`flex flex-col gap-2 sm:gap-4 justify-center sm:ml-12 transition-opacity duration-500 ${
+                isLogoLoaded ? "opactiy-100" : "opacity-0"
+              }`}
+            >
+              <div className="flex mb-2 px-10 justify-center sm:px-0 sm:justify-start">
+                <img
+                  className={`w-auto max-h-50 sm:w-auto sm:max-h-65`}
+                  src={logoImgSrc}
+                  alt=""
+                  onLoad={() => setTimeout(() => setIsLogoLoaded(true), 500)}
+                />
+              </div>
 
-            <div className="text-stone-300 text-center sm:text-left">
-              {getGenreNamesFromIds(mediaItem.genre_ids)}
-            </div>
+              <div className="hidden text-white sm:block sm:w-150 sm:text-sm">
+                {shortenParagraph(mediaItem.overview, 100)}
+              </div>
 
-            <div className="flex gap-4 justify-center sm:justify-start">
-              <button
-                onClick={() =>
-                  showAddListModal({
-                    media_id: mediaItem.id,
-                    media_type: mediaItem.media_type,
-                  })
-                }
-                className="btn"
-                data-variant="primary"
-              >
-                <BsPlusCircleFill className="text-md mr-2" />
-                Add to my List
-              </button>
+              <div className="text-stone-300 text-center sm:text-left">
+                {getGenreNamesFromIds(mediaItem.genre_ids)}
+              </div>
 
-              <button
-                onClick={handleMoreInfoClick}
-                className="btn"
-                data-variant="secondary"
-              >
-                <FaInfoCircle className="text-md mr-2" />
-                More Info
-              </button>
+              <div className="flex gap-4 justify-center sm:justify-start">
+                <button
+                  onClick={() =>
+                    showAddListModal({
+                      media_id: mediaItem.id,
+                      media_type: mediaItem.media_type,
+                    })
+                  }
+                  className="btn"
+                  data-variant="primary"
+                >
+                  <BsPlusCircleFill className="text-md mr-2" />
+                  Add to my List
+                </button>
+
+                <button
+                  onClick={handleMoreInfoClick}
+                  className="btn"
+                  data-variant="secondary"
+                >
+                  <FaInfoCircle className="text-md mr-2" />
+                  More Info
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
