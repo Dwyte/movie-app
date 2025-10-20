@@ -101,7 +101,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
       ></div> */}
       <div
         className={clsx(
-          "h-150 sm:h-200 relative z-0 mx-4 sm:mx-20 border-x-1 p-1 border-[var(--list-border-color)]",
+          "h-150 sm:h-175 relative z-0 mx-4 sm:mx-20 border-x-1 p-1 border-[var(--list-border-color)] flex justify-end",
         )}
       >
         {(!backdropImgSrc || !isBackdropLoaded) && (
@@ -109,15 +109,14 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
         )}
 
         {backdropImgSrc && isBackdropLoaded && (
-          <div className="pointer-events-none bg-gradient-to-r from-0% from-[var(--main-bg)] to-60% to-[var(--main-bg)]/0 absolute inset-0 z-10"></div>
+          <div className="bg-gradient-to-t sm:bg-gradient-to-r pointer-events-none  from-0% from-[var(--main-bg)] via-[var(--main-bg)]/90 via-15% to-70% to-[var(--main-bg)]/0 absolute inset-0 z-10"></div>
         )}
 
         {backdropImgSrc && (
           <img
             className={clsx(
-              "w-full h-full object-cover transition-opacity duration-500",
+              "h-full w-full object-cover transition-opacity duration-500",
               isBackdropLoaded ? "opacity-100" : "opacity-0",
-              "brightness-75",
             )}
             src={backdropImgSrc}
             onLoad={() => setIsBackdropLoaded(true)}
@@ -126,14 +125,14 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
 
         <div
           className={clsx(
-            "flex items-end sm:items-center justify-center sm:justify-start",
+            "flex items-end -mb-3 sm:-mb-3 sm: sm:items-end justify-center sm:justify-start",
             "absolute top-0 bottom-[-1px] right-0 left-0 z-10",
           )}
         >
           {mediaItem && logoImgSrc && isBackdropLoaded && (
             <div
               className={clsx(
-                "flex flex-col gap-2 sm:gap-4 justify-center sm:ml-12 transition-opacity duration-500",
+                "flex flex-col gap-4 sm:gap-4 justify-center sm:ml-12 transition-opacity duration-500",
                 isLogoLoaded ? "opactiy-100" : "opacity-0",
               )}
             >
@@ -143,7 +142,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
                 )}
               >
                 <img
-                  className={clsx("w-auto max-h-50 sm:w-auto sm:max-h-65")}
+                  className={clsx("w-auto max-h-50 sm:w-auto sm:max-h-100")}
                   src={logoImgSrc}
                   alt=""
                   onLoad={() => setTimeout(() => setIsLogoLoaded(true), 500)}
