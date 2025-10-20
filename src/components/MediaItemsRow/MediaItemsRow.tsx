@@ -58,7 +58,7 @@ const MediaItemsRow = ({
     // Compute TotalPages and CurrentPage
     const actualScrollWidth = currentDiv.scrollWidth - TOTAL_SPACE_WIDTH;
     const visibleMediaItemsCount = Math.floor(
-      currentDiv.clientWidth / MEDIA_CARD_DIV_WIDTH
+      currentDiv.clientWidth / MEDIA_CARD_DIV_WIDTH,
     );
 
     const step = MEDIA_CARD_DIV_WIDTH * visibleMediaItemsCount;
@@ -113,13 +113,13 @@ const MediaItemsRow = ({
       isProgrammaticScroll.current = true;
 
       const visibleMediaItemsCount = Math.floor(
-        currentDiv.clientWidth / MEDIA_CARD_DIV_WIDTH
+        currentDiv.clientWidth / MEDIA_CARD_DIV_WIDTH,
       );
 
       const step = MEDIA_CARD_DIV_WIDTH * visibleMediaItemsCount;
       const targetPage = Math.max(
         0,
-        Math.min(currentPage + direction, totalPages)
+        Math.min(currentPage + direction, totalPages),
       );
       setCurrentPage(targetPage);
       const targetPageScrollLeft = step * targetPage;
@@ -141,7 +141,7 @@ const MediaItemsRow = ({
   }>({});
 
   const isDoneLoadingAll = mediaItems?.every(
-    (mediaItem) => !!isMediaCardsLoaded[mediaItem.id]
+    (mediaItem) => !!isMediaCardsLoaded[mediaItem.id],
   );
 
   const isShowSkeleton = !mediaItems || !isDoneLoadingAll;
@@ -188,7 +188,7 @@ const MediaItemsRow = ({
 
             <div
               ref={scrollableDiv}
-              className="scrollable flex items-stretch gap-2"
+              className="scrollable flex items-stretch gap-2 py-1"
             >
               {/** Acts as left padding, also being scrolled so items go through the edges of the screen.*/}
               <div className="shrink-0 w-2 sm:w-10 checkered-background"></div>

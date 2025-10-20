@@ -52,7 +52,7 @@ export const MediaCardDetails = ({
         <button
           aria-label="Open Media Page and Play Trailer"
           onClick={handlePlay}
-          className="btn"
+          className="btn gap-1"
           data-variant="primary-icon"
         >
           <BsPlayFill />

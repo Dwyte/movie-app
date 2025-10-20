@@ -47,7 +47,8 @@ const MediaCard = ({
         <div
           className={clsx(
             flexible ? "w-full h-full" : MEDIA_CARD_DIMENSIONS,
-            "border-[1px] border-[var(--light-border-color)] p-[1px]"
+            "border-[1px] border-[var(--light-border-color)] p-[1px]",
+            "focus-within:outline",
           )}
         >
           <MediaCardThumbnail

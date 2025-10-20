@@ -31,7 +31,8 @@ const findBackdropWithTitle = (mediaImages: MediaImagesResult) => {
   // that backdrop image has the title/logo and we use that as preview
   // for the media card so it's easier for the user to identify
   const mediaBackdropWithTitle = mediaImages.backdrops.find(
-    (mediaImage) => mediaImage.iso_639_1 === "en" && mediaImage.aspect_ratio > 1
+    (mediaImage) =>
+      mediaImage.iso_639_1 === "en" && mediaImage.aspect_ratio > 1,
   );
 
   if (mediaBackdropWithTitle) return mediaBackdropWithTitle.file_path;
