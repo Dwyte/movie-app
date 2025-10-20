@@ -25,7 +25,7 @@ function Header() {
   };
 
   return (
-    <header>
+    <header className="relative">
       <div>
         <div className="mx-4 text-center h-6 sm:h-20 sm:mx-20 border-x-[1px] border-[var(--list-border-color)]"></div>
         <div className="border-y-[1px]  border-[var(--list-border-color)]">
@@ -45,7 +45,7 @@ function Header() {
               onClick={handleNavModalClick}
               className={`${
                 !isMobileNavVisible && "hidden"
-              } z-50 fixed inset-0 sm:static bg-black/75 backdrop-blur-lg sm:block sm:bg-transparent sm:backdrop-blur-none sm:flex-1`}
+              } z-100 fixed inset-0 sm:static bg-black/75 backdrop-blur-lg sm:block sm:bg-transparent sm:backdrop-blur-none sm:flex-1`}
             >
               <ul
                 className={`flex flex-col items-center justify-center gap-10 h-[100%] text-4xl sm:justify-start sm:flex-row sm:text-base sm:gap-8 sm:flex`}
@@ -77,16 +77,15 @@ function Header() {
           </div>
         </div>
       </div>
-
       {/** Discover button for activating fullscreen NavLinks in Mobile */}
-      {/* {!(searchMatch || myListsMatch || listPageMatch) && (
+      {!(searchMatch || myListsMatch || listPageMatch) && (
         <button
           onClick={() => setIsMobileNavVisible(true)}
-          className="absolute -bottom-8 flex items-center gap-1 justify-center w-full text-white cursor-pointer sm:hidden z-50"
+          className="absolute left-[50%] translate-x-[-50%] flex py-3 px-6 items-center gap-1 justify-center sm:hidden z-50"
         >
           <span>Discover</span> <BsChevronDown className="text-sm" />
         </button>
-      )} */}
+      )}
     </header>
   );
 }
