@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Header from "./components/Header";
 import { useMediaQueries } from "./contexts/MediaQueriesContext";
 import RouteErrorBoundary from "./components/RouteErrorBoundary";
+import Footer from "./components/Footer";
 
 const SearchResults = lazy(() => import("./pages/SearchResults"));
 const TestPage = lazy(() => import("./pages/Test"));
@@ -151,6 +152,7 @@ const App = () => {
           </Routes>
         )}
       </div>
+      <Footer />
     </main>
   );
 };

@@ -25,11 +25,9 @@ function Header() {
   };
 
   return (
-    <header className="relative">
+    <header>
       <div>
-        <div className="mx-4 text-center h-6 sm:h-20 sm:mx-20 border-x-[1px] border-[var(--list-border-color)]">
-          {/* <h1 className="font-mono">MOVIE DEX</h1> */}
-        </div>
+        <div className="mx-4 text-center h-6 sm:h-20 sm:mx-20 border-x-[1px] border-[var(--list-border-color)]"></div>
         <div className="border-y-[1px]  border-[var(--list-border-color)]">
           <div className="flex items-center justify-between gap-4 sm:gap-8 mx-4 sm:mx-20 sm:px-4 px-2 py-2 border-x-[1px]  border-[var(--list-border-color)]">
             {/** Full name Logo in Desktop and Just the Letter N logo in Mobile */}
