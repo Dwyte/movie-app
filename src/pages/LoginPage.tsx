@@ -32,7 +32,7 @@ const LoginPage = () => {
       if (!requestToken) return null;
 
       const accessToken = await postCreateAccessToken(
-        requestToken?.request_token
+        requestToken?.request_token,
       );
 
       if (!accessToken.success) {
@@ -40,7 +40,7 @@ const LoginPage = () => {
       }
 
       const session = await postCreateSessionFromV4Token(
-        accessToken.access_token
+        accessToken.access_token,
       );
 
       setLoginState(LoginState.APPROVED);
@@ -48,7 +48,7 @@ const LoginPage = () => {
       login(
         session.session_id,
         accessToken.access_token,
-        accessToken.account_id
+        accessToken.account_id,
       );
 
       // Redirect to home
@@ -67,7 +67,7 @@ const LoginPage = () => {
     setLoginState(LoginState.FOR_APPROVAL);
 
     window.open(
-      `https://www.themoviedb.org/auth/access?request_token=${requestToken?.request_token}`
+      `https://www.themoviedb.org/auth/access?request_token=${requestToken?.request_token}`,
     );
   };
 
@@ -78,16 +78,18 @@ const LoginPage = () => {
   }, [isLoggedIn]);
 
   return (
-    <PageContainer className="p-1 text-white h-full flex flex-col items-center justify-center">
+    <PageContainer className="p-1 text-white h-full flex flex-col items-center justify-center relative">
       <img
-        className="h-[100vh] opacity-75 object-cover"
+        className="h-[100vh] opacity-100 object-cover saturate-25"
         src={heroImage}
         alt=""
       />
+      <div className="bg-noise inset-0 absolute"></div>
       <div className="absolute p-8 bg-black/90  sm:min-w-125">
         <h2 className="text-2xl mt-0 mb-4">Sign-in</h2>
         <button
-          className="w-full font-bold bg-red-700 px-8 py-4  cursor-pointer hover:opacity-70"
+          data-variant="primary"
+          className="btn justify-center w-full font-bold px-8 py-4"
           onClick={startLogin}
           disabled={!requestToken?.success}
         >

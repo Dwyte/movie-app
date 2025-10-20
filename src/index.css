@@ -1,155 +1,155 @@
 @import "tailwindcss";
 
 :root {
-  --main-bg: #090909;
-  --media-page-bg: #141414;
-  --header-bg: #080808;
-  --input-bg: #242424;
-  --primary-btn-bg: #e1e1e1;
-  --secondary-btn-bg: #242424;
-  --media-card-bg: #181818;
-  --skeleton-color: #202020;
-  --list-border-color: #252525;
-  --light-border-color: #424242;
+    --main-bg: #090909;
+    --media-page-bg: #141414;
+    --header-bg: #080808;
+    --input-bg: #242424;
+    --primary-btn-bg: #e1e1e1;
+    --secondary-btn-bg: #242424;
+    --media-card-bg: #181818;
+    --skeleton-color: #202020;
+    --list-border-color: #252525;
+    --light-border-color: #424242;
 
-  --primary-btn-bg-hover: #f8f8f8;
-  --secondary-btn-bg-hover: #2a2a2a;
+    --primary-btn-bg-hover: #f8f8f8;
+    --secondary-btn-bg-hover: #2a2a2a;
 
-  --list-item-hover-bg: linear-gradient(
-    to bottom,
-    #1f1f1f 0%,
-    #202020 10%,
-    #202020 90%,
-    #1f1f1f 100%
-  );
+    --list-item-hover-bg: linear-gradient(
+        to bottom,
+        #1f1f1f 0%,
+        #202020 10%,
+        #202020 90%,
+        #1f1f1f 100%
+    );
 }
 
 @layer base {
-  html {
-    scrollbar-width: none; /* auto | thin | none */
-    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-  }
+    html {
+        scrollbar-width: none; /* auto | thin | none */
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    }
 
-  body {
-    background-color: var(--main-bg);
-  }
+    body {
+        background-color: var(--main-bg);
+    }
 
-  h2 {
-    @apply font-bold text-xl my-2 text-white sm:text-2xl sm:my-3;
-  }
+    h2 {
+        @apply font-bold text-xl my-2 text-white sm:text-2xl sm:my-3;
+    }
 
-  * {
-    @apply focus-visible:outline-1 outline-white outline-offset-1;
-  }
+    * {
+        @apply focus-visible:outline-1 outline-white outline-offset-1;
+    }
 }
 
 @layer components {
-  .outline {
-    @apply outline-1 outline-white outline-offset-1;
-  }
-
-  .btn {
-    @apply p-3 font-semibold cursor-pointer flex items-center rounded-none;
-    transition: background 150ms ease;
-  }
-
-  .btn[data-variant="primary"] {
-    background: var(--primary-btn-bg);
-    color: #1a1a1a;
-  }
-
-  .btn[data-variant="primary"]:hover {
-    background: var(--primary-btn-bg-hover);
-  }
-
-  .btn[data-variant="secondary"] {
-    background: var(--secondary-btn-bg);
-    color: #e5e5e5;
-  }
-
-  .btn[data-variant="secondary"]:hover {
-    background: var(--secondary-btn-bg-hover);
-  }
-
-  /* Icon button variants - with borders */
-  .btn[data-variant="primary-icon"] {
-    background: var(--primary-btn-bg);
-    color: #1a1a1a;
-    border: 1px solid transparent;
-  }
-
-  .btn[data-variant="primary-icon"]:hover {
-    background: var(--primary-btn-bg-hover);
-  }
-
-  .btn[data-variant="secondary-icon"] {
-    background: var(--secondary-btn-bg);
-    color: #e5e5e5;
-    border: 1px solid #525252;
-  }
-
-  .btn[data-variant="secondary-icon"]:hover {
-    background: var(--secondary-btn-bg-hover);
-  }
-
-  .media-page-nav-active {
-    @apply shrink-0 text-white sm:text-lg font-bold p-2 border-t-2 border-red-600;
-  }
-
-  .media-page-nav {
-    @apply shrink-0 text-stone-400 sm:text-lg font-bold p-2 border-t-2 border-black/0;
-  }
-
-  /* Scrollable content but scroll bar not visible */
-  .scrollable {
-    @apply overflow-x-scroll;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .scrollable::-webkit-scrollbar {
-    display: none;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
+    .outline {
+        @apply outline-1 outline-white outline-offset-1;
     }
-    to {
-      opacity: 1;
+
+    .btn {
+        @apply p-3 font-semibold cursor-pointer flex items-center rounded-none;
+        transition: background 150ms ease;
     }
-  }
 
-  .fade-in {
-    animation: fadeIn 200ms forwards ease-in;
-  }
+    .btn[data-variant="primary"] {
+        background: var(--primary-btn-bg);
+        color: #1a1a1a;
+    }
 
-  .modal-backdrop {
-    @apply fixed inset-0 bg-black/50 backdrop-blur-xs;
-  }
+    .btn[data-variant="primary"]:hover {
+        background: var(--primary-btn-bg-hover);
+    }
+
+    .btn[data-variant="secondary"] {
+        background: var(--secondary-btn-bg);
+        color: #e5e5e5;
+    }
+
+    .btn[data-variant="secondary"]:hover {
+        background: var(--secondary-btn-bg-hover);
+    }
+
+    /* Icon button variants - with borders */
+    .btn[data-variant="primary-icon"] {
+        background: var(--primary-btn-bg);
+        color: #1a1a1a;
+        border: 1px solid transparent;
+    }
+
+    .btn[data-variant="primary-icon"]:hover {
+        background: var(--primary-btn-bg-hover);
+    }
+
+    .btn[data-variant="secondary-icon"] {
+        background: var(--secondary-btn-bg);
+        color: #e5e5e5;
+        border: 1px solid #525252;
+    }
+
+    .btn[data-variant="secondary-icon"]:hover {
+        background: var(--secondary-btn-bg-hover);
+    }
+
+    .media-page-nav-active {
+        @apply shrink-0 text-white sm:text-lg font-bold p-2 border-t-2 border-red-600;
+    }
+
+    .media-page-nav {
+        @apply shrink-0 text-stone-400 sm:text-lg font-bold p-2 border-t-2 border-black/0;
+    }
+
+    /* Scrollable content but scroll bar not visible */
+    .scrollable {
+        @apply overflow-x-scroll;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .scrollable::-webkit-scrollbar {
+        display: none;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .fade-in {
+        animation: fadeIn 200ms forwards ease-in;
+    }
+
+    .modal-backdrop {
+        @apply fixed inset-0 bg-black/50 backdrop-blur-xs;
+    }
 }
 
 .checkered-background {
-  background: repeating-conic-gradient(
-    var(--light-border-color) 0% 25%,
-    /* White for the first quarter of the cone */ #000 25% 50%
-      /* Black for the second quarter */
-  );
-  background-size: 4px 4px;
-  background-repeat: repeat;
+    background: repeating-conic-gradient(
+        var(--light-border-color) 0% 25%,
+        /* White for the first quarter of the cone */ #000 25% 50%
+            /* Black for the second quarter */
+    );
+    background-size: 4px 4px;
+    background-repeat: repeat;
 }
 .popover-content {
-  animation: slideDown 200ms ease-in-out;
+    animation: slideDown 200ms ease-in-out;
 }
 
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
 
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
