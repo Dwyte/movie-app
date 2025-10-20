@@ -29,7 +29,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
       const [_, mediaType, timeWindow] = queryKey as [
         string,
         MediaType,
-        TimeWindow
+        TimeWindow,
       ];
 
       const { results } = await getTrendingMediaItems(mediaType, timeWindow);
@@ -61,7 +61,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
     if (!mediaItemImages || !mediaItem) return [null, null];
 
     const backdrop = mediaItemImages.backdrops.filter(
-      (backdrop) => backdrop.iso_639_1 === null
+      (backdrop) => backdrop.iso_639_1 === null,
     )[Math.floor(Math.random() * mediaItemImages.backdrops.length)];
 
     let logo = mediaItemImages.logos.find((logo) => logo.iso_639_1 === "en");
@@ -91,7 +91,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
   return (
     <div
       className={clsx(
-        "relative min-h-150 border-b-1 border-[var(--list-border-color)]"
+        "relative min-h-150 border-b-1 border-[var(--list-border-color)]",
       )}
     >
       {/* <div
@@ -101,7 +101,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
       ></div> */}
       <div
         className={clsx(
-          "h-150 sm:h-200 relative z-0 mx-4 sm:mx-20 border-x-1 p-1 border-[var(--list-border-color)]"
+          "h-150 sm:h-200 relative z-0 mx-4 sm:mx-20 border-x-1 p-1 border-[var(--list-border-color)]",
         )}
       >
         {(!backdropImgSrc || !isBackdropLoaded) && (
@@ -117,7 +117,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
             className={clsx(
               "w-full h-full object-cover transition-opacity duration-500",
               isBackdropLoaded ? "opacity-100" : "opacity-0",
-              "brightness-75"
+              "brightness-75",
             )}
             src={backdropImgSrc}
             onLoad={() => setIsBackdropLoaded(true)}
@@ -127,19 +127,19 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
         <div
           className={clsx(
             "flex items-end sm:items-center justify-center sm:justify-start",
-            "absolute top-0 bottom-[-1px] right-0 left-0 z-10"
+            "absolute top-0 bottom-[-1px] right-0 left-0 z-10",
           )}
         >
           {mediaItem && logoImgSrc && isBackdropLoaded && (
             <div
               className={clsx(
                 "flex flex-col gap-2 sm:gap-4 justify-center sm:ml-12 transition-opacity duration-500",
-                isLogoLoaded ? "opactiy-100" : "opacity-0"
+                isLogoLoaded ? "opactiy-100" : "opacity-0",
               )}
             >
               <div
                 className={clsx(
-                  "flex mb-2 px-10 justify-center sm:px-0 sm:justify-start"
+                  "flex mb-2 px-10 justify-center sm:px-0 sm:justify-start",
                 )}
               >
                 <img
@@ -152,7 +152,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
 
               <div
                 className={clsx(
-                  "hidden text-white sm:block sm:w-150 sm:text-sm"
+                  "hidden text-white sm:block sm:w-150 sm:text-sm",
                 )}
               >
                 {shortenParagraph(mediaItem.overview, 100)}
@@ -173,7 +173,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
                     })
                   }
                   className={clsx("btn")}
-                  data-variant="primary-icon"
+                  data-variant="primary"
                 >
                   <BsPlusCircleFill className={clsx("text-md mr-2")} />
                   Add to my List
@@ -182,7 +182,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
                 <button
                   onClick={handleMoreInfoClick}
                   className={clsx("btn")}
-                  data-variant="secondary-icon"
+                  data-variant="secondary"
                 >
                   <FaInfoCircle className={clsx("text-md mr-2")} />
                   More Info

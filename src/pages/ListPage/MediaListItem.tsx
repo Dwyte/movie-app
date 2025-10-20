@@ -33,9 +33,7 @@ export const MediaListItemSkeleton = () => {
       <Skeleton rounded="" className="hidden sm:block h-6 w-6" />
 
       <div className="flex items-center w-full gap-2">
-        <Skeleton
-          className="h-42 sm:h-24 aspect-[1/1.5] sm:aspect-[16/9]"
-        />
+        <Skeleton className="h-42 sm:h-24 aspect-[1/1.5] sm:aspect-[16/9]" />
 
         <div className="flex flex-col gap-4 flex-1">
           <div className="flex gap-8 items-center justify-between">
@@ -91,12 +89,7 @@ const MediaListItem = ({
 
   return (
     <div className="flex items-center w-full gap-2">
-      <img
-        src={thumbnail}
-        alt=""
-        className="h-42 sm:h-24"
-        onLoad={onLoad}
-      />
+      <img src={thumbnail} alt="" className="h-42 sm:h-24" onLoad={onLoad} />
 
       <div className="flex flex-col gap-4 flex-1">
         <div className="flex gap-8 items-center justify-between">
@@ -133,7 +126,7 @@ const MediaListItem = ({
                 onClick={() => onComment(media)}
                 className="btn  p-2"
                 disabled={isDeleting}
-                data-variant="secondary-icon"
+                data-variant="secondary"
               >
                 <BsChatSquareDots />
               </button>
@@ -141,7 +134,7 @@ const MediaListItem = ({
                 onClick={() => onDelete(mediaRef)}
                 className="btn  p-2"
                 disabled={isDeleting}
-                data-variant="secondary-icon"
+                data-variant="secondary"
               >
                 <BsXLg />
               </button>
@@ -152,7 +145,7 @@ const MediaListItem = ({
             <button
               className="btn  p-3"
               aria-label={`Open ${media.title} media page.`}
-              data-variant="secondary-icon"
+              data-variant="secondary"
             >
               <BsChevronRight />
             </button>

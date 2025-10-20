@@ -17,7 +17,7 @@ const YoutubeEmbed = ({ title, videoKey, onExit }: Props) => {
           ref={(node) => node?.focus()}
           onClick={onExit}
           className="btn  absolute left-4 bottom-10 translate-y-[-50%] gap-1"
-          data-variant="secondary-icon"
+          data-variant="secondary"
         >
           <BsChevronBarLeft />{" "}
           <span className="text-sm mr-1">Exit Trailer</span>

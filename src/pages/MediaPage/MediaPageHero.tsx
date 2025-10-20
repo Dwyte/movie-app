@@ -103,7 +103,7 @@ const MediaPageHero = ({
       <button
         onClick={onClose}
         className="btn  absolute right-3 top-3 z-50"
-        data-variant="secondary-icon"
+        data-variant="secondary"
       >
         <BsXLg />
       </button>
@@ -174,15 +174,15 @@ const MediaPageHero = ({
                   });
                 }}
                 className="btn "
-                data-variant="secondary-icon"
+                data-variant="secondary"
               >
                 <BsPlusLg />
               </button>
-              <button className="btn " data-variant="secondary-icon">
+              <button className="btn " data-variant="secondary">
                 <BsStar />
               </button>
               <div className="flex-1"></div>
-              <button className="btn  opacity-65" data-variant="secondary-icon">
+              <button className="btn  opacity-65" data-variant="secondary">
                 <RiDownloadLine />
               </button>
             </div>

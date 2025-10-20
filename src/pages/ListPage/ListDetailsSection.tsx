@@ -50,28 +50,28 @@ const ListDetailsSection = ({
           <button
             onClick={handleShare}
             className="btn  p-3"
-            data-variant="secondary-icon"
+            data-variant="secondary"
           >
             <BsBoxArrowUpRight />
           </button>
           <button
             onClick={onEditBackdrop}
             className="btn  p-3"
-            data-variant="secondary-icon"
+            data-variant="secondary"
           >
             <BsImages />
           </button>
           <button
             onClick={onEditDetails}
             className="btn  p-3"
-            data-variant="secondary-icon"
+            data-variant="secondary"
           >
             <BsPencilSquare />
           </button>
           <button
             onClick={onDeleteList}
             className="btn  p-3"
-            data-variant="secondary-icon"
+            data-variant="secondary"
           >
             <BsTrash />
           </button>

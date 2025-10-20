@@ -45,7 +45,7 @@ export const MediaCardDetails = ({
           aria-label={`Add ${media.title} to a List`}
           onClick={handleAddToList}
           className="btn"
-          data-variant="secondary-icon"
+          data-variant="secondary"
         >
           <BsPlusLg />
         </button>
@@ -53,15 +53,11 @@ export const MediaCardDetails = ({
           aria-label="Open Media Page and Play Trailer"
           onClick={handlePlay}
           className="btn gap-1"
-          data-variant="primary-icon"
+          data-variant="primary"
         >
           <BsPlayFill />
           <span className="leading-none">PLAY</span>
         </button>
-        {/* <button className="btn" data-variant="secondary-icon">
-          <BsStar />
-        </button> */}
-        {/* <div className="flex-1"></div> */}
         <Link
           to={mediaUrl}
           state={{
@@ -70,7 +66,7 @@ export const MediaCardDetails = ({
           }}
           aria-label="Open Media Page"
           className="btn"
-          data-variant="secondary-icon"
+          data-variant="secondary"
         >
           <BsChevronDown />
         </Link>
