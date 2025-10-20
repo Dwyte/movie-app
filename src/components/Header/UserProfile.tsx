@@ -70,7 +70,7 @@ const UserProfile = () => {
           src={profilePicture}
           alt="Smiley Icon"
         />
-        <BsChevronDown />
+        <BsChevronDown className="hidden sm:block" />
       </div>
 
       <ErrorBoundary fallbackRender={(props) => <ErrorFallback {...props} />}>
