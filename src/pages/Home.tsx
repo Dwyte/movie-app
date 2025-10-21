@@ -8,18 +8,17 @@ import {
   createMediaSectionConfigs,
 } from "../misc/mediaSectionConfigs";
 import ScrollToTop from "../components/ScrollToTop";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MediaType } from "../misc/types";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "../components/ErrorFallback";
+import IntersectionObserverComponent from "../components/IntersectionObserverComponent";
 
 const Home = ({ mediaType }: { mediaType?: MediaType }) => {
   const [configs, setConfigs] = useState<MediaSectionConfig[]>(() =>
     createMediaSectionConfigs(mediaType),
   );
-
   const [activeMediaRowCount, setActiveMediaRowCount] = useState(1);
-
   const activeConfigs = configs.slice(0, activeMediaRowCount);
 
   const mediaSectionsQueries = useQueries({
@@ -34,31 +33,7 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
     },
   });
 
-  useEffect(() => {
-    const isAtTheBottomOfThePageHandler = () => {
-      /* activate/show more media rows */
-
-      const { scrollHeight, scrollTop, clientHeight } =
-        document.documentElement;
-
-      const tolerance = 2; // Pixels
-      if (scrollTop + clientHeight >= scrollHeight - tolerance) {
-        console.log(
-          "React the bottom of the page, looking for more media lists to display.",
-        );
-
-        setActiveMediaRowCount((p) => p + 1);
-      }
-    };
-
-    document.addEventListener("scroll", isAtTheBottomOfThePageHandler);
-    window.addEventListener("resize", isAtTheBottomOfThePageHandler);
-
-    return () => {
-      document.removeEventListener("scroll", isAtTheBottomOfThePageHandler);
-      window.removeEventListener("resize", isAtTheBottomOfThePageHandler);
-    };
-  }, []);
+  const mediaSectionsRef = useRef<Element | null>(null);
 
   return (
     <div>
@@ -80,7 +55,7 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
         />
       </ErrorBoundary>
 
-      <div className="relative z-20 mx-4 sm:mx-20">
+      <div className="relative z-20 mx-4 md:mx-20">
         <div className="max-w-[100%] flex flex-col gap-4 py-6 border-x-1  border-[var(--list-border-color)]">
           {mediaSectionsQueries.map((query, index) => {
             const { mediaSection, useQueryResult } = query;
@@ -100,6 +75,9 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
             );
           })}
         </div>
+        <IntersectionObserverComponent
+          onIntersect={() => setActiveMediaRowCount((p) => p + 1)}
+        />
       </div>
     </div>
   );
