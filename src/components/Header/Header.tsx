@@ -47,7 +47,7 @@ function Header() {
               onClick={handleNavModalClick}
               className={`${
                 !isMobileNavVisible && "hidden"
-              } z-100 fixed inset-0 lg:static bg-black/80 backdrop-blur-lg lg:block lg:bg-transparent lg:backdrop-blur-lg lg:flex-1`}
+              } z-100 fixed inset-0 lg:static bg-black/80 backdrop-blur-lg lg:block lg:bg-transparent lg:backdrop-blur-none lg:z-0 lg:flex-1`}
             >
               <ul
                 className={`flex flex-col items-center justify-center gap-10 h-[100%] text-4xl lg:justify-start lg:flex-row lg:text-base lg:gap-8 lg:flex`}
