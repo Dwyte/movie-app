@@ -89,16 +89,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
   const [isLogoLoaded, setIsLogoLoaded] = useState(false);
 
   return (
-    <div
-      className={clsx(
-        "relative min-h-150 border-b-1 border-[var(--list-border-color)]",
-      )}
-    >
-      {/* <div
-        className={`hidden sm:block absolute inset-0 bg-linear-to-r ${
-          isBackdropLoaded ? "from-[var(--main-bg)]" : "from-[var(--main-bg)]/0"
-        } to-black/0 to-60% z-10`}
-      ></div> */}
+    <div className={clsx("border-b-1 border-[var(--list-border-color)]")}>
       <div
         className={clsx(
           "h-150 sm:h-175 relative z-0 mx-4 sm:mx-20 border-x-1 p-1 border-[var(--list-border-color)] flex justify-end",
@@ -109,7 +100,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
         )}
 
         {backdropImgSrc && isBackdropLoaded && (
-          <div className="bg-gradient-to-t sm:bg-gradient-to-r pointer-events-none  from-0% from-[var(--main-bg)] via-[var(--main-bg)]/90 via-15% to-70% to-[var(--main-bg)]/0 absolute inset-0 z-10"></div>
+          <div className="bg-gradient-to-t lg:bg-gradient-to-r pointer-events-none  from-0% from-[var(--main-bg)] via-[var(--main-bg)]/90 via-15% to-70% to-[var(--main-bg)]/0 absolute inset-0 z-10"></div>
         )}
 
         {backdropImgSrc && (
@@ -125,24 +116,24 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
 
         <div
           className={clsx(
-            "flex items-end -mb-3 sm:-mb-3 sm: sm:items-end justify-center sm:justify-start",
+            "flex items-end -mb-3 justify-center md:justify-start",
             "absolute top-0 bottom-[-1px] right-0 left-0 z-10",
           )}
         >
           {mediaItem && logoImgSrc && isBackdropLoaded && (
             <div
               className={clsx(
-                "flex flex-col gap-4 sm:gap-4 justify-center sm:ml-12 transition-opacity duration-500",
+                "flex flex-col gap-4 md:gap-4 justify-center md:ml-12 transition-opacity duration-500",
                 isLogoLoaded ? "opactiy-100" : "opacity-0",
               )}
             >
               <div
                 className={clsx(
-                  "flex mb-2 px-10 justify-center sm:px-0 sm:justify-start",
+                  "flex mb-2 px-10 justify-center md:px-0 md:justify-start",
                 )}
               >
                 <img
-                  className={clsx("w-auto max-h-50 sm:w-auto sm:max-h-100")}
+                  className={clsx("w-auto max-h-50 md:w-auto md:max-h-100")}
                   src={logoImgSrc}
                   alt=""
                   onLoad={() => setTimeout(() => setIsLogoLoaded(true), 500)}
@@ -151,18 +142,18 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
 
               <div
                 className={clsx(
-                  "hidden text-white sm:block sm:w-150 sm:text-sm",
+                  "hidden text-white md:block md:w-140 md:text-sm",
                 )}
               >
                 {shortenParagraph(mediaItem.overview, 100)}
               </div>
 
-              <div className={clsx("text-stone-300 text-center sm:text-left")}>
+              <div className={clsx("text-stone-300 text-center md:text-left")}>
                 {getGenreNamesFromIds(mediaItem.genre_ids)}
               </div>
 
               <div
-                className={clsx("flex gap-4 justify-center sm:justify-start")}
+                className={clsx("flex gap-4 justify-center md:justify-start")}
               >
                 <button
                   onClick={() =>
