@@ -14,7 +14,7 @@ const UserDropdownContent = () => {
 
   return (
     <div className="inline-block sm:hidden sm:group-hover:inline-block sm:group-focus:inline-block sm:group-focus-within:inline-block absolute min-w-42 right-0 text-white pt-2 w-max">
-      <div className="fixed inset-0 bg-black/75 backdrop-blur-lg flex flex-col justify-center items-center text-4xl sm:items-stretch sm:text-base sm:static sm:bg-black ">
+      <div className="fixed border-1 border-[var(--list-border-color)] inset-0 bg-black/75 backdrop-blur-lg flex flex-col justify-center items-center text-4xl sm:items-stretch sm:text-base sm:static sm:bg-black">
         {auth.isLoggedIn ? (
           <>
             <Link
