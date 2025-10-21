@@ -15,7 +15,7 @@ import ErrorFallback from "../components/ErrorFallback";
 
 const Home = ({ mediaType }: { mediaType?: MediaType }) => {
   const [configs, setConfigs] = useState<MediaSectionConfig[]>(() =>
-    createMediaSectionConfigs(mediaType)
+    createMediaSectionConfigs(mediaType),
   );
 
   const [activeMediaRowCount, setActiveMediaRowCount] = useState(1);
@@ -35,19 +35,25 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
   });
 
   useEffect(() => {
-    document.addEventListener("scroll", () => {
+    const handleScrollEnd = () => {
       const { scrollHeight, scrollTop, clientHeight } =
         document.documentElement;
 
       const tolerance = 2; // Pixels
       if (scrollTop + clientHeight >= scrollHeight - tolerance) {
         console.log(
-          "React the bottom of the page, looking for more media lists to display."
+          "React the bottom of the page, looking for more media lists to display.",
         );
 
         setActiveMediaRowCount((p) => p + 1);
       }
-    });
+    };
+
+    document.addEventListener("scroll", handleScrollEnd);
+
+    return () => {
+      document.removeEventListener("scroll", handleScrollEnd);
+    };
   }, []);
 
   return (
