@@ -35,7 +35,9 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
   });
 
   useEffect(() => {
-    const handleScrollEnd = () => {
+    const isAtTheBottomOfThePageHandler = () => {
+      /* activate/show more media rows */
+
       const { scrollHeight, scrollTop, clientHeight } =
         document.documentElement;
 
@@ -49,10 +51,12 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
       }
     };
 
-    document.addEventListener("scroll", handleScrollEnd);
+    document.addEventListener("scroll", isAtTheBottomOfThePageHandler);
+    window.addEventListener("resize", isAtTheBottomOfThePageHandler);
 
     return () => {
-      document.removeEventListener("scroll", handleScrollEnd);
+      document.removeEventListener("scroll", isAtTheBottomOfThePageHandler);
+      window.removeEventListener("resize", isAtTheBottomOfThePageHandler);
     };
   }, []);
 
