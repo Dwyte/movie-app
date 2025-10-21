@@ -83,7 +83,7 @@ function Header() {
       {!(searchMatch || myListsMatch || listPageMatch) && (
         <button
           onClick={() => setIsMobileNavVisible(true)}
-          className="absolute left-[50%] translate-x-[-50%] flex py-3 px-6 items-center gap-1 justify-center lg:hidden z-50"
+          className="absolute left-[50%] translate-x-[-50%] flex py-3 px-6 items-center gap-1 justify-center lg:hidden z-10"
         >
           <span>Discover</span> <BsChevronDown className="text-sm" />
         </button>
