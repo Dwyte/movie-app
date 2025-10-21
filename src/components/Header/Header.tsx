@@ -31,12 +31,14 @@ function Header() {
         <div className="border-y-[1px]  border-[var(--list-border-color)]">
           <div className="flex items-center justify-between gap-4 sm:gap-8 mx-4 sm:mx-20 sm:px-4 px-2 py-2 border-x-[1px]  border-[var(--list-border-color)]">
             {/** Full name Logo in Desktop and Just the Letter N logo in Mobile */}
-            <Link to="/">
-              <picture>
-                <source media="(min-width: 640px)" srcSet={webLogo} />
-                <img className="w-12 sm:w-30" src={mobileLogo} alt="logo" />
-              </picture>
-            </Link>
+            <div className="shrink-0">
+              <Link to="/">
+                <picture>
+                  <source media="(min-width: 640px)" srcSet={webLogo} />
+                  <img className="w-12 sm:w-30" src={mobileLogo} alt="logo" />
+                </picture>
+              </Link>
+            </div>
 
             {/**
              * NavLinks are full screen and collapsable in Mobile.
@@ -45,10 +47,10 @@ function Header() {
               onClick={handleNavModalClick}
               className={`${
                 !isMobileNavVisible && "hidden"
-              } z-100 fixed inset-0 sm:static bg-black/75 backdrop-blur-lg sm:block sm:bg-transparent sm:backdrop-blur-none sm:flex-1`}
+              } z-100 fixed inset-0 lg:static bg-black/80 backdrop-blur-lg lg:block lg:bg-transparent lg:backdrop-blur-lg lg:flex-1`}
             >
               <ul
-                className={`flex flex-col items-center justify-center gap-10 h-[100%] text-4xl sm:justify-start sm:flex-row sm:text-base sm:gap-8 sm:flex`}
+                className={`flex flex-col items-center justify-center gap-10 h-[100%] text-4xl lg:justify-start lg:flex-row lg:text-base lg:gap-8 lg:flex`}
               >
                 {NAV_LINKS.map((link) => (
                   <li key={link.path}>
@@ -81,7 +83,7 @@ function Header() {
       {!(searchMatch || myListsMatch || listPageMatch) && (
         <button
           onClick={() => setIsMobileNavVisible(true)}
-          className="absolute left-[50%] translate-x-[-50%] flex py-3 px-6 items-center gap-1 justify-center sm:hidden z-50"
+          className="absolute left-[50%] translate-x-[-50%] flex py-3 px-6 items-center gap-1 justify-center lg:hidden z-50"
         >
           <span>Discover</span> <BsChevronDown className="text-sm" />
         </button>
