@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-use";
 import { useMemo, useState } from "react";
+import _ from "lodash";
 
 import { BsPlusCircleFill } from "react-icons/bs";
 import { FaInfoCircle } from "react-icons/fa";
@@ -29,7 +30,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
       const [_, mediaType, timeWindow] = queryKey as [
         string,
         MediaType,
-        TimeWindow,
+        TimeWindow
       ];
 
       const { results } = await getTrendingMediaItems(mediaType, timeWindow);
@@ -39,13 +40,11 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
     staleTime: Infinity,
   });
 
-  // Selects a random trending movie to show.
+  // Selects a random trending media to show.
   const mediaItem = useMemo(() => {
     if (!trendingMediaItems || trendingMediaItems.length === 0) return null;
 
-    return trendingMediaItems[
-      Math.floor(Math.random() * trendingMediaItems.length)
-    ];
+    return _.sample(trendingMediaItems)
   }, [isSuccess]);
 
   const { data: mediaItemImages } = useQuery({
@@ -60,20 +59,21 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
   const [backdropImgSrc, logoImgSrc] = useMemo(() => {
     if (!mediaItemImages || !mediaItem) return [null, null];
 
-    const backdrop = mediaItemImages.backdrops.filter(
-      (backdrop) => backdrop.iso_639_1 === null,
-    )[Math.floor(Math.random() * mediaItemImages.backdrops.length)];
+    const backdropsWithoutTitle = mediaItemImages.backdrops.filter(
+      (backdrop) => backdrop.iso_639_1 === null
+    );
+
+    const backdrop = _.sample(backdropsWithoutTitle);
 
     let logo = mediaItemImages.logos.find((logo) => logo.iso_639_1 === "en");
-    if (!logo) {
-      logo =
-        mediaItemImages.logos[
-          Math.floor(Math.random() * mediaItemImages.logos.length)
-        ];
+
+    const hasNoEnglishLogo = !logo;
+    if (hasNoEnglishLogo) {
+      logo = _.sample(mediaItemImages.logos);
     }
 
     return [
-      getTMDBImageURL(backdrop?.file_path || mediaItem.backdrop_path, "1920"),
+      getTMDBImageURL(backdrop?.file_path || mediaItem.backdrop_path, "1280"),
       logo ? getTMDBImageURL(logo.file_path, "500") : null,
     ];
   }, [mediaItem, mediaItemImages]);
@@ -92,7 +92,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
     <div className={clsx("border-b-1 border-[var(--list-border-color)]")}>
       <div
         className={clsx(
-          "h-150 sm:h-175 relative z-0 mx-4 sm:mx-20 border-x-1 p-1 border-[var(--list-border-color)] flex justify-end",
+          "h-150 sm:h-175 relative z-0 mx-4 sm:mx-20 border-x-1 p-1 border-[var(--list-border-color)] flex justify-end"
         )}
       >
         {(!backdropImgSrc || !isBackdropLoaded) && (
@@ -107,7 +107,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
           <img
             className={clsx(
               "h-full w-full object-cover transition-opacity duration-500",
-              isBackdropLoaded ? "opacity-100" : "opacity-0",
+              isBackdropLoaded ? "opacity-100" : "opacity-0"
             )}
             src={backdropImgSrc}
             onLoad={() => setIsBackdropLoaded(true)}
@@ -117,19 +117,19 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
         <div
           className={clsx(
             "flex items-end -mb-3 justify-center md:justify-start",
-            "absolute top-0 bottom-[-1px] right-0 left-0 z-10",
+            "absolute top-0 bottom-[-1px] right-0 left-0 z-10"
           )}
         >
           {mediaItem && logoImgSrc && isBackdropLoaded && (
             <div
               className={clsx(
                 "flex flex-col gap-4 md:gap-4 justify-center md:ml-12 transition-opacity duration-500",
-                isLogoLoaded ? "opactiy-100" : "opacity-0",
+                isLogoLoaded ? "opactiy-100" : "opacity-0"
               )}
             >
               <div
                 className={clsx(
-                  "flex mb-2 px-10 justify-center md:px-0 md:justify-start",
+                  "flex mb-2 px-10 justify-center md:px-0 md:justify-start"
                 )}
               >
                 <img
@@ -142,7 +142,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
 
               <div
                 className={clsx(
-                  "hidden text-white md:block md:w-140 md:text-sm",
+                  "hidden text-white md:block md:w-140 md:text-sm"
                 )}
               >
                 {shortenParagraph(mediaItem.overview, 100)}
