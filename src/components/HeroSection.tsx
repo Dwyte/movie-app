@@ -44,7 +44,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
   const mediaItem = useMemo(() => {
     if (!trendingMediaItems || trendingMediaItems.length === 0) return null;
 
-    return _.sample(trendingMediaItems)
+    return _.sample(trendingMediaItems);
   }, [isSuccess]);
 
   const { data: mediaItemImages } = useQuery({
@@ -73,7 +73,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
     }
 
     return [
-      getTMDBImageURL(backdrop?.file_path || mediaItem.backdrop_path, "1280"),
+      backdrop?.file_path || mediaItem.backdrop_path,
       logo ? getTMDBImageURL(logo.file_path, "500") : null,
     ];
   }, [mediaItem, mediaItemImages]);
@@ -88,6 +88,8 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
   const [isBackdropLoaded, setIsBackdropLoaded] = useState(false);
   const [isLogoLoaded, setIsLogoLoaded] = useState(false);
 
+  console.log("hero");
+
   return (
     <div className={clsx("border-b-1 border-[var(--list-border-color)]")}>
       <div
@@ -100,18 +102,33 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
         )}
 
         {backdropImgSrc && isBackdropLoaded && (
-          <div className="bg-gradient-to-t lg:bg-gradient-to-r pointer-events-none  from-0% from-[var(--main-bg)] via-[var(--main-bg)]/90 via-15% to-70% to-[var(--main-bg)]/0 absolute inset-0 z-10"></div>
+          <div className="bg-gradient-to-t lg:bg-gradient-to-r pointer-events-none  from-0% from-[var(--main-bg)] via-[var(--main-bg)]/95 via-20% to-60% to-[var(--main-bg)]/0 absolute inset-0 z-10"></div>
         )}
 
         {backdropImgSrc && (
-          <img
-            className={clsx(
-              "h-full w-full object-cover transition-opacity duration-500",
-              isBackdropLoaded ? "opacity-100" : "opacity-0"
-            )}
-            src={backdropImgSrc}
-            onLoad={() => setIsBackdropLoaded(true)}
-          />
+          <picture className="h-full w-full object-cover">
+            <source
+              media="(min-width: 1440px)"
+              srcSet={getTMDBImageURL(backdropImgSrc, "1920")}
+            />
+            <source
+              media="(min-width: 1080px)"
+              srcSet={getTMDBImageURL(backdropImgSrc, "1280")}
+            />
+            <source
+              media="(min-width: 640px)"
+              srcSet={getTMDBImageURL(backdropImgSrc, "780")}
+            />
+            <img
+              onLoad={() => setIsBackdropLoaded(true)}
+              className={clsx(
+                "w-full h-full object-cover transition-opacity duration-500",
+                isBackdropLoaded ? "opacity-100" : "opacity-0"
+              )}
+              src={getTMDBImageURL(backdropImgSrc, "780")}
+              alt={`${mediaItem?.title}'s backdrop`}
+            />
+          </picture>
         )}
 
         <div
