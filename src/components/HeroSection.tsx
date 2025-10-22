@@ -94,7 +94,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
     <div className={clsx("border-b-1 border-[var(--list-border-color)]")}>
       <div
         className={clsx(
-          "h-150 sm:h-175 relative z-0 mx-4 sm:mx-20 border-x-1 p-1 border-[var(--list-border-color)] flex justify-end"
+          "h-150 sm:h-175 relative z-0 mx-[4vw] border-x-1 p-1 border-[var(--list-border-color)] flex justify-end"
         )}
       >
         {(!backdropImgSrc || !isBackdropLoaded) && (

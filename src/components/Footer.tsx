@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <div className="border-t-1 border-[var(--list-border-color)]">
-      <div className="overflow-hidden mx-4 text-center h-6 sm:h-20 sm:mx-20 border-x-[1px] border-[var(--list-border-color)]"></div>
+      <div className="overflow-hidden  h-[4vw] mx-[4vw] border-x-[1px] border-[var(--list-border-color)]"></div>
     </div>
   );
 };

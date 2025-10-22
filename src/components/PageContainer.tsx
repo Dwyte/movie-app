@@ -6,7 +6,7 @@ const PageContainer = (props: React.ComponentProps<"div">) => {
     <div
       {...props}
       className={clsx(
-        "min-h-screen mx-4 sm:mx-20 border-x-1 border-[var(--list-border-color)]",
+        "min-h-screen mx-[4vw] border-x-1 border-[var(--list-border-color)]",
         props.className
       )}
     />

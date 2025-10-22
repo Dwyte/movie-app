@@ -27,9 +27,9 @@ function Header() {
   return (
     <header className="relative">
       <div>
-        <div className="mx-4 text-center h-6 sm:h-20 sm:mx-20 border-x-[1px] border-[var(--list-border-color)]"></div>
+        <div className="text-center h-[4vw] mx-[4vw] border-x-[1px] border-[var(--list-border-color)]"></div>
         <div className="border-y-[1px]  border-[var(--list-border-color)]">
-          <div className="flex items-center justify-between gap-4 sm:gap-8 mx-4 sm:mx-20 sm:px-4 px-2 py-2 border-x-[1px]  border-[var(--list-border-color)]">
+          <div className="flex items-center justify-between gap-4 sm:gap-8 mx-[4vw] sm:px-4 px-2 py-2 border-x-[1px]  border-[var(--list-border-color)]">
             {/** Full name Logo in Desktop and Just the Letter N logo in Mobile */}
             <div className="shrink-0">
               <Link to="/">
