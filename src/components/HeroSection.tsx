@@ -74,7 +74,7 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
 
     return [
       backdrop?.file_path || mediaItem.backdrop_path,
-      logo ? getTMDBImageURL(logo.file_path, "500") : null,
+      logo ? logo.file_path : null,
     ];
   }, [mediaItem, mediaItemImages]);
 
@@ -149,12 +149,18 @@ const HeroSection = ({ mediaType }: { mediaType: MediaType }) => {
                   "flex mb-2 px-10 justify-center md:px-0 md:justify-start"
                 )}
               >
-                <img
-                  className={clsx("w-auto max-h-50 md:w-auto md:max-h-100")}
-                  src={logoImgSrc}
-                  alt=""
-                  onLoad={() => setTimeout(() => setIsLogoLoaded(true), 500)}
-                />
+                <picture className="w-auto max-h-50 md:w-auto md:max-h-100">
+                  <source
+                    media="(min-width: 1080px)"
+                    srcSet={getTMDBImageURL(logoImgSrc, "500")}
+                  />
+                  <img
+                    className={clsx("")}
+                    src={getTMDBImageURL(logoImgSrc, "300")}
+                    alt={mediaItem.title}
+                    onLoad={() => setTimeout(() => setIsLogoLoaded(true), 500)}
+                  />
+                </picture>
               </div>
 
               <div
