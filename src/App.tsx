@@ -1,8 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 
-import Home from "./pages/Home";
-
+import MediaDiscoveryPage from "./pages/MediaDiscoveryPage";
 import Header from "./components/Header";
 import { useMediaQueries } from "./contexts/MediaQueriesContext";
 import RouteErrorBoundary from "./components/RouteErrorBoundary";
@@ -45,7 +44,7 @@ const App = () => {
             path="/"
             element={
               <RouteErrorBoundary>
-                <Home />
+                <MediaDiscoveryPage />
               </RouteErrorBoundary>
             }
           />
@@ -53,7 +52,7 @@ const App = () => {
             path="/movies"
             element={
               <RouteErrorBoundary key="movie">
-                <Home mediaType="movie" />
+                <MediaDiscoveryPage mediaType="movie" />
               </RouteErrorBoundary>
             }
           />
@@ -61,7 +60,7 @@ const App = () => {
             path="/series"
             element={
               <RouteErrorBoundary key="tv">
-                <Home mediaType="tv" />
+                <MediaDiscoveryPage mediaType="tv" />
               </RouteErrorBoundary>
             }
           />

@@ -16,7 +16,7 @@ import ErrorFallback from "../components/ErrorFallback";
 
 import IntersectionObserverComponent from "../components/IntersectionObserverComponent";
 
-const Home = ({ mediaType }: { mediaType?: MediaType }) => {
+const MediaDiscoveryPage = ({ mediaType }: { mediaType?: MediaType }) => {
   const [configs, setConfigs] = useState<MediaSectionConfig[]>(() =>
     createMediaSectionConfigs(mediaType)
   );
@@ -86,4 +86,4 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
   );
 };
 
-export default Home;
+export default MediaDiscoveryPage;
