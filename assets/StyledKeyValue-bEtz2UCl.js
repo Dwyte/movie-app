@@ -1,1 +1,0 @@
-import{j as s}from"./index-BIGyygmS.js";const r=({label:e,value:t,className:a,...l})=>s.jsxs("div",{className:`flex gap-2 ${a}`,...l,children:[s.jsx("span",{className:"text-stone-400",children:e}),s.jsx("span",{className:"text-white",children:t})]});export{r as S};
