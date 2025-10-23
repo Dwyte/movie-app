@@ -1,4 +1,5 @@
 import { useQueries } from "@tanstack/react-query";
+import _ from "lodash";
 
 import HeroSection from "../components/HeroSection";
 import MediaItemsRow from "../components/MediaItemsRow";
@@ -8,15 +9,16 @@ import {
   createMediaSectionConfigs,
 } from "../misc/mediaSectionConfigs";
 import ScrollToTop from "../components/ScrollToTop";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MediaType } from "../misc/types";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "../components/ErrorFallback";
+
 import IntersectionObserverComponent from "../components/IntersectionObserverComponent";
 
 const Home = ({ mediaType }: { mediaType?: MediaType }) => {
   const [configs, setConfigs] = useState<MediaSectionConfig[]>(() =>
-    createMediaSectionConfigs(mediaType),
+    createMediaSectionConfigs(mediaType)
   );
   const [activeMediaRowCount, setActiveMediaRowCount] = useState(1);
   const activeConfigs = configs.slice(0, activeMediaRowCount);
@@ -35,6 +37,11 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
 
   const mediaSectionsRef = useRef<Element | null>(null);
 
+  const heroSectionMediaType = useMemo(
+    () => mediaType ?? _.sample(["movie", "tv"]) as MediaType,
+    [mediaType]
+  );
+
   return (
     <div>
       <ScrollToTop />
@@ -48,11 +55,7 @@ const Home = ({ mediaType }: { mediaType?: MediaType }) => {
           />
         )}
       >
-        <HeroSection
-          mediaType={
-            mediaType ? mediaType : Math.random() >= 0.5 ? "movie" : "tv"
-          }
-        />
+        <HeroSection mediaType={heroSectionMediaType} />
       </ErrorBoundary>
 
       <div className="relative z-20 mx-[4vw]">
